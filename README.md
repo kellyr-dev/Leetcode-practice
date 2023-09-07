@@ -1,3 +1,7 @@
 # LeetCode
 
-## Dynamic Programming
+### Dynamic Programming
+### Sliding Windows
+### Graphs
+### BFS & DFS
+
