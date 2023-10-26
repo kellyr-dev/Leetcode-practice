@@ -98,10 +98,6 @@ def minimunSizeSubarraySum(nums, target):
         suma = suma + nums[right]
 
         while suma >= target and left <= right:
-            print(f"right: {right}")
-            print(f"left: {left}")
-            print(f"nums[left:right+1]", suma)
-            print(f"______________________________")
             if (right - left + 1) <= min_len:
                 min_len = right - left + 1
 
@@ -115,11 +111,52 @@ def minimunSizeSubarraySum(nums, target):
     else:
         return 0
 
+# 3. Longest Substring Without Repeating Characters
+def lengthOfLongestSubstring(s):
+
+    hashmap = {}
+    left = 0
+    right = 0
+    max_qty = float('-inf')
+
+    # base cases
+    if len(s) == 0:
+        return 0
+    if len(s) == 1:
+        return 1
+
+    # move right pointer until end of array
+    while right <= len(s)-1:
+
+        if s[right] not in hashmap:
+            hashmap[s[right]] = right
+
+        else:
+            if len(hashmap) > max_qty:
+                max_qty = len(hashmap)
+
+            # if get a repeated character move left pointer until find
+            # when move remove from hashmap
+            while s[left] != s[right]:
+                hashmap.pop(s[left])
+                left += 1
+
+            hashmap.pop((s[left]))
+            hashmap[s[right]] = right
+            # update pointer left to the start point of the new possible longest substring
+            left += 1
+
+        right += 1
+
+    # if not repeat character max longest substring is len(hashmap)
+    return max(max_qty, len(hashmap))
+
 
 if __name__ == '__main__':
 
     nums = [1,2,3,4,5] # 15,14,12,
     k = 3
     target = 11
+    s = "dvdf"
 
-    print(minimunSizeSubarraySum(nums, target))
+    print(lengthOfLongestSubstring(s))
