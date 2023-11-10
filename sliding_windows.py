@@ -189,7 +189,60 @@ def isPalindrome(s):
 
     return True
 
+# 1031. Maximum Sum of Two Non-Overlapping Subarrays
+def maxConsecutiveSubArrayKOverlaping(nums, firstLen, secondLen):
 
+    print(nums)
+    if firstLen > secondLen:
+        k = firstLen
+    else:
+        k = secondLen
+
+    if k > len(nums):
+        return sum(nums)
+
+    sumsofar = sum(nums[0:k])
+    maxsum1 = sumsofar
+    right = k
+    left = 0
+    leftIdx = left
+    rightIdx = right-1
+    while right < len(nums):
+
+        sumsofar = sumsofar + nums[right] - nums[left]
+        if sumsofar > maxsum1:
+
+            maxsum1 = sumsofar
+            leftIdx = left
+            rightIdx = right
+
+
+        left += 1
+        right += 1
+
+    leftIdx += 1
+    new_array = nums[0:leftIdx]
+    for i in range(rightIdx+1, len(nums)):
+        new_array.append(nums[i])
+
+    if k - firstLen == 0:
+        k = secondLen
+    else:
+        k = firstLen
+
+    sumsofar = sum(nums[0:k])
+    maxsum2 = sumsofar
+    right = k
+    left = 0
+    while right < len(new_array):
+        sumsofar = sumsofar + new_array[right] - new_array[left]
+        if sumsofar > maxsum2:
+            maxsum2 = sumsofar
+
+        left += 1
+        right += 1
+
+    return maxsum1 + maxsum2
 
 if __name__ == '__main__':
     nums = [-1,0,1,2,-1,-4] # 15,14,12,
