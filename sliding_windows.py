@@ -192,62 +192,72 @@ def isPalindrome(s):
 # 1031. Maximum Sum of Two Non-Overlapping Subarrays
 def maxConsecutiveSubArrayKOverlaping(nums, firstLen, secondLen):
 
-    print(nums)
+    # As at this point I dont know what is the efficient point to select which range get first
+    # what if I select both choices and after check what is the max
+
+    # Select first maximun lenght
+    rightIdx = 0
+    leftIdx = 0
+    def maxConsecutiveKelements(nums, k):
+        sumsofar = sum(nums[0:k])
+        maxsum1 = sumsofar
+        right = k
+        left = 0
+        #nonlocal leftIdx = left
+        #nonlocal rightIdx = right - 1
+        #print(f"leftIdx", leftIdx)
+        #print(f"rightIdx", rightIdx)
+
+        while right < len(nums):
+
+            sumsofar = sumsofar + nums[right] - nums[left]
+            if sumsofar > maxsum1:
+                maxsum1 = sumsofar
+                leftIdx = left
+                rightIdx = right
+
+            left += 1
+            right += 1
+
+        return maxsum1
+
     if firstLen > secondLen:
-        k = firstLen
-    else:
-        k = secondLen
+        if firstLen > len(nums):
+            return sum(nums)
+        maxSum1_opt1 = maxConsecutiveKelements(nums, firstLen)
+        print(f"maxSum1_opt1: {maxSum1_opt1}")
+        print(f"nums[{leftIdx}:{rightIdx}]")
+        leftIdx += 1
+        new_array = nums[0:leftIdx]
+        for i in range(rightIdx + 1, len(nums)):
+            new_array.append(nums[i])
 
-    if k > len(nums):
-        return sum(nums)
-
-    sumsofar = sum(nums[0:k])
-    maxsum1 = sumsofar
-    right = k
-    left = 0
-    leftIdx = left
-    rightIdx = right-1
-    while right < len(nums):
-
-        sumsofar = sumsofar + nums[right] - nums[left]
-        if sumsofar > maxsum1:
-
-            maxsum1 = sumsofar
-            leftIdx = left
-            rightIdx = right
+        maxSum2_opt1 = maxConsecutiveKelements(new_array, secondLen)
+        print(f"maxSum2_opt1: {maxSum2_opt1}")
 
 
-        left += 1
-        right += 1
+    # else:
+    #     if secondLen > len(nums):
+    #         return sum(nums)
+    #     maxSum1_opt1 = maxConsecutiveKelements(nums, secondLen)
+    #     leftIdx += 1
+    #     new_array = nums[0:leftIdx]
+    #     for i in range(rightIdx + 1, len(nums)):
+    #         new_array.append(nums[i])
+    #
+    #     maxSum2_opt1 = maxConsecutiveKelements(new_array, firstLen)
 
-    leftIdx += 1
-    new_array = nums[0:leftIdx]
-    for i in range(rightIdx+1, len(nums)):
-        new_array.append(nums[i])
+    maxSum_opt1 = maxSum1_opt1 + maxSum2_opt1
 
-    if k - firstLen == 0:
-        k = secondLen
-    else:
-        k = firstLen
+    return maxSum_opt1
 
-    sumsofar = sum(nums[0:k])
-    maxsum2 = sumsofar
-    right = k
-    left = 0
-    while right < len(new_array):
-        sumsofar = sumsofar + new_array[right] - new_array[left]
-        if sumsofar > maxsum2:
-            maxsum2 = sumsofar
-
-        left += 1
-        right += 1
-
-    return maxsum1 + maxsum2
 
 if __name__ == '__main__':
-    nums = [-1,0,1,2,-1,-4] # 15,14,12,
+    nums = [3,8,1,3,2,1,8,9,0] # 15,14,12,
     target = 11
-    k = 0
+    k = 2
     s = "AAAB"
+    firstLen = 3
+    secondLen = 2
 
-    print(characterReplacement(nums, k))
+    print(maxConsecutiveSubArrayKOverlaping(nums, firstLen, secondLen))
