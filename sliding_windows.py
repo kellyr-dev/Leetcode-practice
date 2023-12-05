@@ -192,72 +192,64 @@ def isPalindrome(s):
 # 1031. Maximum Sum of Two Non-Overlapping Subarrays
 def maxConsecutiveSubArrayKOverlaping(nums, firstLen, secondLen):
 
-    # As at this point I dont know what is the efficient point to select which range get first
-    # what if I select both choices and after check what is the max
+    # Time Complexity - > 4 call to maxConsecutiK function -> 4*O(n)
+    # Space Complexity - > 4 arrays nums - > 4*O(n)
 
-    # Select first maximun lenght
-    rightIdx = 0
-    leftIdx = 0
-    def maxConsecutiveKelements(nums, k):
-        sumsofar = sum(nums[0:k])
+    array2opt = []
+    for i in range(len(nums)):
+        array2opt.append(nums[i])
+
+    def maxConsecutiveK(array, k):
+
+        sumsofar = sum(array[0:k])
         maxsum1 = sumsofar
         right = k
         left = 0
-        #nonlocal leftIdx = left
-        #nonlocal rightIdx = right - 1
-        #print(f"leftIdx", leftIdx)
-        #print(f"rightIdx", rightIdx)
+        leftIdx = left
+        rightIdx = right - 1
+        while right < len(array):
 
-        while right < len(nums):
-
-            sumsofar = sumsofar + nums[right] - nums[left]
+            sumsofar = sumsofar + array[right] - array[left]
             if sumsofar > maxsum1:
                 maxsum1 = sumsofar
-                leftIdx = left
+                leftIdx = left + 1
                 rightIdx = right
 
             left += 1
             right += 1
 
+        for i in range(len(array)):
+
+            if i >= leftIdx and i <= rightIdx:
+                array[i] = -1
+
         return maxsum1
 
-    if firstLen > secondLen:
-        if firstLen > len(nums):
-            return sum(nums)
-        maxSum1_opt1 = maxConsecutiveKelements(nums, firstLen)
-        print(f"maxSum1_opt1: {maxSum1_opt1}")
-        print(f"nums[{leftIdx}:{rightIdx}]")
-        leftIdx += 1
-        new_array = nums[0:leftIdx]
-        for i in range(rightIdx + 1, len(nums)):
-            new_array.append(nums[i])
+    sum1_1 = maxConsecutiveK(nums, firstLen)
+    sum2_1 = maxConsecutiveK(array2opt, secondLen)
 
-        maxSum2_opt1 = maxConsecutiveKelements(new_array, secondLen)
-        print(f"maxSum2_opt1: {maxSum2_opt1}")
+    nums2 = []
+    for i in range(len(nums)):
+        if nums[i] != -1:
+            nums2.append(nums[i])
 
+    array2opt2 = []
+    for i in range(len(array2opt)):
+        if array2opt[i] != -1:
+            array2opt2.append(array2opt[i])
 
-    # else:
-    #     if secondLen > len(nums):
-    #         return sum(nums)
-    #     maxSum1_opt1 = maxConsecutiveKelements(nums, secondLen)
-    #     leftIdx += 1
-    #     new_array = nums[0:leftIdx]
-    #     for i in range(rightIdx + 1, len(nums)):
-    #         new_array.append(nums[i])
-    #
-    #     maxSum2_opt1 = maxConsecutiveKelements(new_array, firstLen)
+    sum1_2 = maxConsecutiveK(nums2, secondLen)
+    sum2_2 = maxConsecutiveK(array2opt2, firstLen)
 
-    maxSum_opt1 = maxSum1_opt1 + maxSum2_opt1
-
-    return maxSum_opt1
+    return max(sum1_1 + sum1_2, sum2_1 + sum2_2)
 
 
 if __name__ == '__main__':
-    nums = [3,8,1,3,2,1,8,9,0] # 15,14,12,
+    nums = [8,20,6,2,20,17,6,3,20,8,12] # 15,14,12,
     target = 11
     k = 2
     s = "AAAB"
-    firstLen = 3
-    secondLen = 2
+    firstLen = 5
+    secondLen = 4
 
     print(maxConsecutiveSubArrayKOverlaping(nums, firstLen, secondLen))
