@@ -27,27 +27,6 @@ def findMaxAverage(nums, k):
 # 128. Longest Consecutive Sequence
 def longestConsecutiveSequence(nums):
     # ELEGANT SOLUTION
-    '''
-    uniques = set(nums)
-        max_length = 0
-
-        while uniques:
-            low = high = uniques.pop()
-
-            while low - 1 in uniques or high + 1 in uniques:
-                if low - 1 in uniques:
-                    uniques.remove(low - 1)
-                    low -= 1
-
-                if high + 1 in uniques:
-                    uniques.remove(high + 1)
-                    high += 1
-
-            max_length = max(high - low + 1, max_length)
-
-        return max_length
-
-    '''
     values = {}
     for j in range(len(nums)):
         if nums[j] in values:
@@ -242,6 +221,8 @@ def maxConsecutiveSubArrayKOverlaping(nums, firstLen, secondLen):
     sum2_2 = maxConsecutiveK(array2opt2, firstLen)
 
     return max(sum1_1 + sum1_2, sum2_1 + sum2_2)
+
+# 643 Maximun Average Subarray
 
 
 if __name__ == '__main__':

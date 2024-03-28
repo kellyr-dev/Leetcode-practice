@@ -1,4 +1,3 @@
-
 # Node class for a binary tree node
 class TreeNode:
     def __init__(self, value=None):
@@ -30,8 +29,8 @@ def longest_path_binary_tree(root):
     print(root)
     pass
 
-def print_bfs(root):
 
+def print_bfs(root):
     bfs_queue = list()
     bfs_queue.append(root)
 
@@ -45,7 +44,6 @@ def print_bfs(root):
 
 
 def find_min_value(root):
-
     if root == None:
         return -1
 
@@ -68,14 +66,13 @@ def find_min_value(root):
 
 
 def find_min_recursive(root):
-
     if root == None:
         return float('inf')
 
     return min(root.value, find_min_recursive(root.left), find_min_recursive(root.right))
 
-def max_sum_path(root):
 
+def max_sum_path(root):
     if root == None:
         return 0
 
@@ -83,43 +80,40 @@ def max_sum_path(root):
 
 
 def longest_path_binary(root):
-
     if root == None:
         return 0
 
-    return max(1 + longest_path_binary(root.left), 1+longest_path_binary(root.right))
+    return max(1 + longest_path_binary(root.left), 1 + longest_path_binary(root.right))
 
 
 def lowest_common_ancestor(root, value1, value2):
-
-    list_value1 = bfs(root, value1) # O(N)
-    list_value2 = bfs(root, value2) # O(N)
+    list_value1 = bfs(root, value1)  # O(N)
+    list_value2 = bfs(root, value2)  # O(N)
 
     print(list_value1)
     print(list_value2)
 
-    tam_1 = len(list_value1)-1
-    tam_2 = len(list_value2)-1
+    tam_1 = len(list_value1) - 1
+    tam_2 = len(list_value2) - 1
 
     # O(N)
 
     # O(3N)
     if len(list_value2) > len(list_value1):
-        for i in range(tam_2-1, 0, -1):
+        for i in range(tam_2 - 1, 0, -1):
             if list_value2[i] == list_value1[tam_1]:
                 if i > 0:
-                    if list_value2[i-1] == list_value1[tam_1-1]:
-                        return list_value1[tam_1-1]
+                    if list_value2[i - 1] == list_value1[tam_1 - 1]:
+                        return list_value1[tam_1 - 1]
     else:
-        for i in range(tam_1-1, 0, -1):
+        for i in range(tam_1 - 1, 0, -1):
             if list_value1[i] == list_value2[tam_2]:
                 if i > 0:
-                    if list_value1[i-1] == list_value2[tam_2-1]:
-                        return list_value2[tam_2-1]
+                    if list_value1[i - 1] == list_value2[tam_2 - 1]:
+                        return list_value2[tam_2 - 1]
 
 
 def bfs(root, value):
-
     queque_bfs = list()
     queue_return = list()
 
@@ -144,14 +138,123 @@ def bfs(root, value):
 
     return queue_return
 
-if __name__ == '__main__':
-    #lst = [1, 2, 3, None, None, None, 4]
-    lst = [5, 2, 7, None, None, 4, 8, None, None, None, 9]
-    #lst = [5, 10, 30, 25, 100, 85, 30]
-    root = deserialize(lst)
-    #print(find_min_value(root))
-    #print_bfs(root)
-    #print(max_sum_path(root))
-    print(lowest_common_ancestor(root, 2, 9))
-    #a = [3, 2, 1, 5, 4, 6]
 
+# 102. Binary Tree Level Order Traversal
+def traversebfs(root):
+    queue = []
+    queue.append(root)
+
+    res = []
+    while len(queue) > 0:
+
+        currenLevel = []
+        levelSize = len(queue)
+
+        for i in range(levelSize):  # 1, #2, #4
+            current = queue.pop(0)
+            currenLevel.append(current.value)
+            if current.left is not None:
+                queue.append(current.left)
+            if current.right is not None:
+                queue.append(current.right)
+
+        print(currenLevel)
+        res.append(currenLevel)
+
+    return res
+
+# 107. Binary Tree Level Order Traversal II
+def levelOrderBottom(root):
+    if not root:
+        return []
+
+    queue = []
+    queue.append(root)
+
+    pre_result = []
+    while queue:
+        level = len(queue)
+        aux = []
+
+        for i in range(level):
+            currentNode = queue.pop(0)
+            aux.append(currentNode.value)
+
+            if currentNode.left is not None:
+                queue.append(currentNode.left)
+            if currentNode.right is not None:
+                queue.append(currentNode.right)
+
+        pre_result.insert(0, aux)
+
+    print(pre_result)
+    return pre_result
+
+# 103. Binary Tree Zigzag Level Order Traversal
+def zigzagLevelOrder(root):
+
+    if not root:
+        return []
+
+    toleft = False
+    toright = True
+
+    queue = []
+    queue.append(root)
+    result = []
+
+    while queue:
+        aux = []
+        levelSize = len(queue)
+        print(f"toRight--> {toright}")
+        print(f"toLeft--> {toleft}")
+
+        for i in range(levelSize):
+            currentNode = queue.pop(0)
+
+            if toright == True and toleft == False:
+                aux.append(currentNode.value)
+
+            if toright == False and toleft == True:
+                aux.insert(0, currentNode.value)
+
+            if currentNode.left is not None:
+                queue.append(currentNode.left)
+
+            if currentNode.right is not None:
+                queue.append(currentNode.right)
+
+        result.append(aux)
+        toleft = not toleft
+        toright = not toright
+
+    return result
+
+# 113. Path Sum II
+def hasPathSum(root, targetSum):
+
+    allPaths = []
+    localPath = []
+
+    def local_path(root, targetSum, localPath):
+
+        if not root:
+            return
+
+        localPath.append(root.value)
+
+        if root.value == targetSum and root.left is None and root.right is None:
+            allPaths.append(localPath)
+        else:
+            local_path(root.left, targetSum - root.value, localPath)
+            local_path(root.right, targetSum - root.value, localPath)
+
+        del localPath[-1]
+
+
+if __name__ == '__main__':
+    lst = [5,4,8,11,None,13,4,7,2,None,None,None,1]
+    root = deserialize(lst)
+    key = 22
+    print(hasPathSum(root, key))
+    # a = [3, 2, 1, 5, 4, 6]
