@@ -222,7 +222,49 @@ def maxConsecutiveSubArrayKOverlaping(nums, firstLen, secondLen):
 
     return max(sum1_1 + sum1_2, sum2_1 + sum2_2)
 
-# 643 Maximun Average Subarray
+# 1100
+def findKlenghtSubtringsWithNoRepeatChar(word, k):
+    '''
+        word = "havefunonleetcode", k = 5 -> 6
+        word = "home", k = 5 -> 0
+
+    '''
+
+    if k > len(word):
+        return 0
+
+    right = k
+    left = 0
+    count_B = True
+    count = 0
+    map = {}
+    result = []
+    while right <= len(word): # O(n)
+
+        for i in range(left, right): # O(k)
+            if word[i] in map:
+                map[word[i]] = map[word[i]] + 1
+
+            else:
+                map[word[i]] = 1
+
+        print(map)
+        for value in map.keys(): # O(k)
+            if map[value] > 1:
+                count_B = False
+
+        if count_B:
+            count += 1
+            result.append("".join(map.keys()))
+
+        map.clear() # O(k)
+        count_B = True
+        print(result)
+        print("<======================>")
+        right += 1
+        left += 1
+
+    return count
 
 
 if __name__ == '__main__':
@@ -232,5 +274,7 @@ if __name__ == '__main__':
     s = "AAAB"
     firstLen = 5
     secondLen = 4
+    word = "havefunonleetcode"
+    k = 5
 
-    print(maxConsecutiveSubArrayKOverlaping(nums, firstLen, secondLen))
+    print(findKlenghtSubtringsWithNoRepeatChar(word, k))
