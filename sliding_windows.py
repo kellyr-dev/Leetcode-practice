@@ -24,6 +24,7 @@ def findMaxAverage(nums, k):
     # print(max_avg)
     return max_avg
 
+
 # 128. Longest Consecutive Sequence
 def longestConsecutiveSequence(nums):
     # ELEGANT SOLUTION
@@ -50,6 +51,7 @@ def longestConsecutiveSequence(nums):
         cont = 1
 
     return max_consecutive
+
 
 # 209. Minimum Size Subarray Sum
 def minimunSizeSubarraySum(nums, target):
@@ -84,6 +86,7 @@ def minimunSizeSubarraySum(nums, target):
         return min_len
     else:
         return 0
+
 
 # 3. Longest Substring Without Repeating Characters
 def lengthOfLongestSubstring(s):
@@ -124,6 +127,7 @@ def lengthOfLongestSubstring(s):
     # if not repeat character max longest substring is len(hashmap)
     return max(max_qty, len(hashmap))
 
+
 # 424. Longest Repeating Character Replacement
 def characterReplacement(s, k):
     right = 0
@@ -133,11 +137,11 @@ def characterReplacement(s, k):
     aux = k
     hashmap = {}
 
-    while right <= len(s)-1:
+    while right <= len(s) - 1:
 
         hashmap[s[right]] = 1 + hashmap.get(s[right], 0)
 
-        while (right -left + 1) - max(hashmap.values()) > k:
+        while (right - left + 1) - max(hashmap.values()) > k:
             hashmap[s[left]] -= 1
             left += 1
 
@@ -145,6 +149,7 @@ def characterReplacement(s, k):
         right += 1
 
     return global_max
+
 
 # 125. Valid Palindrome
 def isPalindrome(s):
@@ -170,7 +175,6 @@ def isPalindrome(s):
 
 # 1031. Maximum Sum of Two Non-Overlapping Subarrays
 def maxConsecutiveSubArrayKOverlaping(nums, firstLen, secondLen):
-
     # Time Complexity - > 4 call to maxConsecutiK function -> 4*O(n)
     # Space Complexity - > 4 arrays nums - > 4*O(n)
 
@@ -222,14 +226,8 @@ def maxConsecutiveSubArrayKOverlaping(nums, firstLen, secondLen):
 
     return max(sum1_1 + sum1_2, sum2_1 + sum2_2)
 
-# 1100
+# 1100. Find K length Substrings With No Repeated
 def findKlenghtSubtringsWithNoRepeatChar(word, k):
-    '''
-        word = "havefunonleetcode", k = 5 -> 6
-        word = "home", k = 5 -> 0
-
-    '''
-
     if k > len(word):
         return 0
 
@@ -239,9 +237,9 @@ def findKlenghtSubtringsWithNoRepeatChar(word, k):
     count = 0
     map = {}
     result = []
-    while right <= len(word): # O(n)
+    while right <= len(word):  # O(n)
 
-        for i in range(left, right): # O(k)
+        for i in range(left, right):  # O(k)
             if word[i] in map:
                 map[word[i]] = map[word[i]] + 1
 
@@ -249,7 +247,7 @@ def findKlenghtSubtringsWithNoRepeatChar(word, k):
                 map[word[i]] = 1
 
         print(map)
-        for value in map.keys(): # O(k)
+        for value in map.keys():  # O(k)
             if map[value] > 1:
                 count_B = False
 
@@ -257,7 +255,7 @@ def findKlenghtSubtringsWithNoRepeatChar(word, k):
             count += 1
             result.append("".join(map.keys()))
 
-        map.clear() # O(k)
+        map.clear()  # O(k)
         count_B = True
         print(result)
         print("<======================>")
@@ -266,15 +264,169 @@ def findKlenghtSubtringsWithNoRepeatChar(word, k):
 
     return count
 
+# 2461. Maximum Sum of Distinct Subarrays With Length K (not finished)
+def maximumSubarraySum(nums, k):
+    if k > len(nums):
+        return 0
+
+    table = {}
+    left = 0
+    right = k - 1
+    maxSum = sum(nums[0:k])  # question if k is inclusive in Python
+    for i in range(k):
+        if nums[i] not in table:
+            table[nums[i]] = 1
+        else:
+            table[nums[i]] = table[nums[i]] + 1
+            maxSum = 0
+    right += 1
+    print(f"starting: ", table)
+    while right < len(nums):
+
+        print(f"[right]: ", right)
+        print(f"[left]: ", left)
+        if nums[right] not in table:
+            table[nums[right]] = 1
+            aux = maxSum - nums[left] + nums[right]
+            maxSum = max(maxSum, aux)
+
+            if table[nums[left]] > 1:
+                table[nums[left]] = table[nums[left]] - 1
+            else:
+                table.pop(nums[left])
+            right += 1
+        else:
+
+            table[nums[right]] = table[nums[right]] + 1
+            if table[nums[left]] > 1:
+                table[nums[left]] = table[nums[left]] - 1
+            else:
+                maxSum = max(sum(table.values()), maxSum)
+                table.pop(nums[left])
+            right += 1
+
+        print(table)
+        print("<================>")
+    return maxSum
+
+# 340 Longest Substring with K Distinct Characters
+def longestSubstringwithKDistinctChars(word, k):
+    table = {}
+    right = 0
+    left = 0
+    aux_k = k
+    result = float('-inf')
+
+    print(word)
+    while right < len(word):
+        print(table)
+        print(f"current: ", word[right])
+        if word[right] in table:
+            table[word[right]] = table[word[right]] + 1
+            result = max(result, sum(table.values()))
+
+        else:
+            print(len(table))
+            if len(table) < k:
+                table[word[right]] = 1
+                result = max(result, sum(table.values()))
+            else:
+                result = max(result, sum(table.values()))
+                while len(table) >= k:
+                    print("here")
+                    if table[word[left]] > 1:
+                        print(f"reduce -1 to :", table[word[left]])
+                        table[word[left]] -= 1
+                    else:
+                        print(f"pop: ", word[left])
+                        table.pop(word[left])
+                    left += 1
+                table[word[right]] = 1
+
+        right += 1
+
+    return result
+
+# 904. Fruit Into Baskets
+def totalFruit(fruits):
+    table = {}
+    right = 0
+    left = 0
+    max_pick = 0
+    K = 2
+
+    while right < len(fruits):
+
+        if fruits[right] in table:
+            table[fruits[right]] += 1
+            max_pick = max(max_pick, right - left)
+
+        else:
+
+            if len(table) < K:
+                table[fruits[right]] = 1
+                max_pick = max(max_pick, right - left)
+            else:
+                max_pick = max(max_pick, right - left)
+                while len(table) >= K and left < right:
+
+                    if table[fruits[left]] > 1:
+                        table[fruits[left]] -= 1
+                    else:
+                        table.pop(fruits[left])
+
+                    left += 1
+
+                table[fruits[right]] = 1
+
+        right += 1
+
+    return max(max_pick, right - left)
+
+# 1004. Max Consecutive Ones III
+def longestOnes(nums, k):
+
+    table = {0:0}
+    right = 0
+    left = 0
+    max_lenght = 0
+
+    while right < len(nums):
+
+        if nums[right] == 0:
+            if table.get(0) < k:
+                max_lenght = max(max_lenght, right - left)
+                table[0] += 1
+
+            else:
+                max_lenght = max(max_lenght, right - left)
+                while table.get(0) >= k:
+                    if nums[left] == 0:
+                        left += 1
+                        table[0] -= 1
+                    else:
+                        left += 1
+
+                table[0] += 1
+
+        else:
+            max_lenght = max(max_lenght, right - left)
+
+        right += 1
+
+    return max(max_lenght, right - left)
+
+
 
 if __name__ == '__main__':
-    nums = [8,20,6,2,20,17,6,3,20,8,12] # 15,14,12,
-    target = 11
+
+    nums = [0, 1, 1, 0, 0, 0, 1, 1, 0, 1, 1]
     k = 2
+    target = 11
     s = "AAAB"
     firstLen = 5
     secondLen = 4
-    word = "havefunonleetcode"
-    k = 5
+    word = "cbbebi"
+    fruits = [3,3,3,1,2,1,1,2,3,3,4]
 
-    print(findKlenghtSubtringsWithNoRepeatChar(word, k))
+    print(longestOnes(nums, k))
