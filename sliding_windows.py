@@ -416,6 +416,94 @@ def longestOnes(nums, k):
 
     return max(max_lenght, right - left)
 
+# 567. Permutation in String
+def findPermutationAux(str1, pattern):
+
+    if len(pattern) > len(str1):
+        return False
+
+    if len(str1) == 0:
+        return False
+
+    if len(pattern) == 0:
+        return False
+
+    right = len(pattern)
+    left = 0
+    aux_pattern = sorted(pattern)
+
+    while right <= len(str1):
+        aux = sorted(str1[left:right])
+        if aux == aux_pattern:
+            return True
+
+        right +=1
+        left +=1
+
+    return False
+
+# 438. Find All Anagrams in a String
+def findAllAnagrams(str1, pattern):
+
+    if len(pattern) > len(str1):
+        return []
+
+    right = len(pattern)
+    left = 0
+    aux_pattern = sorted(pattern)
+    result = []
+
+    while right <= len(str1):
+        aux = sorted(str1[left:right])
+        if aux == aux_pattern:
+            result.append(left)
+
+        right +=1
+        left +=1
+
+    return result
+
+# 76. Minimum Window Substring
+def minWindow(s, t):
+
+    table = {}
+
+    # [0..26]
+
+    if len(t) > len(s):
+        return ""
+
+    #if len(t) == 0 and len(s) != 0:
+    #    return ""
+
+    for i in range(len(t)):
+        if t[i] in table:
+            table[t[i]] += 1
+        else:
+            table[t[i]] = 1
+
+    right = len(t)
+    left = 0
+    aux_left = left
+    min_windows = float('inf')
+
+    while right < len(s): # going to thru complete string
+
+        while left <= right: # going to thru complete windows
+
+            if s[left] in table: # if match letter decrease value in my hashMap
+                if table.get(s[left]) > 1:
+                    table[s[left]] -= 1 # aabbc  # abc
+                else:
+                    table.pop(s[left])
+            left += 1
+
+        if len(table) == 0: # if all letter are matched
+            min_windows = min(right - aux_left, min_windows)
+
+
+
+
 
 
 if __name__ == '__main__':
@@ -426,7 +514,10 @@ if __name__ == '__main__':
     s = "AAAB"
     firstLen = 5
     secondLen = 4
-    word = "cbbebi"
+    word = "odicf"
+    s1 = "abbcabc" #=> "testc" / "estca" / "stcas" / "tcase"
+                    # => "ecstt" / "acest" / "  " / "acest"
+    s2 = "abc" # => 5
     fruits = [3,3,3,1,2,1,1,2,3,3,4]
 
-    print(longestOnes(nums, k))
+    print(findAllAnagrams(s1, s2))
