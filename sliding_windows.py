@@ -173,6 +173,7 @@ def isPalindrome(s):
 
     return True
 
+
 # 1031. Maximum Sum of Two Non-Overlapping Subarrays
 def maxConsecutiveSubArrayKOverlaping(nums, firstLen, secondLen):
     # Time Complexity - > 4 call to maxConsecutiK function -> 4*O(n)
@@ -264,51 +265,6 @@ def findKlenghtSubtringsWithNoRepeatChar(word, k):
 
     return count
 
-# 2461. Maximum Sum of Distinct Subarrays With Length K (not finished)
-def maximumSubarraySum(nums, k):
-    if k > len(nums):
-        return 0
-
-    table = {}
-    left = 0
-    right = k - 1
-    maxSum = sum(nums[0:k])  # question if k is inclusive in Python
-    for i in range(k):
-        if nums[i] not in table:
-            table[nums[i]] = 1
-        else:
-            table[nums[i]] = table[nums[i]] + 1
-            maxSum = 0
-    right += 1
-    print(f"starting: ", table)
-    while right < len(nums):
-
-        print(f"[right]: ", right)
-        print(f"[left]: ", left)
-        if nums[right] not in table:
-            table[nums[right]] = 1
-            aux = maxSum - nums[left] + nums[right]
-            maxSum = max(maxSum, aux)
-
-            if table[nums[left]] > 1:
-                table[nums[left]] = table[nums[left]] - 1
-            else:
-                table.pop(nums[left])
-            right += 1
-        else:
-
-            table[nums[right]] = table[nums[right]] + 1
-            if table[nums[left]] > 1:
-                table[nums[left]] = table[nums[left]] - 1
-            else:
-                maxSum = max(sum(table.values()), maxSum)
-                table.pop(nums[left])
-            right += 1
-
-        print(table)
-        print("<================>")
-    return maxSum
-
 # 340 Longest Substring with K Distinct Characters
 def longestSubstringwithKDistinctChars(word, k):
     table = {}
@@ -385,8 +341,7 @@ def totalFruit(fruits):
 
 # 1004. Max Consecutive Ones III
 def longestOnes(nums, k):
-
-    table = {0:0}
+    table = {0: 0}
     right = 0
     left = 0
     max_lenght = 0
@@ -418,7 +373,6 @@ def longestOnes(nums, k):
 
 # 567. Permutation in String
 def findPermutationAux(str1, pattern):
-
     if len(pattern) > len(str1):
         return False
 
@@ -437,14 +391,13 @@ def findPermutationAux(str1, pattern):
         if aux == aux_pattern:
             return True
 
-        right +=1
-        left +=1
+        right += 1
+        left += 1
 
     return False
 
 # 438. Find All Anagrams in a String
 def findAllAnagrams(str1, pattern):
-
     if len(pattern) > len(str1):
         return []
 
@@ -458,23 +411,62 @@ def findAllAnagrams(str1, pattern):
         if aux == aux_pattern:
             result.append(left)
 
-        right +=1
-        left +=1
+        right += 1
+        left += 1
 
     return result
 
-# 76. Minimum Window Substring
-def minWindow(s, t):
+# 2461. Maximum Sum of Distinct Subarrays With Length K (not finished)
+def maximumSubarraySum(nums, k):
+    if k > len(nums):
+        return 0
 
     table = {}
+    left = 0
+    right = k - 1
+    maxSum = sum(nums[0:k])  # question if k is inclusive in Python
+    for i in range(k):
+        if nums[i] not in table:
+            table[nums[i]] = 1
+        else:
+            table[nums[i]] = table[nums[i]] + 1
+            maxSum = 0
+    right += 1
+    print(f"starting: ", table)
+    while right < len(nums):
 
-    # [0..26]
+        print(f"[right]: ", right)
+        print(f"[left]: ", left)
+        if nums[right] not in table:
+            table[nums[right]] = 1
+            aux = maxSum - nums[left] + nums[right]
+            maxSum = max(maxSum, aux)
+
+            if table[nums[left]] > 1:
+                table[nums[left]] = table[nums[left]] - 1
+            else:
+                table.pop(nums[left])
+            right += 1
+        else:
+
+            table[nums[right]] = table[nums[right]] + 1
+            if table[nums[left]] > 1:
+                table[nums[left]] = table[nums[left]] - 1
+            else:
+                maxSum = max(sum(table.values()), maxSum)
+                table.pop(nums[left])
+            right += 1
+
+        print(table)
+        print("<================>")
+    return maxSum
+
+# 76. Minimum Window Substring (not finished)
+def minWindow(s, t):
+    table = {}
 
     if len(t) > len(s):
         return ""
-
-    #if len(t) == 0 and len(s) != 0:
-    #    return ""
 
     for i in range(len(t)):
         if t[i] in table:
@@ -482,32 +474,49 @@ def minWindow(s, t):
         else:
             table[t[i]] = 1
 
-    right = len(t)
+    table_compare = {}
+    right = 0
     left = 0
-    aux_left = left
     min_windows = float('inf')
+    result = (-1,-1)
 
-    while right < len(s): # going to thru complete string
+    while right < len(s):  # going to thru complete string
 
-        while left <= right: # going to thru complete windows
+        if s[right] in table:
+            if s[right] in table_compare:
+                table_compare[s[right]] += 1
+            else:
+                table_compare[s[right]] = 1
 
-            if s[left] in table: # if match letter decrease value in my hashMap
-                if table.get(s[left]) > 1:
-                    table[s[left]] -= 1 # aabbc  # abc
-                else:
-                    table.pop(s[left])
-            left += 1
+        sames = True
+        while left <= right and len(table_compare) == len(table) and sames:
 
-        if len(table) == 0: # if all letter are matched
-            min_windows = min(right - aux_left, min_windows)
+            print(f"{table_compare} -> {table}")
 
+            if len(table_compare) == len(table): # O(n)
+                for value in table:
+                    print(f"value: {value} -> table[value]:{table[value]} - table_compare[value]:{table_compare[value]}")
+                    if table[value] != table_compare[value]:
+                        sames = False
+                        continue
 
+            if sames:
+                if (right - left) < min_windows:
+                    min_windows = (right - left)
+                    result = (left, right)
 
+                if s[left] in table:
+                    if table_compare.get(s[left]) > 1:
+                        table_compare[s[left]] -= 1
+                    else:
+                        table_compare.pop(s[left])
+                left+=1
 
+        right +=1
 
+    return s[result[0]:result[1]+1]
 
 if __name__ == '__main__':
-
     nums = [0, 1, 1, 0, 0, 0, 1, 1, 0, 1, 1]
     k = 2
     target = 11
@@ -515,9 +524,8 @@ if __name__ == '__main__':
     firstLen = 5
     secondLen = 4
     word = "odicf"
-    s1 = "abbcabc" #=> "testc" / "estca" / "stcas" / "tcase"
-                    # => "ecstt" / "acest" / "  " / "acest"
-    s2 = "abc" # => 5
-    fruits = [3,3,3,1,2,1,1,2,3,3,4]
+    s1 = "aabdec" # s1 = "abababab" -> s2 = "baba" -> "abab"
+    s2 = "abc"
+    fruits = [3, 3, 3, 1, 2, 1, 1, 2, 3, 3, 4]
 
-    print(findAllAnagrams(s1, s2))
+    print(minWindow(s1, s2))
