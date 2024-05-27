@@ -1,3 +1,6 @@
+import re
+
+
 # 1189. Maximum Number of Balloons -> HASHMAP
 def maxNumberOfBalloons(word):
     table = {
@@ -24,6 +27,7 @@ def maxNumberOfBalloons(word):
 
     return factor
 
+
 def nextLargerElement(nums):
     res = [-1] * len(nums)
     for i in range(len(nums)):
@@ -33,6 +37,7 @@ def nextLargerElement(nums):
                 break
     print(res)
     return res
+
 
 def converToBinary(num):
     divisor = num
@@ -48,6 +53,7 @@ def converToBinary(num):
 
     return result
 
+
 def sortInplace(nums):
     table = {}
 
@@ -60,6 +66,7 @@ def sortInplace(nums):
 
         if i not in table:
             return i
+
 
 # 347. Top K Frequent Elements
 def topKFrequent(nums, k):
@@ -81,9 +88,36 @@ def topKFrequent(nums, k):
 
     return result
 
+def Ginterview(string):
+
+    new_string = []
+    prev_star = string.split("(")
+    if len(prev_star) > 1:
+        inside = prev_star[1].split(")")
+        if len(inside) > 1:
+            new_string.append(prev_star[0])
+            new_string.append(inside[0])
+            new_string.append(inside[1])
+        else:
+            new_string.append(prev_star[0])
+            new_string.append(inside[0])
+    else:
+        new_string.append(prev_star[0])
+
+    print(new_string)
+
+    #if len(new_string) == 3:
+        # apply complete algorithm
+        # just put new_string[0] in a hashmap
+        # after that multiply new_string[3][0] if a number * new_string[2]
+        # check if multiply exist in hashmap
+        # after that += add or add
+
+    return new_string
 
 if __name__ == '__main__':
     word = "ballon"
     nums = [1, 3, 5, 12, 11, 12, 11]
     k = 2
-    print(topKFrequent(nums, k))
+    string = "H2(MgO2)2"
+    print(Ginterview(string))
