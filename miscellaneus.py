@@ -115,9 +115,107 @@ def Ginterview(string):
 
     return new_string
 
+# Given an string of periodelment divide it in parts
+# H2O => H2, O1
+# HMg
+# H2(MgO2)2 => H2, Mg2, O4
+# O4(H2O)2 => H4, O6
+# O4(H2O)2O2 => H4, O8
+
+# First/Original approach
+def elmentEval(string):
+    i = 0
+    left = 0
+    hashmap = {}
+    stacks_of = []
+
+    while i < len(string):
+        print(f"i:{i} -> {string[i]}")
+
+        #if char is a digit() or is a lower letter
+        if string[i].isdigit() or string[i].islower():  # condition to put into hashmap
+            if len(stacks_of) > 0:  # if some element are in the stack
+
+                while stacks_of:  # poping from the stack until is empty
+                    aux_key = stacks_of.pop(0)
+                    aux_key_letter = aux_key[0]
+                    aux_key_number = aux_key[1] * int(string[i])
+
+                    if aux_key_letter in hashmap:
+                        hashmap[aux_key_letter] += aux_key_number
+                    else:
+                        hashmap[aux_key_letter] = aux_key_number
+            else:
+                aux = string[left:i]
+                if aux in hashmap:
+                    hashmap[aux] += int(string[i])
+                else:
+                    hashmap[aux] = int(string[i])
+
+            i += 1
+            left = i #i
+
+        #if char is open parethesis
+        elif string[i] == "(":
+
+            i += 1  # move to next char because string[i] is equal to "("
+            left = i
+
+            while i < len(string) and string[i] != ")":
+                if string[i].isdigit():
+                    key = (string[left:i], int(string[i]))  # if it is a digit I have case "O2"
+                    stacks_of.append(key)
+                    i += 1
+                    left = i
+                elif string[i].islower():  # if it is a lowerletter  I have case "Mg" it means (Mg,1)
+                    key = (string[left:i + 1], 1)
+                    stacks_of.append(key)
+                    i += 1
+                    left = i
+                else:
+                    i += 1
+
+            if i - left >= 1:
+                key = (string[left:i], 1)
+                stacks_of.append(key)
+
+        #if it is capitalize letter
+        else:
+            if i+1 < len(string):
+                if string[i+1].isupper():
+                    if string[i] in hashmap:
+                        hashmap[string[i]] += 1
+                    else:
+                        hashmap[string[i]] = 1
+                i += 1
+
+            else:
+                if string[i] in hashmap:
+                    hashmap[string[i]] += 1
+                else:
+                    hashmap[string[i]] = 1
+                i += 1
+
+    '''
+    if i - left >= 1:  # if the last element is an element without number like just: "O"
+        final_element = string[left:i]
+        if final_element in hashmap:
+            hashmap[final_element] += 1
+        else:
+            hashmap[final_element] = 1
+    '''
+
+    print(hashmap)
+    res = []
+    for key in hashmap:
+        word = "" + key + str(hashmap[key])
+        res.append(word)
+
+    res.sort()
+    return res
 if __name__ == '__main__':
     word = "ballon"
     nums = [1, 3, 5, 12, 11, 12, 11]
     k = 2
     string = "H2(MgO2)2"
-    print(Ginterview(string))
+    print(elmentEval(string))
