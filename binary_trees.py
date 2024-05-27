@@ -24,12 +24,6 @@ def deserialize(lst):
         i += 2
     return root
 
-
-def longest_path_binary_tree(root):
-    print(root)
-    pass
-
-
 def print_bfs(root):
     bfs_queue = list()
     bfs_queue.append(root)
@@ -41,7 +35,6 @@ def print_bfs(root):
             bfs_queue.append(current.left)
         if current.right != None:
             bfs_queue.append(current.right)
-
 
 def find_min_value(root):
     if root == None:
@@ -64,13 +57,11 @@ def find_min_value(root):
 
     return min
 
-
 def find_min_recursive(root):
     if root == None:
         return float('inf')
 
     return min(root.value, find_min_recursive(root.left), find_min_recursive(root.right))
-
 
 def max_sum_path(root):
     if root == None:
@@ -78,13 +69,11 @@ def max_sum_path(root):
 
     return max(root.value + max_sum_path(root.left), root.value + max_sum_path(root.right))
 
-
 def longest_path_binary(root):
     if root == None:
         return 0
 
     return max(1 + longest_path_binary(root.left), 1 + longest_path_binary(root.right))
-
 
 def lowest_common_ancestor(root, value1, value2):
     list_value1 = bfs(root, value1)  # O(N)
@@ -112,7 +101,6 @@ def lowest_common_ancestor(root, value1, value2):
                     if list_value1[i - 1] == list_value2[tam_2 - 1]:
                         return list_value2[tam_2 - 1]
 
-
 def bfs(root, value):
     queque_bfs = list()
     queue_return = list()
@@ -137,7 +125,6 @@ def bfs(root, value):
             queque_bfs.append(current.right)
 
     return queue_return
-
 
 # 102. Binary Tree Level Order Traversal
 def traversebfs(root):
@@ -238,7 +225,7 @@ def hasPathSum(root, targetSum):
 
     def local_path(root, targetSum, localPath):
 
-        if not root:
+        if root is None:
             return
 
         localPath.append(root.value)
@@ -251,10 +238,81 @@ def hasPathSum(root, targetSum):
 
         del localPath[-1]
 
+# 129. Sum Root to Leaf Numbers
+def sumaRootToLeaf(root):
+
+    def dfs(root, suma):
+
+        if root == None:
+            return 0
+
+        suma = suma * 10 + root.value
+
+        if root.left == None and root.right == None:
+            return suma
+
+        return dfs(root.left, suma) + dfs(root.right, suma)
+
+    return dfs(root, 0)
+
+# 116. Populating Next Right Pointers in Each Node
+def populatingNextRightPointer(root):
+
+    cola = []
+    result = []
+    cola.append(root)
+    previousNode = None
+
+    while cola:
+
+        levelSize = len(cola)
+        previousNode = None
+        for i in range(levelSize):
+            currenNode = cola.pop(0)
+
+            if previousNode:
+                previousNode.next = currenNode
+
+            previousNode = currenNode
+            print(f"CurrentNode: {currenNode.value}")
+            print(f"PreviousNode: {previousNode.value}")
+
+            if currenNode.left != None:
+                cola.append(currenNode.left)
+            if currenNode.right != None:
+                cola.append(currenNode.right)
+
+    return root
+
+# 199. Binary Tree Right Side View
+def rightSideView(root):
+
+    if root is None:
+        return None
+
+    res = list()
+    queue = [root]
+
+    currentNode = None
+    while queue:
+
+        levelSize = len(queue)
+
+        for i in range(levelSize):
+            currentNode = queue.pop(0)
+            print(f"currenNode: {currentNode.value}")
+
+            if currentNode.left is not None:
+                queue.append(currentNode.left)
+            if currentNode.right is not None:
+                queue.append(currentNode.right)
+        print(f"CurrenNode al salir: {currentNode.value}")
+        res.append(currentNode.value)
+    return res
 
 if __name__ == '__main__':
-    lst = [5,4,8,11,None,13,4,7,2,None,None,None,1]
+    lst = [1,2,3,None,5,None,4]
     root = deserialize(lst)
     key = 22
-    print(hasPathSum(root, key))
+    print(rightSideView(root))
     # a = [3, 2, 1, 5, 4, 6]

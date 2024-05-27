@@ -45,25 +45,6 @@ def partition_equal_subset_sum(nums):
     else:
         return False
 
-def count_of_subsets_with_given_sum(nums, target):
-
-    def helper(nums, target):
-
-        if target == 0:
-            return 1
-
-        if target < 0:
-            return 0
-
-        if len(nums) == 0:
-            return 0
-
-        value = helper(nums[1:], target) + helper(nums[1:], target - nums[0])
-        return value
-
-    result = helper(nums, target)
-    print(f"result: ",result)
-    return result
 
 # find the number of ways since a diff given
 # input: [3,1,2,3] and diff = 3
@@ -75,6 +56,13 @@ def count_of_subsets_with_given_sum(nums, target):
 # 2s1 = diff + sum
 # s1 = (diff + sum)/2
 # new problem is count num subtset with a sum given (already solved)
+
+# s1 - s2 = diff (a)
+# sum = s1 + s2 => s2 = sum - s1 (b)
+# (b) in (a) => s1 - (sum - s1) = diff
+# 2s1 = diff + sum
+# s1 = diff + sum // 2
+
 
 def count_num_subset_given_a_diff(nums, diff):
 
@@ -815,39 +803,6 @@ def longestCommonSubstringDP(text1, text2):
     return maxlength
 
 
-# LeetCode 312
-def BurstBallons(nums):
-    pass
-
-# LeetCode 56
-# Greedy Intervals
-
-def mergeIntervals(intervals):
-
-    sorted(intervals)
-    left_prev = intervals[0][0]
-    right_prev = intervals[0][1]
-    array_sol = []
-
-    for i in range(1, len(intervals)):
-
-        left_current = intervals[i][0]
-        right_current = intervals[i][1]
-
-        if left_current <= right_prev or right_prev >= right_current:
-            minleft = min(left_current, left_prev)
-            maxright = max(right_current, right_prev)
-
-            # probably need to check if is not overlapped with the array
-            array_sol.append([minleft,maxright])
-            left_prev =minleft
-            right_prev = maxright
-
-        else:
-            array_sol.append([left_current, right_current])
-
-    return array_sol
-
 # LeetCode #3
 def LongestSubstringWithoutRepeat(word):
 
@@ -865,7 +820,6 @@ def LongestSubstringWithoutRepeat(word):
 
     print(cache)
     return max(internal_max, maxLenght)
-
 
 # LeetCode 62
 def uniquePath(m, n):
@@ -890,7 +844,6 @@ def uniquePath(m, n):
 
     result = helper(m, n)
     return result
-
 
 # LeetCode 1143
 def lcs(text1, text2):
@@ -917,7 +870,6 @@ def lcs(text1, text2):
 
     result = helper(0, 0)
     return result
-
 
 # LeetCode 1143
 def lcsDP(text1, text2):
@@ -1210,9 +1162,7 @@ def longestIncreasingPath(matrix):
     print("maxLengh:", maxLengh)
     return maxLengh
 
-
 visited = {}
-
 
 def dfs(matrix, row, col, prev):
     if row == len(matrix) or col == len(matrix[0]):
@@ -1253,7 +1203,6 @@ def longestIncreasingPathDP(matrix):
             prev = float('-inf')
             dp[i][j] = dfsDP(matrix, i, j, prev, dp)
 
-
 def dfsDP(matrix, row, col, prev):
     if row == len(matrix) or col == len(matrix[0]):
         return 0
@@ -1267,10 +1216,128 @@ def dfsDP(matrix, row, col, prev):
     else:
         return 0
 
+def knacksapIntro(profits, weights, capacity):
+
+    dp = {}
+    def picked(profits, weights, capacity, i):
+
+        if i == len(weights):
+            return 0
+
+        if capacity <= 0:
+            return 0
+
+        key = (i, capacity)
+        pick = 0
+
+        if key in dp:
+            return dp[key]
+
+        if weights[i] <= capacity:
+            pick = profits[i] + picked(profits, weights, capacity - weights[i], i+1)
+            dp[key] = pick
+
+        notpick = picked(profits, weights, capacity, i+1)
+
+        return max(pick, notpick)
+
+    return picked(profits, weights, capacity, 0)
+
+# 416. Partition Equal Subset Sum
+def canPartition(nums):
+
+    suma = sum(nums)
+
+    if suma % 2 != 0:
+        return False
+
+    suma = suma//2
+    dp = {}
+
+    def helper(nums, suma, i):
+
+        if suma == 0:
+            return True
+
+        if suma < 0 or i == len(nums):
+            return False
+
+        key = (suma, i)
+        if key in dp:
+            return dp[key]
+
+        sol = helper(nums, suma - nums[i], i+1) or helper(nums, suma, i+1)
+        dp[key] = sol
+        return sol
+
+    result = helper(nums, suma, 0)
+    return result
+
+# 2035. Partition Array Into Two Arrays to Minimize Sum Difference
+def minimumDifference(nums):
+
+    # abs(s1 - s2) = diff
+    # s1 + s2 = sum(nums)
+    # s1 = sum(nums) - s2
+    # abs(sum(nums) - s2 - s2) = diff
+    # abs(sum(nums) - 2s2) = diff
+
+    dp = {}
+    def helper(nums, index, sum1, sum2):
+
+        if index == len(nums):
+            return abs(sum1 - sum2)
+
+        key = (abs(sum1 - sum2), index)
+        if key in dp:
+            return dp[key]
+        diff1 = helper(nums, index+1, sum1 + nums[index], sum2)
+        diff2 = helper(nums, index+1, sum1, sum2 + nums[index])
+
+        value = min(diff1, diff2)
+        dp[key] = value
+        return value
+
+    result = helper(nums, 0, 0, 0)
+    return result
+
+# 494. Target Sum
+def findTargetSumWays(nums, target):
+
+    # s1 - s2 = target
+    # s1 + s2 = suma => s2 = suma - s1
+    # s1 - suma + s1 = target
+    # 2s1 = target + suma
+    # s1 = target + suma/2
+
+    new_target = (target + sum(nums))/2
+
+    dp = {}
+    def helper(nums, new_target, index):
+
+        if new_target == 0:
+            return 1
+
+        if index >= len(nums) or new_target < 0:
+            return 0
+        
+        key = (new_target, index)
+        if key in dp:
+            return dp[key]
+
+        value = helper(nums, new_target - nums[index], index+1) + helper(nums, new_target, index+1)
+        dp[key] = value
+        return value
+
+    result = helper(nums, new_target, 0)
+    return result
+
+
+
+
 
 if __name__ == '__main__':
 
-    nums = [3, 1, 5, 8]
     envelopes = [[1,1],[1,1],[1,1]]
     intervals = [[1,3],[2,6],[8,10],[15,18]]
     word = "dvdf"
@@ -1283,7 +1350,7 @@ if __name__ == '__main__':
     prices = [1, 2, 4]
     coins = [10]
     amount = 10
-    target = 3
+
     word1 = "abc"
     word2 = "abc"
     s1 = "aabcc"
@@ -1291,4 +1358,9 @@ if __name__ == '__main__':
     s3 = "aadbbcbcac"
     matrix = [[9, 9, 4], [6, 6, 8], [2, 1, 1]]
 
-    print(longestIncreasingPath(matrix))
+    weights = [2,3,1,4]
+    profits = [4,5,3,7]
+    capacity = 5
+    nums = [2,-1,0,4,-2,-9]
+    target = 2
+    print(minimumDifference(nums))

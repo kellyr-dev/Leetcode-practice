@@ -20,6 +20,9 @@
                 # case 2)
 
 # 56. Merge Intervals
+import heapq
+
+
 def basicMerge(intervals):
 
     # step 1 initialize prev
@@ -123,8 +126,8 @@ def conflictingAppointments(intervals):
 
     return True
 
-# 253. Minimun Meeting Rooms II
-def minimunMeetingRoom(intervals):
+# 253. Minimun Meeting Rooms II (my solution)
+def minimunMeetingRoomIIOwn(intervals):
 
     if len(intervals) == 1:
         return 1
@@ -180,8 +183,65 @@ def minimunMeetingRoom(intervals):
     # time complexity: O(nlogn) + O(n^2) + O(n)
     # space complexity: O(n)
 
+# 253. Minimun Meeting Rooms II (two list)
+def minimunMeetingRoomIITwoList(intervals):
+
+    if len(intervals) == 0:
+        return 0
+    if len(intervals) == 1:
+        return 1
+
+    startTimes = []
+    endTimes = []
+
+    for i in range(len(intervals)):
+        startTimes.append(intervals[i][0])
+        endTimes.append(intervals[i][1])
+
+    startTimes.sort()
+    endTimes.sort()
+
+    print(startTimes)
+    print(endTimes)
+
+    i = 0
+    j = 0
+    minRoom = 0
+    for i in range(len(startTimes)):
+
+        if startTimes[i] < endTimes[j]:
+            minRoom += 1
+        else:
+            j += 1
+
+    return minRoom
+
+# 253. Minimun Meeting Rooms II (heap)
+def minimunMeetingRoomIITwoHeap(intervals):
+
+    if len(intervals) == 0:
+        return 0
+    if len(intervals) == 1:
+        return 1
+
+    intervals.sort()
+
+    # will be used in the heap
+    rooms = []
+    heapq.heappush(rooms, intervals[0][1])
+
+    for i in range(1, len(intervals)):
+        print(rooms)
+        if intervals[i][0] >= rooms[0]:
+            heapq.heappop(rooms)
+
+        heapq.heappush(rooms, intervals[i][1])
+
+    return len(rooms)
 
 if __name__ == '__main__':
-    intervals = [[6,8], [4,6], [3,5], [8,9]]
+    intervals = [[4,5], [2,3], [2,4], [3,5]]
     newInterval = [2,7]
-    print(minimunMeetingRoom(intervals))
+    event1 = ["10:00","11:00"]
+    event2 = ["14:00","15:00"]
+    print(minimunMeetingRoomIITwoHeap(intervals))
