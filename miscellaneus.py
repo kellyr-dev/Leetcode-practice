@@ -1,4 +1,4 @@
-import re
+import re, heapq
 
 
 # 1189. Maximum Number of Balloons -> HASHMAP
@@ -53,7 +53,6 @@ def converToBinary(num):
 
     return result
 
-
 def sortInplace(nums):
     table = {}
 
@@ -66,7 +65,6 @@ def sortInplace(nums):
 
         if i not in table:
             return i
-
 
 # 347. Top K Frequent Elements
 def topKFrequent(nums, k):
@@ -88,49 +86,25 @@ def topKFrequent(nums, k):
 
     return result
 
-def Ginterview(string):
-
-    new_string = []
-    prev_star = string.split("(")
-    if len(prev_star) > 1:
-        inside = prev_star[1].split(")")
-        if len(inside) > 1:
-            new_string.append(prev_star[0])
-            new_string.append(inside[0])
-            new_string.append(inside[1])
-        else:
-            new_string.append(prev_star[0])
-            new_string.append(inside[0])
-    else:
-        new_string.append(prev_star[0])
-
-    print(new_string)
-
-    #if len(new_string) == 3:
-        # apply complete algorithm
-        # just put new_string[0] in a hashmap
-        # after that multiply new_string[3][0] if a number * new_string[2]
-        # check if multiply exist in hashmap
-        # after that += add or add
-
-    return new_string
-
-# Given an string of periodelment divide it in parts
-# H2O => H2, O1
-# HMg
-# H2(MgO2)2 => H2, Mg2, O4
-# O4(H2O)2 => H4, O6
-# O4(H2O)2O2 => H4, O8
-
-# First/Original approach
 def elmentEval(string):
+
+    # GInterview SOLVED
+    """
+    # Given an string of periodelment divide it in parts
+    # H2O => H2, O1
+    # HMg => H, Mg
+    # H2(MgO2)2 => H2, Mg2, O4
+    # O4(H2O)2 => H4, O6
+    # O4(H2O)2O2 => H4, O8 """
+
+    # First/Original approach
     i = 0
     left = 0
     hashmap = {}
     stacks_of = []
 
     while i < len(string):
-        print(f"i:{i} -> {string[i]}")
+        #print(f"i:{i} -> {string[i]} => {stacks_of} => {hashmap}")
 
         #if char is a digit() or is a lower letter
         if string[i].isdigit() or string[i].islower():  # condition to put into hashmap
@@ -145,12 +119,22 @@ def elmentEval(string):
                         hashmap[aux_key_letter] += aux_key_number
                     else:
                         hashmap[aux_key_letter] = aux_key_number
-            else:
-                aux = string[left:i]
+            elif string[i].islower():
+                aux = ""+string[i-1]+string[i]
+
                 if aux in hashmap:
                     hashmap[aux] += int(string[i])
                 else:
-                    hashmap[aux] = int(string[i])
+                    hashmap[aux] = 1
+            else:
+                value = int(string[i])
+                aux = string[i-1]
+
+                if aux in hashmap:
+                    hashmap[aux] += value
+                else:
+                    hashmap[aux] = value
+
 
             i += 1
             left = i #i
@@ -179,7 +163,7 @@ def elmentEval(string):
                 key = (string[left:i], 1)
                 stacks_of.append(key)
 
-        #if it is capitalize letter
+        #if it is capitalize letter # check next letter if it is a lowercase
         else:
             if i+1 < len(string):
                 if string[i+1].isupper():
@@ -196,14 +180,6 @@ def elmentEval(string):
                     hashmap[string[i]] = 1
                 i += 1
 
-    '''
-    if i - left >= 1:  # if the last element is an element without number like just: "O"
-        final_element = string[left:i]
-        if final_element in hashmap:
-            hashmap[final_element] += 1
-        else:
-            hashmap[final_element] = 1
-    '''
 
     print(hashmap)
     res = []
@@ -213,9 +189,63 @@ def elmentEval(string):
 
     res.sort()
     return res
+
+def topKagain(nums, k):
+
+    if k > len(nums):
+        return []
+
+    for i in range(len(nums)):
+        nums[i] = nums[i] * -1
+
+    heapq.heapify(nums)
+    aux = []
+    for i in range(k):
+        value = heapq.heappop(nums)
+        print(f"value: ", value)
+        aux.append(value)
+
+    for i in range(len(aux)):
+        aux[i] = aux[i] * -1
+    return aux
+
+# Kth Smallest Number (easy)
+def kthSmallestNumber(nums, k):
+
+    if k > len(nums):
+        k = len(nums)
+
+    heapq.heapify(nums)
+
+    for i in range(k):
+        value = heapq.heappop(nums)
+
+    return value
+
+# 378. Kth Smallest Element in a Sorted Matrix
+def kthSmallestMatrix(matrix, k):
+
+    aux = []
+
+    col = len(matrix)
+    row = len(matrix[0])
+    # 9 - k = x
+    # 8 / 3 =
+    print(col)
+    print(row)
+
+
+    for i in range(len(matrix)):
+
+        aux.append(matrix[i])
+    print(aux)
+    return -1
+
 if __name__ == '__main__':
     word = "ballon"
-    nums = [1, 3, 5, 12, 11, 12, 11]
-    k = 2
-    string = "H2(MgO2)2"
-    print(elmentEval(string))
+    nums = [5, 12, 11, -1, 12]
+    matrix = [[1,5,9],[10,11,13],[12,13,15]]
+    k = 8
+
+    string = "O4(H2O)2O2" #=> H4, 08
+    print(kthSmallestMatrix(matrix, k))

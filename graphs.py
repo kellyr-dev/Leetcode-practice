@@ -3,25 +3,44 @@ import queue
 
 # PRACTICE ON GRAPHS FOR CODING INTERVIEWS
 
-def is_a_tree(graph):
-    print(graph)
+# Basic Theory for Graphs start with BFS and DFS to traversal graphs
+def bfs(graph, entry):
+    queue = []  # queue
+    queue.append(entry)
+    visited = {}  # set to check if a particular node has been visited
 
-    # find cycles to retur False (condition 1)
-    for nodes in graph:
-        print(f"node: ", nodes)
-        if explore_bfs_tree(graph, nodes) > 1:
-            return False
+    result = []
 
-    # find unvisited nodes -> means island or disconnected nodes because BFS never toch it (condition 2)
-    for nodis in graph:
-        if nodis not in visited:
-            return False
+    while (len(queue) > 0):
+        current = queue.pop(0)
 
-    return True
+        if current not in visited:
+            print(current)
+            visited[current] = 1
+            result.append(current)
+            for neighbor in graph[current]:
+                queue.append(neighbor)
+        else:
+            continue
+
+    return result
+
+def dfs(graph, entry):
+    aux = list()
+    aux.append(entry)
+
+    while (len(aux) > 0):
+        current = aux.pop()
+        print(current)
+        for neight in graph[current]:
+            aux.append(neight)
 
 
+#  /* Alvin practice
+visited = {}
 def explore_bfs_tree(graph, node):
 
+    visited = {}
     queue = list()
     queue.append(node)
     visited[node] = 1
@@ -47,30 +66,21 @@ def explore_bfs_tree(graph, node):
 
     return cont_visited
 
+def is_a_tree(graph):
+    print(graph)
 
-def dfs(graph, entry):
-    aux = list()
-    aux.append(entry)
+    # find cycles to retur False (condition 1)
+    for nodes in graph:
+        print(f"node: ", nodes)
+        if explore_bfs_tree(graph, nodes) > 1:
+            return False
 
-    while (len(aux) > 0):
-        current = aux.pop()
-        print(current)
-        for neight in graph[current]:
-            aux.append(neight)
+    # find unvisited nodes -> means island or disconnected nodes because BFS never toch it (condition 2)
+    for nodis in graph:
+        if nodis not in visited:
+            return False
 
-
-def bfs(graph, entry):
-    aux = list()
-    aux.append(entry)
-
-    while (len(aux) > 0):
-        current = aux.pop(0)
-        print(current)
-        for neighbor in graph[current]:
-            aux.append(neighbor)
-
-
-visited = {}
+    return True
 
 
 def hasPath(graph, src, tgt):
@@ -87,7 +97,6 @@ def hasPath(graph, src, tgt):
             return True
 
     return False
-
 
 def traversal(graph_input, srcnode):
     if srcnode in visited:
@@ -109,7 +118,6 @@ def traversal(graph_input, srcnode):
 
     return True
 
-
 # another way is using recursion
 
 def explore(graph_input, srcnode):
@@ -122,7 +130,6 @@ def explore(graph_input, srcnode):
         explore(graph_input, neighbor)
 
     return True
-
 
 def explore_int(graph_input, srcnode):
 
@@ -139,7 +146,7 @@ def explore_int(graph_input, srcnode):
 
     return cont
 
-
+# Alvin practice */
 def largest_components(graph_input):
     largest = 0
     for node in graph_input:
@@ -149,7 +156,6 @@ def largest_components(graph_input):
             largest = size
 
     return largest
-
 
 def connected_components_cont(graph_input):
     contIterative = 0
@@ -163,7 +169,6 @@ def connected_components_cont(graph_input):
 
     return contRecursive
 
-
 def count_island(matrix):
     cont = 0
     for row in range(len(matrix)):
@@ -172,7 +177,6 @@ def count_island(matrix):
                 cont += 1
 
     return cont
-
 
 def explore_traversal(grid, x, y):
     if x < 0 or x >= len(grid):
