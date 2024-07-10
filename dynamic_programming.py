@@ -1332,7 +1332,20 @@ def findTargetSumWays(nums, target):
     result = helper(nums, new_target, 0)
     return result
 
+# 38. Count and Say
+def countAndSay(n):
 
+    # RLE(1) = 1
+    # RLE(2) = 11
+    # RLE(n) = RLE(n-1) 
+
+    if n == 1:
+        return "1"
+
+    table_hash = []
+    table_hash[1] = [1]
+    for i in range(2, n):
+        RLE = table_hash[i-1]
 
 
 

@@ -1,4 +1,4 @@
-import re, heapq
+import re, heapq, math
 
 
 # 1189. Maximum Number of Balloons -> HASHMAP
@@ -227,25 +227,66 @@ def kthSmallestMatrix(matrix, k):
 
     aux = []
 
-    col = len(matrix)
-    row = len(matrix[0])
-    # 9 - k = x
-    # 8 / 3 =
-    print(col)
-    print(row)
-
-
     for i in range(len(matrix)):
+        for j in range(len(matrix[0])):
+            aux.append(matrix[i][j])
 
-        aux.append(matrix[i])
-    print(aux)
-    return -1
+    heapq.heapify(aux)
+    value = -1
+    for i in range(k):
+        value = heapq.heappop(aux)
+
+    return value
+
+# 973. K Closest Points to Origin
+def kClosestPointsTotheOrigin(points, k):
+
+    result = []
+    table_hash = {}
+
+    if k >= len(points):
+        return points
+
+    for i in range(len(points)):  # O(n)
+
+        suma = pow(points[i][0],2) + pow(points[i][1],2)
+        value = math.sqrt(suma)
+        result.append(value)
+
+        if value in table_hash:
+            table_hash[value].append([points[i][0],points[i][1]])
+        else:
+            table_hash[value] = [[points[i][0],points[i][1]]]
+
+    print(table_hash)
+    heapq.heapify(result)
+    ans = []
+    j = 0
+
+    while j < k:  # k*log(n)
+        print(f"j: {j}")
+        value = heapq.heappop(result)
+        array_ = table_hash[value]
+        if len(array_) > 1:
+            for i in range(len(array_)):
+                if j < k:
+                    ans.append(array_[i])
+                    j+= 1
+                else:
+                    break
+        else:
+            ans.append(array_[0])
+            j += 1
+
+    return ans
+
 
 if __name__ == '__main__':
     word = "ballon"
     nums = [5, 12, 11, -1, 12]
-    matrix = [[1,5,9],[10,11,13],[12,13,15]]
-    k = 8
+    matrix = [[1, 3], [3, 4], [2, -1]]
+    k = 2
 
     string = "O4(H2O)2O2" #=> H4, 08
-    print(kthSmallestMatrix(matrix, k))
+    n = 4
+    print(kClosestPointsTotheOrigin(matrix, k))
