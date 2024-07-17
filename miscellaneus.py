@@ -280,13 +280,229 @@ def kClosestPointsTotheOrigin(points, k):
 
     return ans
 
+# Connect Ropes
+def minimumCostToConnectRopes(nums):
+
+    if len(nums) == 1:
+        return nums[0]
+
+    if len(nums) == 0:
+        return 0
+
+    heapq.heapify(nums) # O(n)
+
+    result = 0
+    while len(nums) > 1:
+        num1 = heapq.heappop(nums) # O(Log(n))
+        num2 = heapq.heappop(nums) # O(Log(n))
+        suma = num1 + num2
+        print(f"(num1:{num1} - num2:{num2}) => suma: {suma}")
+        heapq.heappush(nums, suma)
+
+        result = result + suma
+
+    return result
+
+# 347. Top K Frequent Elements
+def topKFrequent(nums, k):
+
+    hashing = {} # O(n) -> memory
+    for num in nums: # O(n) -> time
+        hashing[num] = hashing.get(num, 0) + 1 # if num in hashing; hashing[num] += 1 else hashing[num] = 1
+
+    minHeap = [] # O(n) -> memory
+
+    for num, frequency in hashing.items(): # O(n) * O(log(n)) -> time
+        heapq.heappush(minHeap, (frequency, num))
+        print(f"minHeap: {minHeap}")
+        if len(minHeap) > k:
+            heapq.heappop(minHeap)
+
+    print(minHeap)
+    result = []
+    while minHeap: # O(k) * O(log(k))
+        result.append(heapq.heappop(minHeap)[1])
+
+    return result
+
+# 347. Top K Frequent Elements
+def topKfrequentWithoutHeap(nums, k):
+
+    table_hash = {} # O(n) -> memory
+    for i in range(len(nums)):
+
+        if nums[i] in table_hash: # O(n) -> time
+
+            print(table_hash[nums[i]][0])
+            key = (int(table_hash[nums[i]][0])+1, nums[i])
+            table_hash[nums[i]] = key
+        else:
+            key = (1, nums[i])
+            table_hash[nums[i]] = key
+
+    ordered = sorted(list(table_hash.values()), reverse=True) # O(nlog(n)) -> time and O(n) memory
+    print(ordered)
+
+
+    result = [] # O(k)
+    for i in range(k): # O(k)
+        result.append(ordered[i][1])
+
+    return result
+
+    # Time Complexity = O(n) + O(nlog(n)) + O(k) = O(nlog(n))
+    # Memory = O(n) + O(n) + O(k) = 2*O(n) + O(K) = O(n)
+
+# 658. Find K Closest Elements
+def findClosestElements(nums, k, x):
+
+    minHeap = []
+
+    for num in nums:
+        value = (abs(num - x), num)
+        minHeap.append(value)
+
+    heapq.heapify(minHeap)
+
+    result = []
+    for i in range(k):
+        result_ith = heapq.heappop(minHeap)
+        result.append(result_ith[1])
+
+    result.sort()
+    return result
+
+# find distinct elements k
+def findMaximumDistinctElements(nums, k):
+
+    table_hash = {}
+    for num in nums: # O(n)
+        # key = (freq, num)
+        if num in table_hash:
+            key = (int(table_hash[num][0])+1, num)
+            table_hash[num] = key
+        else:
+            key = (1, num)
+            table_hash[num] = key
+
+    print(table_hash)
+
+    distint = []
+    maxHeap = []
+
+    for pair in table_hash.values(): # O(n)
+        if pair[0] == 1:
+            distint.append(pair[1])
+        else:
+            maxHeap.append(pair)
+
+    print(distint)
+    heapq.heapify(maxHeap) # O(n)
+    print(maxHeap)
+
+    while k > 0 and len(maxHeap) > 0: #k*log(n)
+        value = heapq.heappop(maxHeap)
+        print(f"value: {value}")
+        if value[0] == 2:
+            distint.append(value[1])
+        else:
+            key = (value[0]-1, value[1])
+            heapq.heappush(maxHeap, key)
+
+        k -= 1
+
+    if k > 0:
+        print(distint)
+        return len(distint) - k
+    else:
+        print(distint)
+        return len(distint)
+
+# find sum between k1 and k2
+def findSumOfElements(nums, k1, k2):
+
+    if k1 < 0 or k2 < 0:
+        return -1
+
+    if k1 == k2:
+        return 0
+
+    heapq.heapify(nums)
+
+    for i in range(k1):
+        heapq.heappop(nums)
+
+    print(nums)
+    result = 0
+    k2 = (k2 - k1) -1
+    print(k2)
+    for j in range(k2):
+        result += heapq.heappop(nums)
+
+    return result
+
+# 767. Reorganize String
+def rearrangeString(str1):
+
+    table_hash = {}
+    for i in range(len(str1)):
+        table_hash[str1[i]] = table_hash.get(str1[i], 0) + 1
+
+    print(table_hash)
+
+# 621. Task Scheduler
+def leastIntervalI(tasks, n):
+    table_hash = {}
+
+    for value in tasks:
+
+        if value in table_hash:
+            key = (table_hash[value][0] - 1, value)
+            table_hash[value] = key
+        else:
+            key = (-1, value)
+            table_hash[value] = key
+
+    freq_values = list(table_hash.values())
+    heapq.heapify(freq_values)
+    cycle = 0
+
+    while freq_values:
+        waitlist = []
+        k = n + 1 # k = 2+1
+        print(f"freq_list: {freq_values}")
+        print(f"cycle: {cycle}")
+        while k > 0 and freq_values:
+            cycle += 1
+            pair = heapq.heappop(freq_values)
+            print(f"pair: {pair}")
+            if -pair[0] > 1:
+                key = (pair[0]+1, pair[1])
+                waitlist.append(key)
+            k -= 1
+
+        for pairs in waitlist:
+            print(f"pairs_waitlist: {pairs}")
+            heapq.heappush(freq_values, pairs)
+
+        if freq_values:
+            cycle = cycle + k # 2 + 1
+
+        print(f"waitlist: {waitlist}")
+        print(f"|==========================================|")
+
+    return cycle
 
 if __name__ == '__main__':
     word = "ballon"
-    nums = [5, 12, 11, -1, 12]
+    nums = [3, 5, 8, 7]
+    k1 = 1
+    k2 = 4
+    x = 7
     matrix = [[1, 3], [3, 4], [2, -1]]
-    k = 2
-
     string = "O4(H2O)2O2" #=> H4, 08
-    n = 4
-    print(kClosestPointsTotheOrigin(matrix, k))
+    str1 = "Programming"
+
+    tasks = ["A","A","A","B","B","B"]
+    n = 2
+    print(leastIntervalI(tasks, n))
