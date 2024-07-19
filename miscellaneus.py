@@ -444,11 +444,92 @@ def findSumOfElements(nums, k1, k2):
 # 767. Reorganize String
 def rearrangeString(str1):
 
+    print(f"String: {str1}")
     table_hash = {}
-    for i in range(len(str1)):
-        table_hash[str1[i]] = table_hash.get(str1[i], 0) + 1
+    l = 0
+    r = 1
+    while r < len(str1):
+
+        print(f"table_hash: {table_hash}")
+        print(f"l: {l} -> r: {r}")
+        if str1[r] == str1[l]:
+            while r < len(str1) and str1[r] == str1[l]:
+                r += 1
+
+            aux = []
+            for _ in range(l, r):
+                aux.append(_)
+            print(f"aux: {aux}")
+
+            if str1[l] in table_hash:
+                _aux = list(table_hash[str1[l]])
+                for val in aux:
+                    _aux.append(val)
+                table_hash[str1[l]] = _aux
+            else:
+                table_hash[str1[l]] = aux
+
+            for j in range(len(aux)-1):
+                for char in table_hash:
+                    if str1[l] != char:
+                        tmp = table_hash[char].pop(0)
+                        table_hash[char].append(aux[j])
+                        aux[j] = tmp
+                        break
+            l = r
+            r += 1
+            # make algorithm to swap
+
+        else:
+            if str1[l] in table_hash:
+                _aux = table_hash[str1[l]]
+                _aux.append(l)
+                table_hash[str1[l]] = _aux
+            else:
+                table_hash[str1[l]] = [l]
+
+            r += 1
+            l += 1
+
+    if l < len(str1):
+        if str1[l] in table_hash:
+            _aux = table_hash[str1[l]]
+            _aux.append(l)
+            table_hash[str1[l]] = _aux
+        else:
+            table_hash[str1[l]] = [l]
 
     print(table_hash)
+    result = list(str1)
+    #print(result)
+
+    for char in table_hash:
+        print(f"char: {char}")
+        lista = table_hash[char]
+        for values in lista:
+            print(f"values: {values}")
+            result[values] = char
+
+    result_str = "".join(list(result))
+    print(result_str)
+
+    return list(table_hash.values())
+
+def rearrangeStringI(str1):
+
+    table_hash = {}
+    for i in range(len(str1)):
+        if str1[i] in table_hash:
+            key = (table_hash[str1[i]][0]-1, str1[i])
+            table_hash[str1[i]] = key
+        else:
+            table_hash[str1[i]] = (-1, str1[i])
+
+    maxHeap = list(table_hash.values())
+    heapq.heapify(maxHeap)
+    print(maxHeap)
+
+
 
 # 621. Task Scheduler
 def leastIntervalI(tasks, n):
@@ -501,8 +582,8 @@ if __name__ == '__main__':
     x = 7
     matrix = [[1, 3], [3, 4], [2, -1]]
     string = "O4(H2O)2O2" #=> H4, 08
-    str1 = "Programming"
+    str1 = "Programmingg"
 
     tasks = ["A","A","A","B","B","B"]
     n = 2
-    print(leastIntervalI(tasks, n))
+    print(rearrangeStringI(str1))
