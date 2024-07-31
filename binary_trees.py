@@ -310,10 +310,43 @@ def rightSideView(root):
         res.append(currentNode.value)
     return res
 
+# 938. Range Sum of BST
+
+def rangeSumBST(root, low, high):
+
+    if root is None:
+        return None
+
+    queue = [root]
+    currentNode = None
+    suma = 0
+
+    while queue:
+
+        levelsize = len(queue)
+      #  print(levelsize)
+
+        for i in range(levelsize):
+            currentNode = queue.pop(0)
+          #  print(currentNode.value)
+            if currentNode.value >= low and currentNode.value <= high:
+                suma += currentNode.value
+
+            if currentNode.left is not None:
+                queue.append(currentNode.left)
+            if currentNode.right is not None:
+                queue.append(currentNode.right)
+
+    return suma
+
+
+
 
 if __name__ == '__main__':
-    lst = [1,2,3,None,5,None,4]
+    lst = [10,5,15,3,7,13,18,1,None,6]
+    low = 6
+    high = 10
     root = deserialize(lst)
     key = 22
-    print(rightSideView(root))
+    print(rangeSumBST(root, low, high))
     # a = [3, 2, 1, 5, 4, 6]

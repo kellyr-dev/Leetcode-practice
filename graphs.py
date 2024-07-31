@@ -69,7 +69,7 @@ def explore_bfs_tree(graph, node):
 def is_a_tree(graph):
     print(graph)
 
-    # find cycles to retur False (condition 1)
+    # find cycles to return False (condition 1)
     for nodes in graph:
         print(f"node: ", nodes)
         if explore_bfs_tree(graph, nodes) > 1:
@@ -246,7 +246,7 @@ def maximunIsland(matrix):
             size = explore_maxIsland(matrix, row, col, visitado)
             print(f"Size: ", size)
             if size < maxSize and size > 0:
-                maxSize =  size
+                maxSize = size
 
     return maxSize
 
@@ -298,6 +298,9 @@ def wordBreakBFS(word, wordDict):
                 queue.append(current[i:])
 
     return True
+
+
+
 
 
 if __name__ == '__main__':

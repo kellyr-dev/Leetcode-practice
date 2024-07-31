@@ -1,6 +1,5 @@
 
-# 11. Container With Most Water
-# NO SOLVED
+# 11. Container With Most Water (not checked)
 def maxArea(height):
 
     if len(height) <= 1:

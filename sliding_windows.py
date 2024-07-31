@@ -1,3 +1,5 @@
+from collections import defaultdict
+
 # 643. Maximum Average Subarray I
 def findMaxAverage(nums, k):
     if k == 1:
@@ -87,7 +89,6 @@ def minimunSizeSubarraySum(nums, target):
     else:
         return 0
 
-
 # 3. Longest Substring Without Repeating Characters
 def lengthOfLongestSubstring(s):
     hashmap = {}
@@ -127,7 +128,6 @@ def lengthOfLongestSubstring(s):
     # if not repeat character max longest substring is len(hashmap)
     return max(max_qty, len(hashmap))
 
-
 # 424. Longest Repeating Character Replacement
 def characterReplacement(s, k):
     right = 0
@@ -150,7 +150,6 @@ def characterReplacement(s, k):
 
     return global_max
 
-
 # 125. Valid Palindrome
 def isPalindrome(s):
     aux = ""
@@ -172,7 +171,6 @@ def isPalindrome(s):
         right -= 1
 
     return True
-
 
 # 1031. Maximum Sum of Two Non-Overlapping Subarrays
 def maxConsecutiveSubArrayKOverlaping(nums, firstLen, secondLen):
@@ -416,7 +414,7 @@ def findAllAnagrams(str1, pattern):
 
     return result
 
-# 2461. Maximum Sum of Distinct Subarrays With Length K (not finished)
+# 2461. Maximum Sum of Distinct Subarrays With Length K (not checked)
 def maximumSubarraySum(nums, k):
     if k > len(nums):
         return 0
@@ -461,7 +459,7 @@ def maximumSubarraySum(nums, k):
         print("<================>")
     return maxSum
 
-# 76. Minimum Window Substring (not finished)
+# 76. Minimum Window Substring (not checked)
 def minWindow(s, t):
     table = {}
 
@@ -516,9 +514,132 @@ def minWindow(s, t):
 
     return s[result[0]:result[1]+1]
 
+# Amazon Interview (question 1)
+def getMaxConsecutiveON(servers, k):
+
+    right = 0
+    left = 0
+    maxlenght = 0
+    aux = k
+
+    while aux > 0 and left < len(servers):
+
+        while right < len(servers):
+            if servers[right] == 0:
+                if aux > 0:
+                    aux -= 1
+                    while right < len(servers) and servers[right] == 0:
+                        maxlenght = max(maxlenght, right - left + 1)
+                        right +=1
+                else:
+                    break
+            else:
+                maxlenght = max(maxlenght, right - left + 1)
+                right += 1
+
+        aux = k
+        left += 1
+        right = left
+
+    return maxlenght
+
+# Amazon Interview (question 2)
+def getRedundantSubstring(string, a, b):
+
+    # V =[0,1]
+    # C =[0 .. 5]
+    # akljfs | a=-2, b=1 | a * V + b * C|
+    # |a * V + b * C| => |-2*0 + 1*1| = L => 1 ===> 5
+    # |a * V + b * C| => |-2*0 + 1*2| = L => 2 ===> 4
+    # |a * V + b * C| => |-2*0 + 1*3| = L => 3 ===> 3
+    # |a * V + b * C| => |-2*0 + 1*4| = L => 4 ===> 2
+    # |a * V + b * C| => |-2*0 + 1*5| = L => 5 ===> 1
+
+    #================================================
+    # V = [0,2]
+    # C = [0,4]
+    # abbacc | a=-1, b=2 | a * V + b * C
+    # |a * V + b * C| => |-1*1 + 2*2| = L => 3 ===> 4
+    # |a * V + b * C| => |-1*2 + 2*4| = L => 6 ===> 1
+
+    vowels = {
+        'a' : 0,
+        'e' : 0,
+        'i' : 0,
+        'o' : 0,
+        'u' : 0
+    }
+    C = 0
+
+    for i in range(len(string)):
+
+        if string[i] in vowels:
+            vowels[string[i]] += 1
+        else:
+            C += 1
+
+    V = sum(vowels.values())
+
+    # for each combination of C and V using a,b and formula I need to check how many substring are in the string that comply with these variables
+
+    combinations = 0
+    result = []
+    for i in range(C+1):
+
+        for j in range(V+1):
+            #aux_c, aux_v, str_len
+            aux_c = i
+            aux_v = j
+            str_len = a*j + b*i
+            left = 0
+            right = str_len
+            while right < len(string):
+
+                for k in range(left, right):
+                    if string[k] in vowels:
+                        aux_v -= 1
+                    else:
+                        aux_c -= 1
+
+                if aux_v == 0 and aux_c == 0:
+                    combinations += 1
+                    result.append(string[left:right+1])
+
+                right += 1
+                left += 1
+                aux_c = i
+                aux_v = j
+
+    print(result)
+    return combinations
+
+def getRedundantSub(string, a, b):
+
+    table_hash = defaultdict(int)
+    table_hash[0] = 1
+    vowels = 0
+    consont = 0
+    result = 0
+
+    maximo2 = 5511098820 * 2
+    maximo = 1216131524 * 2
+    print(f"maximo: {maximo}")
+    print(f"maximo2: {maximo2}")
+
+    for char in string:
+        if char in 'aeiou':
+            vowels += 1
+        else:
+            consont += 1
+
+        leN = (a - 1)*vowels + (b-1)*consont
+        result += table_hash[leN]
+        table_hash[leN] += 1
+
+    return result
+
 if __name__ == '__main__':
     nums = [0, 1, 1, 0, 0, 0, 1, 1, 0, 1, 1]
-    k = 2
     target = 11
     s = "AAAB"
     firstLen = 5
@@ -528,4 +649,10 @@ if __name__ == '__main__':
     s2 = "abc"
     fruits = [3, 3, 3, 1, 2, 1, 1, 2, 3, 3, 4]
 
-    print(minWindow(s1, s2))
+    servers = [1,1,1,0,1,0,1,0,1,1,0,0,1,1]
+    k = 2
+    words = "akljfs"
+    a = -2
+    b = 1
+
+    print(getRedundantSub(words, a,b))

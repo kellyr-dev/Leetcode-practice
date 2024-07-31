@@ -441,7 +441,7 @@ def findSumOfElements(nums, k1, k2):
 
     return result
 
-# 767. Reorganize String
+# 767. Reorganize String (not checked)
 def rearrangeString(str1):
 
     print(f"String: {str1}")
@@ -515,21 +515,6 @@ def rearrangeString(str1):
 
     return list(table_hash.values())
 
-def rearrangeStringI(str1):
-
-    table_hash = {}
-    for i in range(len(str1)):
-        if str1[i] in table_hash:
-            key = (table_hash[str1[i]][0]-1, str1[i])
-            table_hash[str1[i]] = key
-        else:
-            table_hash[str1[i]] = (-1, str1[i])
-
-    maxHeap = list(table_hash.values())
-    heapq.heapify(maxHeap)
-    print(maxHeap)
-
-
 
 # 621. Task Scheduler
 def leastIntervalI(tasks, n):
@@ -574,6 +559,7 @@ def leastIntervalI(tasks, n):
 
     return cycle
 
+
 if __name__ == '__main__':
     word = "ballon"
     nums = [3, 5, 8, 7]
@@ -586,4 +572,4 @@ if __name__ == '__main__':
 
     tasks = ["A","A","A","B","B","B"]
     n = 2
-    print(rearrangeStringI(str1))
+    tickets = [["JFK","SFO"],["JFK","ATL"],["SFO","ATL"],["ATL","JFK"],["ATL","SFO"]]
