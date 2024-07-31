@@ -1,4 +1,8 @@
+import java.util.Collections
+
 class Miscellaneus {
+
+    var streamList = ArrayList<Int>()
 
     // 646. Maximum Length of Pair Chain
     fun findLongestChain(pairs: Array<Array<Int>>): Int {
@@ -22,8 +26,33 @@ class Miscellaneus {
     // 921. Minimum Add to Make Parentheses Valid
     fun minAddToMakeValid(s: String): Int {
 
-        return 0
+        val stacks = ArrayDeque<Char>()
+        var j = 0
+
+        while (j < s.length){
+
+            if (s[j] == '('){
+                stacks.add(s[j])
+            }else{
+                if (stacks.size > 0){
+
+                    if (stacks.last() == '(') {
+                        stacks.removeLast()
+                    }else{
+                        stacks.add(s[j])
+                    }
+
+                } else{
+                    stacks.add(s[j])
+                }
+            }
+            j += 1
+
+        }
+        println("stacks: ${stacks}")
+        return stacks.size
     }
+
 }
 
 fun main() {
@@ -38,5 +67,7 @@ fun main() {
         arrayOf(2, 3),
     )
 
-    print(TestClass.findLongestChain(pairs))
+    val value = TestClass.findLongestChain(pairs)
+    println("result: ${value}")
+
 }
