@@ -36,9 +36,13 @@ fun main(){
  /*
 
 ["MyCalendar",
+    [list.start, list.end]
+  [start, end]          case 1
+        [start, end]    case 2
+
 "book", [47,50] -> true if (start < list.end){
-"book", [33,41] -> true     if (start < list.start) and (end < list.start) => return true
-"book", [39,45] -> false 
+"book", [33,41] -> true     if (start > list.start) and (end < list.start) => return true
+"book", [39,45] -> false
 "book", [33,42] -> false
 "book", [25,32] -> true
 "book", [26,35] -> false
