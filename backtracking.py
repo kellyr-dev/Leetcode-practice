@@ -74,5 +74,5 @@ if __name__ == '__main__':
     word = "ABCESEEEFS"
     candidates = [2,3,6,7]
     targrt = 7
-    # these are backtracking?
+    # need to change this file
     print(exist(board, word))
