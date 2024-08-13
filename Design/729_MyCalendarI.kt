@@ -11,7 +11,9 @@ class MyCalendar(){
         if (pq.size > 0) {
             for (pair in pq){
                 if (start < pair.second){
-                    return false
+                    if (end > pair.first){
+                        return false
+                    }
                 }
             }
             pq.add(Pair(start,end))
@@ -22,39 +24,20 @@ class MyCalendar(){
             return true
         }
     }
-
-
 }
 
 fun main(){
 
     var calendar = MyCalendar()
-    println("booking: ${calendar.book(10, 20)}")
-    println("booking: ${calendar.book(15, 25)}")
-    println("booking: ${calendar.book(20, 30)}")
-
- /*
-
-["MyCalendar",
-    [list.start, list.end]
-  [start, end]          case 1
-        [start, end]    case 2
-
-"book", [47,50] -> true if (start < list.end){
-"book", [33,41] -> true     if (start > list.start) and (end < list.start) => return true
-"book", [39,45] -> false
-"book", [33,42] -> false
-"book", [25,32] -> true
-"book", [26,35] -> false
-"book", [19,25] -> true
-"book", [3,8] -> true
-"book", [8,13] -> true
-"book", [18,27] -> false
-
-Output:
-[null,true,false,false,false,false,false,false,false,false,false]
-
-
-  */
+    println("booking: ${calendar.book(47, 50)}")
+    println("booking: ${calendar.book(33, 41)}")
+    println("booking: ${calendar.book(39, 45)}")
+    println("booking: ${calendar.book(33, 42)}")
+    println("booking: ${calendar.book(25, 32)}")
+    println("booking: ${calendar.book(26, 35)}")
+    println("booking: ${calendar.book(19, 25)}")
+    println("booking: ${calendar.book(3, 8)}")
+    println("booking: ${calendar.book(8, 13)}")
+    println("booking: ${calendar.book(18, 27)}")
 
 }
