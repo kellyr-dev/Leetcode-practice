@@ -49,7 +49,6 @@ def exist(boad, word):
         # not matching letter
         else:
             return False
-
     for i in range(len(board)):
         for j in range(len(board[0])):
             print(f"({i},{j}) -> {board[i][j]}")

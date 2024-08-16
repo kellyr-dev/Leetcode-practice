@@ -340,8 +340,6 @@ def rangeSumBST(root, low, high):
     return suma
 
 
-
-
 if __name__ == '__main__':
     lst = [10,5,15,3,7,13,18,1,None,6]
     low = 6
@@ -349,4 +347,4 @@ if __name__ == '__main__':
     root = deserialize(lst)
     key = 22
     print(rangeSumBST(root, low, high))
-    # a = [3, 2, 1, 5, 4, 6]
+    a = [3, 2, 1, 5, 4, 6]
