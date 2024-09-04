@@ -115,11 +115,41 @@ def nextGreatestLetter(letters, target):
 
             prev = value
 
+# Minimum Difference Element
+def searchMinDiffElement(arr, key):
 
+    if key < arr[0]:
+        return arr[0]
+    if key > arr[len(arr)-1]:
+        return arr[len(arr)-1]
+
+    start = 0
+    end = len(arr)-1
+    minimunDiff = float('inf')
+    result = -1
+
+    while start <= end:
+        middle = int((start + end)/2)
+        print(f"minimunDiff: {minimunDiff}")
+        if key < arr[middle]:
+            if minimunDiff > (abs(key - arr[middle])):
+                minimunDiff = abs(key - arr[middle])
+                result = arr[middle]
+            end = middle - 1
+        elif key > arr[middle]:
+            if minimunDiff > (abs(key - arr[middle])):
+                minimunDiff = abs(key - arr[middle])
+                result = arr[middle]
+            start = middle + 1
+        else:
+            return arr[middle]
+
+    return result
 
 if __name__ == '__main__':
 
     nums = [1,3,5,6]
     letters = ["e","e","e","k","q","q","q","v","v","y"]
-    k = 'v'
-    print(nextGreatestLetter(letters, k))
+    k = 17
+    arr = [4,6,10]
+    print(searchMinDiffElement(arr, k))
