@@ -146,10 +146,79 @@ def searchMinDiffElement(arr, key):
 
     return result
 
+# 33. Search in Rotated Sorted Array
+def rotateArray(arr, key):
+
+    start = 0
+    end = len(arr)-1
+
+    while start < end:
+        middle = int((start + end)/2)
+        if arr[middle] == key:
+            return middle
+        if arr[middle] > arr[start]:
+            start = middle
+        else:
+            end = middle
+
+    indexMax = start
+    start = 0
+    newStart = indexMax + 1
+    end = len(arr) - 1
+
+    # here I have two ways to apply Binary Search
+    # first way apply from start to indexMax
+    # Second way apply from indexMax+1 to end
+
+    if key >= arr[0] and key <= arr[indexMax]:
+        result = binarySearchAux(key, arr, start, indexMax)
+        if result is not None:
+            return result
+
+    if key >= arr[newStart] and key <= arr[end]:
+        result = binarySearchAux(key, arr, newStart, end)
+        if result is not None:
+            return result
+
+    return -1
+
+def binarySearchAux(key, arr, start, end):
+
+    while start <= end:
+        middle = int((start + end)/2)
+        if key == arr[middle]:
+            return middle
+        elif key > arr[middle]:
+            start = middle+1
+        else:
+            end = middle-1
+
+# 153. Find Minimum in Rotated Sorted Array
+def findMin(nums):
+
+    start = 0
+    end = len(nums)-1
+
+    while start < end:
+        middle = int((start + end)/2)
+        if middle < end and arr[middle] > arr[middle+1]:
+            return middle + 1
+
+        if middle > start and arr[middle-1] > arr[middle]:
+            return middle
+
+        if nums[start] < nums[middle]:
+            start = middle + 1
+        else:
+            end = middle - 1
+
+    return 0
+
 if __name__ == '__main__':
 
     nums = [1,3,5,6]
     letters = ["e","e","e","k","q","q","q","v","v","y"]
-    k = 17
-    arr = [4,6,10]
-    print(searchMinDiffElement(arr, k))
+    k = 10
+    #arr = [4, 5, 6, 7, 0, 1, 2, 3]
+    arr = [4, 5, 7, 9, 10, -1, 2]
+    print(findMin(arr))
