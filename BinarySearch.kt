@@ -115,7 +115,29 @@ class BinarySearch{
     // 153. Find Minimum in Rotated Sorted Array
     fun findMin(nums: IntArray): Int {
 
-        return  -1
+        var start = 0
+        var end = nums.size-1
+        var middle : Int
+
+        while (start <= end){
+            middle = ((start + end)/2).toInt()
+            if ((middle < end) && (nums[middle] > nums[middle+1])) {
+                return nums[middle + 1]
+            }
+
+            if ((middle > start) && (nums[middle] < nums[middle-1])){
+                return nums[middle]
+            }
+
+            if (nums[start] <= nums[middle]){
+                start = middle + 1
+            }else{
+                end = middle - 1
+            }
+
+        }
+
+        return nums[0]
     }
 
 }
@@ -123,9 +145,9 @@ class BinarySearch{
 fun main(){
 
     val aux = BinarySearch()
-    //var nums = intArrayOf(4,5,6,7,0,1,2)
-    var nums = intArrayOf(1)
+    //var nums = intArrayOf(4,5,6,7,0,1,2)[3,4,5,1,2][4,5,6,7,0,1,2]
+    var nums = intArrayOf(4,5,6,7,0,1,2)
     val key = 3
-    println(aux.searchRotate(nums, key))
+    println(aux.findMin(nums))
 
 }
