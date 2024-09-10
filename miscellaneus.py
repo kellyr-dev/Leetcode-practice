@@ -27,7 +27,6 @@ def maxNumberOfBalloons(word):
 
     return factor
 
-
 def nextLargerElement(nums):
     res = [-1] * len(nums)
     for i in range(len(nums)):
@@ -37,7 +36,6 @@ def nextLargerElement(nums):
                 break
     print(res)
     return res
-
 
 def converToBinary(num):
     divisor = num
@@ -515,7 +513,6 @@ def rearrangeString(str1):
 
     return list(table_hash.values())
 
-
 # 621. Task Scheduler
 def leastIntervalI(tasks, n):
     table_hash = {}
@@ -559,6 +556,38 @@ def leastIntervalI(tasks, n):
 
     return cycle
 
+# 409. Longest Palindrome
+def longestPalindrome(s):
+
+    hash_table = {}
+    for i in range(len(s)):
+        if s[i] in hash_table:
+            hash_table[s[i]] += 1
+        else:
+            hash_table[s[i]] = 1
+
+
+    maxOdd = -1
+    countNotOdd = 0
+
+    for value in hash_table.values():
+        print(f"value: {value}")
+        if value % 2 == 0:
+            countNotOdd += value
+        else:
+            if value > maxOdd:
+                if maxOdd != -1:
+                    countNotOdd += maxOdd - 1
+                    maxOdd = value
+                else:
+                    maxOdd = value
+            else:
+                countNotOdd += value-1
+
+    if maxOdd != -1:
+        return maxOdd + countNotOdd
+    else:
+        return countNotOdd
 
 if __name__ == '__main__':
     word = "ballon"
@@ -573,3 +602,5 @@ if __name__ == '__main__':
     tasks = ["A","A","A","B","B","B"]
     n = 2
     tickets = [["JFK","SFO"],["JFK","ATL"],["SFO","ATL"],["ATL","JFK"],["ATL","SFO"]]
+    arr = [1,5,2,6,4]
+    print(longestPalindrome("adam"))
