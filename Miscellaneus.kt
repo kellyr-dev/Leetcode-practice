@@ -53,6 +53,37 @@ class Miscellaneus {
         return stacks.size
     }
 
+    // 383. Ransom Note
+    fun canConstruct(ransomNote: String, magazine: String): Boolean {
+
+        var hashOfransom = HashMap<Char, Int>()
+
+        for (i in 0.. ransomNote.length-1){
+            if (hashOfransom.containsKey(ransomNote.get(i))){
+                var value = hashOfransom.get(ransomNote.get(i))
+                hashOfransom.replace(ransomNote.get(i), value!!+1)
+            }else{
+                hashOfransom.put(ransomNote.get(i), 1)
+            }
+        }
+        println(hashOfransom)
+
+        for (i in 0.. magazine.length-1){
+
+            if (hashOfransom.getOrElse(magazine.get(i)) {0} > 0 ){
+                var valor = hashOfransom.get(magazine.get(i))
+                hashOfransom.replace(magazine.get(i), valor!!-1)
+            }
+        }
+
+        var values = hashOfransom.values.sum()
+        println(hashOfransom.values)
+        if (values > 0){
+            return false
+        }
+
+        return true
+    }
 }
 
 fun main() {
@@ -67,7 +98,7 @@ fun main() {
         arrayOf(2, 3),
     )
 
-    val value = TestClass.findLongestChain(pairs)
+    val value = TestClass.canConstruct("hello", "hellworld")
     println("result: ${value}")
 
 }
