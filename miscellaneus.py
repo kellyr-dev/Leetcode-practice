@@ -589,6 +589,34 @@ def longestPalindrome(s):
     else:
         return countNotOdd
 
+# 383. Ransom Note
+    #
+    #
+    #
+    #
+    #
+    # lhmnbgfsjyd22222222222222scvmbn,m,mnvbcbcxvxvzgdgfdef canConstruct(ransomNote, magazine):
+
+    hash_of_ransom = {}
+    for i in range(len(ransomNote)):
+        if ransomNote[i] in hash_of_ransom:
+            hash_of_ransom[ransomNote[i]] += 1
+        else:
+            hash_of_ransom[ransomNote[i]] = 1
+
+    for i in range(len(magazine)):
+        if magazine[i] in hash_of_ransom:
+            if hash_of_ransom[magazine[i]] > 0:
+                hash_of_ransom[magazine[i]] -= 1
+
+    suma_of_letters = sum(hash_of_ransom.values())
+
+    if suma_of_letters > 0:
+        return False
+    else:
+        return True
+
+
 if __name__ == '__main__':
     word = "ballon"
     nums = [3, 5, 8, 7]
@@ -603,4 +631,4 @@ if __name__ == '__main__':
     n = 2
     tickets = [["JFK","SFO"],["JFK","ATL"],["SFO","ATL"],["ATL","JFK"],["ATL","SFO"]]
     arr = [1,5,2,6,4]
-    print(longestPalindrome("adam"))
+    print(canConstruct("apple", "pale"))
