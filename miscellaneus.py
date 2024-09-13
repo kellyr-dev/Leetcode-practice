@@ -590,12 +590,7 @@ def longestPalindrome(s):
         return countNotOdd
 
 # 383. Ransom Note
-    #
-    #
-    #
-    #
-    #
-    # lhmnbgfsjyd22222222222222scvmbn,m,mnvbcbcxvxvzgdgfdef canConstruct(ransomNote, magazine):
+def canConstruct(ransomNote, magazine):
 
     hash_of_ransom = {}
     for i in range(len(ransomNote)):
@@ -629,6 +624,5 @@ if __name__ == '__main__':
 
     tasks = ["A","A","A","B","B","B"]
     n = 2
-    tickets = [["JFK","SFO"],["JFK","ATL"],["SFO","ATL"],["ATL","JFK"],["ATL","SFO"]]
     arr = [1,5,2,6,4]
     print(canConstruct("apple", "pale"))
