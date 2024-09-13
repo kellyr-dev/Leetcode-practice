@@ -1,4 +1,5 @@
 
+# 78. Subsets
 def find_subsets(nums):
 
     result = [[]]
@@ -16,7 +17,7 @@ def find_subsets(nums):
             print(f"result: {result}")
             print(f"i: {i}")
             n = len(result)
-            for j in range(n):
+            for j in range(n): #O(2^n)
                 aux = list(result[j])
                 print(f"aux: {aux}")
                 aux.append(nums[i])
@@ -25,8 +26,26 @@ def find_subsets(nums):
 
     return result
 
+# 90. Subsets II
+def subsetsWithDup(nums):
+    result = [[]]
+    aux_hash = {}
+    for i in range(len(nums)):
+
+        n = len(result)
+        for j in range(n):
+
+            aux = list(result[j])
+            aux.append(nums[i])
+            key = tuple(aux)
+            print(f"key: {key}")
+            if key not in aux_hash:
+                result.append(aux)
+                aux_hash[key] = 1
+
+    return result
 
 if __name__ == '__main__':
 
-    nums = [3, 1, 5]
-    print(find_subsets(nums))
+    nums = [1, 2, 2]
+    print(subsetsWithDup(nums))
