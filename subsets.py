@@ -86,6 +86,9 @@ def findLetterCaseStringPermutations(letters):
 #22. Generate Parentheses
 def generateParenthesis(n):
 
+    if n == 0:
+        return [""]
+
     if n == 1:
         return ["()"]
     if n == 2:
