@@ -328,19 +328,82 @@ def numSubarrayProductLessThanK(nums, target):
 
     return result
 
+# 26. Remove Duplicates from Sorted Array
+def removeDuplicates(nums):
+
+    count = 1
+    if len(nums) <= 1:
+        return len(nums)
+
+    left = 0
+    right = 1
+
+    while right < len(nums):
+        if nums[right] == nums[left]:
+            nums[right] = "_"
+            right += 1
+        else:
+            left = right
+            right += 1
+            count += 1
+
+    print(f"nums: {nums}")
+    right = 0
+    reachFinal = False
+    for left in range(len(nums)):
+        if nums[left] == "_":
+            if left + 1 <= len(nums) - 1:
+                right = left + 1
+                while reachFinal == False and nums[right] == "_":
+                    right += 1
+                    if right > len(nums) - 1:
+                        reachFinal = True
+
+                if reachFinal == True:
+                    continue
+                else:
+                    aux = nums[left]
+                    nums[left] = nums[right]
+                    nums[right] = aux
+                    reachFinal = False
+    print(nums)
+    return count
+
+# 977. Squares of a Sorted Array
+def sortedSquares(nums):
+
+    result = list(nums)
+
+    for i in range(len(nums)):
+        aux = nums[i]
+        nums[i] = aux*aux
+
+    left = 0
+    right = len(nums)-1
+    index = len(nums)-1
+
+    while left <= right and index >= 0:
+        if nums[left] > nums[right]:
+            result[index] = nums[left]
+            index -= 1
+            left += 1
+        else:
+            result[index] = nums[right]
+            index -= 1
+            right -= 1
+
+    return result
+
+
 if __name__ == '__main__':
     height = [1,8,6,2,5,4,8,3,7]
 
     stringCheck = "abcdefghijklmnopqrstuvwxyz"
-    #stringCheck = "DNFjxo?b5h*5<LWbgs6?V5{3M].1hG)pv1VWq4(!][DZ3G)riSJ.CmUj9]7Gzl?VyeJ2dIPEW4GYW*scT8(vhu9wCr]q!7eyaoy."
     k = 2
-
     endo = 7
     sor = -3
     s1 = "ab"
     s2 = "ba"
-    #nums = [-1,0,1,2,-1,-4]
-    #nums = [-5,2,-1,-2,3]
-    nums = [2, 5, 3, 10]
+    nums = [-4, -2, -1, 0, 3, 10]
     target = 30
-    print(numSubarrayProductLessThanK(nums, target))
+    print(sortedSquares(nums))

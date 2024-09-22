@@ -139,13 +139,17 @@ def generateParenthesis(n):
                     key = (auxOpen, auxClose + 1)
                     table_hash[strinCase] = key
 
+    print(len(result))
     return result
 
+# Evaluate Expressuion and return all values possibles
+def diffWaysToEvaluateExpression(s):
 
+    result = []
 
 if __name__ == '__main__':
 
     nums = [1, 3, 5]
     letters = "ad52"
-    n = 3
+    n = 5
     print(generateParenthesis(n))
