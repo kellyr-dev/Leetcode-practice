@@ -1,3 +1,5 @@
+import heapq
+
 
 # 11. Container With Most Water (not checked)
 def maxArea(height):
@@ -198,43 +200,6 @@ def dividir(endo, sor):
 
     return result
 
-# 15. 3Sum
-def threeSum(nums):
-    # Base cases
-    nums.sort()
-    result = []
-
-    i = 0
-    left = 1
-    right = len(nums) - 1
-    previos_num = float('-inf')
-
-    while i < len(nums) - 1:
-
-        if nums[i] == previos_num:
-            i += 1
-            left = i + 1
-            continue
-        else:
-            target_sum = nums[i] * -1
-            while left < right:
-                if nums[left] + nums[right] == target_sum:
-                    result.append([nums[i], nums[left], nums[right]])
-                    left += 1
-                    right -= 1
-                elif nums[left] + nums[right] > target_sum:
-                    right -= 1
-                else:
-                    left += 1
-
-        previos_num = nums[i]
-        i += 1
-        left = i + 1
-        right = len(nums) - 1
-
-    print(result)
-    return result
-
 # 567. Permutation in String
 def permutationString(s1, s2):
 
@@ -372,27 +337,92 @@ def removeDuplicates(nums):
 # 977. Squares of a Sorted Array
 def sortedSquares(nums):
 
-    result = list(nums)
-
-    for i in range(len(nums)):
-        aux = nums[i]
-        nums[i] = aux*aux
-
+    #result = [0 for i in range(len(nums))]
+    result = [0] * len(nums)
     left = 0
-    right = len(nums)-1
-    index = len(nums)-1
+    right = len(nums) - 1
+    index = len(nums) - 1
 
     while left <= right and index >= 0:
-        if nums[left] > nums[right]:
-            result[index] = nums[left]
-            index -= 1
-            left += 1
-        else:
-            result[index] = nums[right]
+
+        leftSide = nums[left]*nums[left]
+        rightSide = nums[right]*nums[right]
+
+        if rightSide > leftSide:
+            result[index] = rightSide
             index -= 1
             right -= 1
+        else:
+            result[index] = leftSide
+            index -= 1
+            left += 1
 
     return result
+
+# 15. 3Sum
+def s3um(nums):
+
+    result = []
+    nums.sort()
+    table_hash = {}
+
+    for i in range(len(nums)):
+        if i > 0 and nums[i] == nums[i-1]:
+            continue
+        else:
+
+            left = i+1
+            right = len(nums)-1
+            tgt = nums[i]*-1
+            print(f"tgt: {tgt}")
+            while left < right:
+                if nums[left] + nums[right] == tgt:
+                    key = (nums[i], nums[left], nums[right])
+                    if key not in table_hash:
+                        result.append([nums[i], nums[left], nums[right]])
+                        table_hash[key] = True
+                    left += 1
+                elif nums[left] + nums[right] > tgt:
+                    right -= 1
+                else:
+                    left += 1
+
+    return result
+
+# 16. 3Sum Closest
+def s3umClosest(nums, target):
+
+    if len(nums) <= 2:
+        return 0
+
+    if len(nums) == 3:
+        return nums[0] + nums[1] + nums[2]
+
+    nums.sort()
+    smallestPos = []
+
+    for i in range(len(nums)):
+        left = i + 1
+        right = len(nums) - 1
+
+        while left < right:
+
+            localSum = nums[i] + nums[left] + nums[right]
+            if localSum - target == 0:
+                return nums[i] + nums[left] + nums[right]
+
+            elif localSum > target:
+                val = abs(localSum - target)
+                key = (val, localSum)
+                right -= 1
+                heapq.heappush(smallestPos, key)
+            else:
+                val = abs(localSum - target)
+                key = (val, localSum)
+                left += 1
+                heapq.heappush(smallestPos, key)
+
+    return heapq.heappop(smallestPos)[1]
 
 
 if __name__ == '__main__':
@@ -404,6 +434,6 @@ if __name__ == '__main__':
     sor = -3
     s1 = "ab"
     s2 = "ba"
-    nums = [-4, -2, -1, 0, 3, 10]
-    target = 30
-    print(sortedSquares(nums))
+    nums = [1,1,1,1]
+    target = 3
+    print(s3umClosest(nums, target))
