@@ -3,7 +3,6 @@ import heapq
 
 # 11. Container With Most Water (not checked)
 def maxArea(height):
-
     if len(height) <= 1:
         return 0
 
@@ -12,7 +11,7 @@ def maxArea(height):
     max_area = 0
     min_height = float('inf')
 
-    while right < len(height)-1:
+    while right < len(height) - 1:
 
         base = right - left
         if height[right] < min_height:
@@ -24,7 +23,7 @@ def maxArea(height):
 
         right += 1
 
-    while left < len(height)-1:
+    while left < len(height) - 1:
         base = right - left
         if height[right] < min_height:
             min_height = height[right]
@@ -37,9 +36,9 @@ def maxArea(height):
 
     return max_area
 
+
 # 28. Find the Index of the First Occurrence in a String
 def strStr(haystack, needle):
-
     ned_pointer = 0
     hay_pointer = 0
     result = -1
@@ -67,7 +66,7 @@ def strStr(haystack, needle):
             if len(queue) > 1:
                 hay_pointer = queue.pop(0)
 
-        if ned_pointer == len(needle)-1:
+        if ned_pointer == len(needle) - 1:
             return result
 
         hay_pointer += 1
@@ -76,10 +75,10 @@ def strStr(haystack, needle):
 
 # Caesar Cipher hackerank
 def caesarCipher(s, k):
-    #rangeMleft = 65
-    #rangeMright = 90
-    #rangemleft = 97
-    #rangemright = 122
+    # rangeMleft = 65
+    # rangeMright = 90
+    # rangemleft = 97
+    # rangemright = 122
     news = []
 
     for i in range(len(s)):
@@ -90,14 +89,14 @@ def caesarCipher(s, k):
             if value >= 65 and value <= 90:
 
                 if (value + k) <= 90:
-                    news.append(chr(value +k))
+                    news.append(chr(value + k))
                 else:
                     value = value + k
                     while (value) > 90:
                         print(f"(value +k)", (value))
                         resto = (value) - 90
                         value = 65 + resto - 1
-                        print(f" new value: ",value)
+                        print(f" new value: ", value)
 
                     news.append(chr(value))
 
@@ -111,19 +110,18 @@ def caesarCipher(s, k):
                         print(f"(value +k)", (value))
                         resto = (value) - 122
                         value = 97 + resto - 1
-                        print(f" new value: ",value)
+                        print(f" new value: ", value)
                     news.append(chr(value))
         else:
 
             news.append(s[i])
 
     print(news)
-    what_is =''.join(map(str, news))
+    what_is = ''.join(map(str, news))
     print(what_is)
     return what_is
 
 def dividir(endo, sor):
-
     INFINITY = 2147483646
     ZERO = -2147483648
 
@@ -155,12 +153,12 @@ def dividir(endo, sor):
             sor = sor + 1
             cont += 1
             print(f"sor: ", sor)
-            print(f"cont: ",cont)
+            print(f"cont: ", cont)
 
         sor = cont
         print(f"new_sor: ", sor)
 
-    if endo <0:
+    if endo < 0:
         flagEndo = True
         cont = 0
         while endo < 0:
@@ -178,7 +176,7 @@ def dividir(endo, sor):
     while resto >= sor:
         suma = suma + sor
         resto = resto - sor
-        result+= 1
+        result += 1
 
         print(f"suma: ", suma)
         print(f"resto: ", resto)
@@ -200,9 +198,9 @@ def dividir(endo, sor):
 
     return result
 
+
 # 567. Permutation in String
 def permutationString(s1, s2):
-
     # corner cases
     if len(s1) > len(s2):
         return False
@@ -222,14 +220,14 @@ def permutationString(s1, s2):
             return False
 
     hasmap = {}
-    right = len(s1) -1
+    right = len(s1) - 1
     left = 0
     index = 0
     flag = False
 
-    while right < len(s2): #O(n)
+    while right < len(s2):  # O(n)
 
-        for i in range(len(s1)): # O(m)
+        for i in range(len(s1)):  # O(m)
             if s1[i] in hasmap:
                 hasmap[s1[i]] += 1
             else:
@@ -256,46 +254,42 @@ def permutationString(s1, s2):
         else:
             return True
 
-
     return False
     # O(mn) being m = lenght of s1 // n = lenght of s2
 
-# 713. Subarray Product Less Than K
-def numSubarrayProductLessThanK(nums, target):
 
-    index = 0
-    right = 0
-    product = 1
-    left = 0
+# 713. Subarray Product Less Than K (limited approach)
+def numSubarrayProductLessThanK(arr, target):
+    if len(arr) == 0:
+        return []
+
+    if len(arr) == 1:
+        if arr[0] < target:
+            return [arr[0]]
+        else:
+            return []
+
     result = []
-    aux_product = 1
+    right = len(arr) - 1
 
-    # initialization
-    while right < len(nums):
+    for i in range(len(arr)):
+        left = i + 1
 
-        product = product * nums[right]
-        if product > target:
+        if arr[i] < target:
+            result.append([arr[i]])
+            product = arr[i]
 
-            for i in range(left, right):
-                for j in range(left + 1, right + 1):
-                    aux_product = nums[i] * nums[j]
-                    print(f"nums[i] * nums[j]", nums[i], nums[j])
-                    if aux_product < target:
-                        result.append([nums[i], nums[j]])
+            while left <= right:
+                product *= int(arr[left])
+                if product < target:
+                    result.append(arr[i:left + 1])
+                    # print(f"arr[i:left+1]:", arr[i:left + 1])
+                left += 1
+    return len(result)
 
-            product = product / nums[index]
-            aux_product = 1
-            print(f"new product: ", product)
-            print(f"index: ", index)
-            index += 1
-
-        right += 1
-
-    return result
 
 # 26. Remove Duplicates from Sorted Array
 def removeDuplicates(nums):
-
     count = 1
     if len(nums) <= 1:
         return len(nums)
@@ -334,10 +328,10 @@ def removeDuplicates(nums):
     print(nums)
     return count
 
+
 # 977. Squares of a Sorted Array
 def sortedSquares(nums):
-
-    #result = [0 for i in range(len(nums))]
+    # result = [0 for i in range(len(nums))]
     result = [0] * len(nums)
     left = 0
     right = len(nums) - 1
@@ -345,8 +339,8 @@ def sortedSquares(nums):
 
     while left <= right and index >= 0:
 
-        leftSide = nums[left]*nums[left]
-        rightSide = nums[right]*nums[right]
+        leftSide = nums[left] * nums[left]
+        rightSide = nums[right] * nums[right]
 
         if rightSide > leftSide:
             result[index] = rightSide
@@ -359,21 +353,21 @@ def sortedSquares(nums):
 
     return result
 
+
 # 15. 3Sum
 def s3um(nums):
-
     result = []
     nums.sort()
     table_hash = {}
 
     for i in range(len(nums)):
-        if i > 0 and nums[i] == nums[i-1]:
+        if i > 0 and nums[i] == nums[i - 1]:
             continue
         else:
 
-            left = i+1
-            right = len(nums)-1
-            tgt = nums[i]*-1
+            left = i + 1
+            right = len(nums) - 1
+            tgt = nums[i] * -1
             print(f"tgt: {tgt}")
             while left < right:
                 if nums[left] + nums[right] == tgt:
@@ -389,9 +383,9 @@ def s3um(nums):
 
     return result
 
+
 # 16. 3Sum Closest
 def s3umClosest(nums, target):
-
     if len(nums) <= 2:
         return 0
 
@@ -425,15 +419,193 @@ def s3umClosest(nums, target):
     return heapq.heappop(smallestPos)[1]
 
 
-if __name__ == '__main__':
-    height = [1,8,6,2,5,4,8,3,7]
+# 75. Sort Colors
+def sortColors(nums):
+    count0s = 0
+    count1s = 0
+    count2s = 0
 
+    for i in range(len(nums)):
+        if nums[i] == 0:
+            count0s += 1
+        elif nums[i] == 1:
+            count1s += 1
+        else:
+            count2s += 1
+    print(f"array: {nums}")
+    print(f"count0s: {count0s}")
+    print(f"count1s: {count1s}")
+    print(f"count2s: {count2s}")
+    index = 0
+    left = index + 1
+    right = len(nums) - 1
+    while count0s > 0 and index <= len(nums) - 1 and left < right:
+        print(f"nums: {nums}")
+        if nums[index] == 0:
+            index += 1
+            left = index + 1
+            count0s -= 1
+        elif nums[left] == 0:
+            aux = nums[index]
+            nums[index] = nums[left]
+            nums[left] = aux
+            index += 1
+            left = index + 1
+            count0s -= 1
+        elif nums[right] == 0:
+            aux = nums[index]
+            nums[index] = nums[right]
+            nums[right] = aux
+            index += 1
+            right -= 1
+            left = index + 1
+            count0s -= 1
+        else:
+            left += 1
+            right -= 1
+
+    left = index + 1
+    right = len(nums) - 1
+    while count1s > 0 and index <= len(nums) - 1 and left <= right:
+        print(f"nums: {nums}")
+        if nums[index] == 1:
+            index += 1
+            left = index + 1
+            count1s -= 1
+        elif nums[left] == 1:
+            aux = nums[index]
+            nums[index] = nums[left]
+            nums[left] = aux
+            index += 1
+            left = index + 1
+            count1s -= 1
+        elif nums[right] == 1:
+            aux = nums[index]
+            nums[index] = nums[right]
+            nums[right] = aux
+            index += 1
+            left = index + 1
+            right -= 1
+            count1s -= 1
+        else:
+            left += 1
+            right -= 1
+
+    left = index + 1
+    right = len(nums) - 1
+
+    while count2s > 0 and index <= len(nums) - 1 and left <= right:
+        print(f"nums: {nums}")
+        if nums[index] == 2:
+            index += 1
+            left = index + 1
+            count2s -= 1
+        elif nums[left] == 2:
+            aux = nums[index]
+            nums[index] = nums[left]
+            nums[left] = aux
+            index += 1
+            left = index + 1
+            count2s -= 1
+        elif nums[right] == 2:
+            aux = nums[index]
+            nums[index] = nums[right]
+            nums[right] = aux
+            index += 1
+            left = index + 1
+            right -= 1
+            count2s -= 1
+        else:
+            left += 1
+            right -= 1
+    return nums
+
+
+# 18. 4Sum
+def fourSum(nums, target):
+
+    if len(nums) <= 3:
+        return []
+    if len(nums) == 4:
+        if nums[0] + nums[1] + nums[2] + nums[3] == target:
+
+            return [[nums[0], nums[1], nums[2], nums[3]]]
+        else:
+            return []
+
+    nums.sort()
+    result = []
+    table_hash = {}
+    right = len(nums) - 1
+    left = 0
+    for i in range(len(nums)):
+        currentTarget = target - nums[i]
+        left = i + 1
+        middle = left + 1
+        right = len(nums) - 1
+
+        while left < right:
+            middle = left + 1
+            right = len(nums) - 1
+
+            while middle < right:
+                if nums[left] + nums[middle] + nums[right] == currentTarget:
+                    key = (nums[i], nums[left], nums[middle], nums[right])
+                    if key not in table_hash:
+                        table_hash[key] = True
+                        result.append([nums[i], nums[left], nums[middle], nums[right]])
+                    middle += 1
+                elif nums[left] + nums[middle] + nums[right] > currentTarget:
+                    right -= 1
+                else:
+                    middle += 1
+            left += 1
+    return result
+
+# 844. Backspace String Compare
+def backspaceCompare(string1, string2):
+
+    index1 = 0
+    index2 = 0
+
+    stack1 = []
+    stack2 = []
+    while index1 < len(string1):
+        if string1[index1] != "#":
+            stack1.insert(0, string1[index1])
+        else:
+            stack1.pop(0)
+        index1 +=1
+
+    while index2 < len(string2):
+        if string2[index2] != "#":
+            stack2.insert(0, string2[index2])
+        else:
+            stack2.pop(0)
+        index2 +=1
+
+    print(stack2)
+    print(stack1)
+
+    if len(stack1) != len(stack2):
+        return False
+    else:
+        while stack1:
+            aux1 = stack1.pop()
+            aux2 = stack2.pop()
+            if aux1 != aux2:
+                return False
+
+    return True
+
+if __name__ == '__main__':
+    height = [1, 8, 6, 2, 5, 4, 8, 3, 7]
     stringCheck = "abcdefghijklmnopqrstuvwxyz"
     k = 2
     endo = 7
     sor = -3
-    s1 = "ab"
-    s2 = "ba"
-    nums = [1,1,1,1]
-    target = 3
-    print(s3umClosest(nums, target))
+    nums = [-3,-2,-1,0,0,1,2,3]
+    target = 0
+    s1 = "xywrrmp"
+    s2 = "xywrrmu#p"
+    print(backspaceCompare(s1, s2))
