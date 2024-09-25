@@ -258,7 +258,7 @@ def permutationString(s1, s2):
     # O(mn) being m = lenght of s1 // n = lenght of s2
 
 
-# 713. Subarray Product Less Than K (limited approach)
+# 713. Subarray Product Less Than K (Time Limit Exceeded)
 def numSubarrayProductLessThanK(arr, target):
     if len(arr) == 0:
         return []
@@ -286,7 +286,6 @@ def numSubarrayProductLessThanK(arr, target):
                     # print(f"arr[i:left+1]:", arr[i:left + 1])
                 left += 1
     return len(result)
-
 
 # 26. Remove Duplicates from Sorted Array
 def removeDuplicates(nums):
@@ -328,7 +327,6 @@ def removeDuplicates(nums):
     print(nums)
     return count
 
-
 # 977. Squares of a Sorted Array
 def sortedSquares(nums):
     # result = [0 for i in range(len(nums))]
@@ -352,7 +350,6 @@ def sortedSquares(nums):
             left += 1
 
     return result
-
 
 # 15. 3Sum
 def s3um(nums):
@@ -382,7 +379,6 @@ def s3um(nums):
                     left += 1
 
     return result
-
 
 # 16. 3Sum Closest
 def s3umClosest(nums, target):
@@ -417,7 +413,6 @@ def s3umClosest(nums, target):
                 heapq.heappush(smallestPos, key)
 
     return heapq.heappop(smallestPos)[1]
-
 
 # 75. Sort Colors
 def sortColors(nums):
@@ -520,7 +515,6 @@ def sortColors(nums):
             right -= 1
     return nums
 
-
 # 18. 4Sum
 def fourSum(nums, target):
 
@@ -598,14 +592,41 @@ def backspaceCompare(string1, string2):
 
     return True
 
+# 581. Shortest Unsorted Continuous Subarray (Time Limit Exceeded)
+def findUnsortedSubarray(nums):
+
+    if len(nums) <= 1:
+        return 0
+
+    originalArray = list(nums)
+    startInterval = float('inf')
+    endInterval = 0
+    for i in range(len(nums)):
+        right = len(nums) - 1
+        left = i+1
+        while left <= right:
+            if nums[left] < nums[i]:
+                startInterval = min(startInterval, i)
+                endInterval = max(endInterval, left)
+                aux = nums[i]
+                nums[i] = nums[left]
+                nums[left] = aux
+            left += 1
+
+    if endInterval != 0:
+        print(originalArray[startInterval:endInterval + 1])
+        return endInterval - startInterval + 1
+    else:
+        return 0
+
 if __name__ == '__main__':
     height = [1, 8, 6, 2, 5, 4, 8, 3, 7]
     stringCheck = "abcdefghijklmnopqrstuvwxyz"
     k = 2
     endo = 7
     sor = -3
-    nums = [-3,-2,-1,0,0,1,2,3]
+    nums = [1,2,3,4]
     target = 0
     s1 = "xywrrmp"
     s2 = "xywrrmu#p"
-    print(backspaceCompare(s1, s2))
+    print(findUnsortedSubarray(nums))
