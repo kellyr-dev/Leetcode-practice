@@ -598,26 +598,47 @@ def findUnsortedSubarray(nums):
     if len(nums) <= 1:
         return 0
 
-    originalArray = list(nums)
-    startInterval = float('inf')
+    startInterval = 0
     endInterval = 0
-    for i in range(len(nums)):
-        right = len(nums) - 1
-        left = i+1
-        while left <= right:
-            if nums[left] < nums[i]:
-                startInterval = min(startInterval, i)
-                endInterval = max(endInterval, left)
-                aux = nums[i]
-                nums[i] = nums[left]
-                nums[left] = aux
-            left += 1
 
-    if endInterval != 0:
-        print(originalArray[startInterval:endInterval + 1])
-        return endInterval - startInterval + 1
-    else:
+    left = 1
+    right = len(nums)-1
+
+    while left <= len(nums)-1:
+
+        if nums[left] < nums[left-1]:
+            startInterval = left-1
+            break
+        left += 1
+
+    while right >= 0:
+        if nums[right-1] > nums[right]:
+            endInterval = right
+            break
+        right -= 1
+
+    if startInterval == 0 and endInterval == 0:
         return 0
+    else:
+        min_subarray = min(nums[startInterval:endInterval+1])
+        max_subarray = max(nums[startInterval:endInterval+1])
+
+        left = startInterval
+        while left >= 0:
+            if min_subarray <= nums[left]:
+                startInterval = left
+
+            left -= 1
+
+        right = endInterval
+        while right <= len(nums)-1:
+            if max_subarray >= nums[right]:
+                endInterval = right
+            right += 1
+
+        print(f"final subarray: {nums[startInterval:endInterval+1]}")
+        return endInterval - startInterval + 1
+
 
 if __name__ == '__main__':
     height = [1, 8, 6, 2, 5, 4, 8, 3, 7]
@@ -625,7 +646,8 @@ if __name__ == '__main__':
     k = 2
     endo = 7
     sor = -3
-    nums = [1,2,3,4]
+    nums =[1,3,2,2,2]
+    #                            ^R-1  ^R
     target = 0
     s1 = "xywrrmp"
     s2 = "xywrrmu#p"
