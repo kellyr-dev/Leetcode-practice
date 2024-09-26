@@ -36,7 +36,6 @@ def maxArea(height):
 
     return max_area
 
-
 # 28. Find the Index of the First Occurrence in a String
 def strStr(haystack, needle):
     ned_pointer = 0
@@ -198,7 +197,6 @@ def dividir(endo, sor):
 
     return result
 
-
 # 567. Permutation in String
 def permutationString(s1, s2):
     # corner cases
@@ -256,7 +254,6 @@ def permutationString(s1, s2):
 
     return False
     # O(mn) being m = lenght of s1 // n = lenght of s2
-
 
 # 713. Subarray Product Less Than K (Time Limit Exceeded)
 def numSubarrayProductLessThanK(arr, target):
@@ -592,7 +589,7 @@ def backspaceCompare(string1, string2):
 
     return True
 
-# 581. Shortest Unsorted Continuous Subarray (Time Limit Exceeded)
+# 581. Shortest Unsorted Continuous Subarray
 def findUnsortedSubarray(nums):
 
     if len(nums) <= 1:
@@ -647,7 +644,6 @@ if __name__ == '__main__':
     endo = 7
     sor = -3
     nums =[1,3,2,2,2]
-    #                            ^R-1  ^R
     target = 0
     s1 = "xywrrmp"
     s2 = "xywrrmu#p"
