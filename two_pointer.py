@@ -608,7 +608,7 @@ def findUnsortedSubarray(nums):
             break
         left += 1
 
-    while right >= 0:
+    while right > 0:
         if nums[right-1] > nums[right]:
             endInterval = right
             break
