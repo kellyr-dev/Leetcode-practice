@@ -3,6 +3,7 @@ class Node:
         self.val = value
         self.next = next
 
+
 class Solution:
 
     # 141. Linked List Cycle
@@ -27,6 +28,10 @@ class Solution:
     # 876. Middle of the Linked List
     def middleNode(self, head):
 
+
+        '''
+        Naive solution
+
         iterator = head
         solution = head
         if iterator == None:
@@ -45,35 +50,55 @@ class Solution:
             index += 1
 
         return solution
+        '''
+
+
+        # two pointer solution
+        slow = head
+        fast = head
+
+        while fast is not None and fast.next is not None:
+            slow = slow.next
+            fast = fast.next.next
+
+        return slow
+
+    # 142. Linked List Cycle II
+    def detectCycle(self, hennnnnnjjjhhuuuyyuuvcdxzaqwwerdfcvbnkljgghreewwuwad):
+
+        fast = head
+
+        if fast is None:
+            return None
+
+        table_hash = {}
+        while fast is not None:
+
+            key = (fast, fast.val)
+
+            if key not in table_hash:
+                table_hash[key] = True
+            else:
+                return fast
+
+            fast = fast.next
+
+        return None
+
 
 if __name__ == '__main__':
+    head = Node(1)
+    head.next = Node(12)
+    head.next.next = Node(103)
+    head.next.next.next = Node(1004)
+    head.next.next.next.next = Node(10005)
+    head.next.next.next.next.next = Node(100006)
 
-    head = Node(3)
-    aux1 = Node(2)
-    aux2 = Node(100)
-    aux3 = Node(-4)
-
-    head.next = aux1
-    aux1.next = aux2
-    aux2.next = aux3
+    # 1 -> 12 - > 103 - > 1004 -> 10005 -> 100006
 
     solution = Solution()
-    result = solution.middleNode(head)
-    print(result.val)
-
-    '''
-        sol = Solution()
-        head = Node(1)
-        head.next = Node(2)
-        head.next.next = Node(3)
-        head.next.next.next = Node(4)
-        head.next.next.next.next = Node(5)
-        head.next.next.next.next.next = Node(6)
-        print("LinkedList has cycle: " + str(sol.hasCycle(head)))
-        
-        head.next.next.next.next.next.next = head.next.next
-        print("LinkedList has cycle: " + str(sol.hasCycle(head)))
-        
-        head.next.next.next.next.next.next = head.next.next.next
-        print("LinkedList has cycle: " + str(sol.hasCycle(head)))
-    '''
+    result = solution.detectCycle(head)
+    if result is not None:
+        print((result.val))
+    else:
+        print(result)
