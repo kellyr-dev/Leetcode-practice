@@ -64,7 +64,7 @@ class Solution:
         return slow
 
     # 142. Linked List Cycle II
-    def detectCycle(self, hennnnnnjjjhhuuuyyuuvcdxzaqwwerdfcvbnkljgghreewwuwad):
+    def detectCycle(self, head):
 
         fast = head
 
@@ -85,20 +85,49 @@ class Solution:
 
         return None
 
+    # 234. Palindrome Linked List
+    def isPalindrome(self, head):
+
+        stack = []
+        aux = head
+        iterator = head
+
+        while iterator is not None:
+            stack.append(iterator.val)
+            iterator = iterator.next
+
+        print(stack)
+        while stack and aux is not None:
+            value = stack.pop()
+            if value != aux.val:
+                return False
+            aux = aux.next
+        return True
+
+    # 206. Reverse Linked List
+    def reverseList(self, head):
+
+        current = head
+        previous = None
+
+        while current is not None:
+            aux = current.next # save current next pointer
+            current.next = previous # point to previous
+            previous = current # previous move to current
+            current = aux # current move to next
+
+        head = previous
+        return head
+
 
 if __name__ == '__main__':
     head = Node(1)
-    head.next = Node(12)
-    head.next.next = Node(103)
-    head.next.next.next = Node(1004)
-    head.next.next.next.next = Node(10005)
-    head.next.next.next.next.next = Node(100006)
-
+    head.next = Node(2)
+    head.next.next = Node(3)
+    head.next.next.next = Node(4)
+    head.next.next.next.next = Node(5)
     # 1 -> 12 - > 103 - > 1004 -> 10005 -> 100006
 
     solution = Solution()
-    result = solution.detectCycle(head)
-    if result is not None:
-        print((result.val))
-    else:
-        print(result)
+    result = solution.reverseList(head)
+    print(result)
