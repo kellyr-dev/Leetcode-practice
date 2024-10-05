@@ -119,6 +119,49 @@ class Solution:
         head = previous
         return head
 
+    # 92. Reverse Linked List II
+    def reverseSubList(self, head, left, right):
+
+        startSub = head
+        prevSub = None
+
+        while startSub.val != left:
+            prevSub = startSub
+            startSub = startSub.next
+
+        endSub = startSub # save the last previous Node before to reverse
+        iterator = startSub # an iterator to reverse the list
+
+        prev = None
+        while iterator.val != right:
+            aux = iterator.next
+            iterator.next = prev
+            prev = iterator
+            iterator = aux
+
+        secondPart = iterator.next
+        iterator.next = prev
+        endSub.next = secondPart
+        prevSub.next = iterator
+
+        while head is not None:
+            print({head.val})
+            head = head.next
+
+        return head
+
+    def reversing(self, head, tail):
+
+        previous = None
+        while head != tail:
+
+            aux = head.next
+            head.next = previous
+            previous = head
+            head = aux
+
+        return previous
+
 
 if __name__ == '__main__':
     head = Node(1)
@@ -126,8 +169,12 @@ if __name__ == '__main__':
     head.next.next = Node(3)
     head.next.next.next = Node(4)
     head.next.next.next.next = Node(5)
+    head.next.next.next.next.next = Node(6)
     # 1 -> 12 - > 103 - > 1004 -> 10005 -> 100006
 
     solution = Solution()
-    result = solution.reverseList(head)
-    print(result)
+    result = solution.reverseSubList(head, 1, 4)
+
+    while result is not None:
+        print(f"{result.val}")
+        result = result.next
