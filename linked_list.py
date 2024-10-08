@@ -119,68 +119,72 @@ class Solution:
         head = previous
         return head
 
-    # 92. Reverse Linked List II
+    # 92. Reverse Linked List II (not checked)
     def reverseSubList(self, head, left, right):
 
-        startSub = head
-        prevSub = None
-
-        while startSub != None and startSub.val != left:
-            prevSub = startSub
-            startSub = startSub.next
-
-        if startSub is not None:
-            endSub = startSub # save the last previous Node before to reverse
-            iterator = startSub # an iterator to reverse the list
-        else:
+        if left == right: # case 1
             return head
 
+        stack = []
         prev = None
-        while iterator != None and iterator.val != right:
+        current = head
+
+        while current is not None and current.val != left:
+            prev = current
+            current = current.next
+
+        iterator = None
+        saveLater = None
+        newPrev = None
+        if current is None: # case 2 (need to reverse whole list)
+            return self.reverseList(head)
+
+        iterator = current
+        saveLater = current
+        newPrev = None
+
+        while iterator is not None and iterator.val != right:
             aux = iterator.next
-            iterator.next = prev
-            prev = iterator
+            iterator.next = newPrev
+            newPrev = iterator
             iterator = aux
 
-        secondPart = iterator.next
-        iterator.next = prev
-        endSub.next = secondPart
+        if iterator is None: # case 3 (when R does not exist in the list)
+            prev.next = newPrev
+            saveLater.next = None
+        else: # cas3 4 (when R exist in the list)
+            if prev is None:
+                #(need to check)
+                saveLater.next = iterator.next
+                iterator.next = newPrev
 
-        if prevSub is not None:
-            prevSub.next = iterator
-        else:
-            head = iterator
-
-        while head is not None:
-            print({head.val})
-            head = head.next
+            else:
+                prev.next = iterator
+                saveLater.next = iterator.next
+                iterator.next = newPrev
 
         return head
 
-    def reversing(self, head, tail):
+    # 25. Reverse Nodes in k-Group
+    def reverseKGroup(self, head, k):
 
-        previous = None
-        while head != tail:
-
-            aux = head.next
-            head.next = previous
-            previous = head
-            head = aux
-
-        return previous
 
 
 if __name__ == '__main__':
-    head = Node(100)
-    head.next = Node(200)
-    head.next.next = Node(300)
-    head.next.next.next = Node(400)
-    head.next.next.next.next = Node(500)
-    head.next.next.next.next.next = Node(600)
+    head = Node(1)
+    head.next = Node(2)
+    head.next.next = Node(3)
+    head.next.next.next = Node(6)
+    head.next.next.next.next = Node(5)
+    head.next.next.next.next.next = Node(4)
+    #head.next.next.next.next.next.next = Node(3)
+    #head.next.next.next.next.next.next.next = Node(2)
+    #head.next.next.next.next.next.next.next.next = Node(1)
+    #head.next.next.next.next.next.next.next.next.next = Node(0)
     # 1 -> 12 - > 103 - > 1004 -> 10005 -> 100006
 
     solution = Solution()
-    result = solution.reverseSubList(head, 2, 5)
+    result = solution.reverseSubList(head, 1, 2)
 
     while result is not None:
         print(f"{result.val}")
