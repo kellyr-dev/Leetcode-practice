@@ -28,31 +28,6 @@ class Solution:
     # 876. Middle of the Linked List
     def middleNode(self, head):
 
-
-        '''
-        Naive solution
-
-        iterator = head
-        solution = head
-        if iterator == None:
-            return
-
-        count = 0
-        while iterator != None:
-            count += 1
-            iterator = iterator.next
-
-        middle = int(count / 2)
-        index = 0
-
-        while index < middle:
-            solution = solution.next
-            index += 1
-
-        return solution
-        '''
-
-
         # two pointer solution
         slow = head
         fast = head
@@ -165,8 +140,28 @@ class Solution:
 
         return head
 
-    # 25. Reverse Nodes in k-Group
+    # 25. Reverse Nodes in k-Group (not checked)
     def reverseKGroup(self, head, k):
+
+        iterator = head
+        prevAux = None
+        while iterator is not None:
+            count = k
+            prev = iterator
+            print(f"entering: {iterator.val}")
+            while iterator is not None and count > 0:
+
+                aux = iterator.next
+                iterator.next = prevAux
+                prevAux = iterator
+                iterator = aux
+
+                count -= 1
+            #print(f"ending: {iterator.val}")
+            print(f"prev: {prev.val}")
+            prev.next = iterator
+
+        return head
 
 
 
@@ -174,17 +169,17 @@ if __name__ == '__main__':
     head = Node(1)
     head.next = Node(2)
     head.next.next = Node(3)
-    head.next.next.next = Node(6)
+    head.next.next.next = Node(4)
     head.next.next.next.next = Node(5)
-    head.next.next.next.next.next = Node(4)
-    #head.next.next.next.next.next.next = Node(3)
-    #head.next.next.next.next.next.next.next = Node(2)
-    #head.next.next.next.next.next.next.next.next = Node(1)
+    #head.next.next.next.next.next = Node(6)
+    #head.next.next.next.next.next.next = Node(7)
+    #head.next.next.next.next.next.next.next = Node(8)
+    #head.next.next.next.next.next.next.next.next = Node(9)
     #head.next.next.next.next.next.next.next.next.next = Node(0)
     # 1 -> 12 - > 103 - > 1004 -> 10005 -> 100006
 
     solution = Solution()
-    result = solution.reverseSubList(head, 1, 2)
+    result = solution.reverseKGroup(head, 3)
 
     while result is not None:
         print(f"{result.val}")
