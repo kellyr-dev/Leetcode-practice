@@ -311,7 +311,6 @@ def rightSideView(root):
     return res
 
 # 938. Range Sum of BST
-
 def rangeSumBST(root, low, high):
 
     if root is None:
@@ -340,11 +339,12 @@ def rangeSumBST(root, low, high):
     return suma
 
 
+
 if __name__ == '__main__':
-    lst = [10,5,15,3,7,13,18,1,None,6]
+    lst = [1,2,3,4,5,6,7]
     low = 6
     high = 10
     root = deserialize(lst)
     key = 22
-    print(rangeSumBST(root, low, high))
+    print(zigz(root))
     a = [3, 2, 1, 5, 4, 6]

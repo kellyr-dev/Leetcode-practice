@@ -117,9 +117,6 @@ def removeDuplicateLetters(s):
             index = ord(s[i]) - 97
             alphabet[index] = s[i]
 
-        print(f"alphabet: {alphabet}")
-        print(f"table: {table_hash}")
-        print(f"|======================================|")
         i += 1
 
     result_array = list(table_hash.values()) # O(n)

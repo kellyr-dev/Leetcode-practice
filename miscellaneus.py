@@ -533,8 +533,6 @@ def leastIntervalI(tasks, n):
     while freq_values:
         waitlist = []
         k = n + 1 # k = 2+1
-        print(f"freq_list: {freq_values}")
-        print(f"cycle: {cycle}")
         while k > 0 and freq_values:
             cycle += 1
             pair = heapq.heappop(freq_values)
@@ -545,14 +543,12 @@ def leastIntervalI(tasks, n):
             k -= 1
 
         for pairs in waitlist:
-            print(f"pairs_waitlist: {pairs}")
             heapq.heappush(freq_values, pairs)
 
         if freq_values:
             cycle = cycle + k # 2 + 1
 
-        print(f"waitlist: {waitlist}")
-        print(f"|==========================================|")
+
 
     return cycle
 

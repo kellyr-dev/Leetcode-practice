@@ -191,6 +191,7 @@ class Solution:
         return head
 
 
+
 if __name__ == '__main__':
     head = Node(1)
     head.next = Node(2)
