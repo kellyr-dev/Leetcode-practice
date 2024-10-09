@@ -1,3 +1,5 @@
+import heapq
+
 class Node:
     def __init__(self, value, next=None):
         self.val = value
@@ -163,6 +165,30 @@ class Solution:
 
         return head
 
+    # 23. Merge k Sorted Lists
+    def mergeKLists(self, lists):
+
+        heap = []
+
+        if len(lists) <= 0:
+            return None
+
+        for lista in lists:
+            current = lista
+            while current is not None:
+                heapq.heappush(heap, current.val)
+
+        if len(heap) <= 0:
+            return None
+
+        head = Node(heapq.heappop(heap))
+        iterator = head
+        while heap:
+            aux = Node(heapq.heappop(heap))
+            iterator.next = aux
+            iterator = iterator.next
+
+        return head
 
 
 if __name__ == '__main__':
@@ -178,9 +204,7 @@ if __name__ == '__main__':
     #head.next.next.next.next.next.next.next.next.next = Node(0)
     # 1 -> 12 - > 103 - > 1004 -> 10005 -> 100006
 
+    lists = [[1, 4, 5], [1, 3, 4], [2, 6]]
     solution = Solution()
-    result = solution.reverseKGroup(head, 3)
+    result = solution.mergeKLists(lists)
 
-    while result is not None:
-        print(f"{result.val}")
-        result = result.next

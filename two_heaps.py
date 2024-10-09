@@ -42,9 +42,35 @@ def medianSlidingWindow(nums, k):
 
     return result
 
+# 373. Find K Pairs with Smallest Sums (TLE)
+def kSmallestPairs(list1, list2, k):
+
+    # Working but getting TLE
+    minHeap = []
+
+    for i in range(len(list1)):
+        for j in range(len(list2)):
+            n1 = -list1[i]
+            n2 = -list2[j]
+            key = (n1+n2, [list1[i], list2[j]])
+            if len(minHeap) < k:
+                heapq.heappush(minHeap, key)
+            else:
+                if n1 + n2 > minHeap[0][0]:
+                    heapq.heappop(minHeap)
+                    heapq.heappush(minHeap, key)
+
+    print(minHeap)
+    result = []
+    for i in range(len(minHeap)):
+        aux = minHeap[i][1]
+        result.append(aux)
+
+    return result
+
 
 if __name__ == '__main__':
-
-    nums = [1,3,-1,-3,5,3,6,7]
+    nums1 = [1,7,11]
+    nums2 = [2,4,6]
     k = 3
-    print(medianSlidingWindow(nums, k))
+    print(kSmallestPairs(nums1, nums2, k))
