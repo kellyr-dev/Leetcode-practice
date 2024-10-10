@@ -217,6 +217,61 @@ def zigzagLevelOrder(root):
 
     return result
 
+# 637. Average of Levels in Binary Tree
+def averageOfLevels(root):
+
+    queue = []
+    queue.append(root)
+    result = []
+
+    while queue:
+        levelSize = len(queue)
+        suma = 0
+
+        for _ in range(levelSize):
+            current = queue.pop(0)
+            suma = suma + current.value
+
+            if current.left is not None:
+                queue.append(current.left)
+
+            if current.right is not None:
+                queue.append(current.right)
+
+        average = suma / levelSize
+        result.append(average)
+
+    return result
+
+# 111. Minimum Depth of Binary Tree
+def minDepth(root):
+
+    if root is None:
+        return 0
+
+    queue = []
+    queue.append(root)
+
+    minDepth = 1
+    while queue:
+        levelSize = len(queue)
+
+        for _ in range(levelSize):
+            current = queue.pop(0)
+
+            if current.left is None and current.right is None:
+                return minDepth
+
+            if current.left is not None:
+                queue.append(current.left)
+
+            if current.right is not None:
+                queue.append(current.right)
+
+        minDepth += 1
+
+    return minDepth
+
 # 113. Path Sum II
 def hasPathSum(root, targetSum):
 
@@ -290,24 +345,22 @@ def rightSideView(root):
     if root is None:
         return None
 
-    res = list()
-    queue = [root]
+    res = []
+    queue = []
+    queue.append(root)
 
-    currentNode = None
     while queue:
-
         levelSize = len(queue)
-
         for i in range(levelSize):
             currentNode = queue.pop(0)
-            print(f"currenNode: {currentNode.value}")
 
             if currentNode.left is not None:
                 queue.append(currentNode.left)
             if currentNode.right is not None:
                 queue.append(currentNode.right)
-        print(f"CurrenNode al salir: {currentNode.value}")
-        res.append(currentNode.value)
+
+            if (i + 1) == levelSize:
+                res.append(currentNode.value)
     return res
 
 # 938. Range Sum of BST
@@ -338,13 +391,33 @@ def rangeSumBST(root, low, high):
 
     return suma
 
+# 112. Path Sum
+def hasPathSum(root, targetSum):
+
+    if root is None:
+        return False
+    def helper(root, target):
+
+        if root is None:
+            return False
+
+        if root.left is None and root.right is None and root.value == target:
+            return True
+
+        leftSide = helper(root.left, target-root.value) # making calls for the left child
+        rightSide = helper(root.right, target-root.value) # making calls for the right child
+
+        return leftSide or rightSide
+
+    result = helper(root, targetSum)
+    return result
 
 
 if __name__ == '__main__':
-    lst = [1,2,3,4,5,6,7]
+    lst = [1,7,9,4,5,2,7]
     low = 6
     high = 10
     root = deserialize(lst)
     key = 22
-    print(zigz(root))
+    print(hasPathSum(root, 12))
     a = [3, 2, 1, 5, 4, 6]
