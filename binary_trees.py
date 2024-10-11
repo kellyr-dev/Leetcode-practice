@@ -273,25 +273,28 @@ def minDepth(root):
     return minDepth
 
 # 113. Path Sum II
-def hasPathSum(root, targetSum):
+def pathSum(root, targetSum):
 
     allPaths = []
     localPath = []
 
-    def local_path(root, targetSum, localPath):
+    def local_path(root, target, localPath, allPaths):
 
         if root is None:
             return
 
         localPath.append(root.value)
 
-        if root.value == targetSum and root.left is None and root.right is None:
-            allPaths.append(localPath)
+        if root.value == target and root.left is None and root.right is None:
+            allPaths.append(list(localPath))
         else:
-            local_path(root.left, targetSum - root.value, localPath)
-            local_path(root.right, targetSum - root.value, localPath)
+            local_path(root.left, target - root.value, localPath, allPaths)
+            local_path(root.right, target - root.value, localPath, allPaths)
 
-        del localPath[-1]
+        localPath.pop()
+
+    local_path(root, targetSum, localPath, allPaths)
+    return allPaths
 
 # 129. Sum Root to Leaf Numbers
 def sumaRootToLeaf(root):
@@ -412,12 +415,89 @@ def hasPathSum(root, targetSum):
     result = helper(root, targetSum)
     return result
 
+# 129. Sum Root to Leaf Numbers
+def sumPathTotal(root):
+
+    paths = []
+    def dfs(root, localPath, globalPath):
+
+        if root is None:
+            return 0
+
+        localPath.append(str(root.value))
+
+        if root.right is None and root.left is None:
+            globalPath.append(list(localPath))
+
+        dfs(root.left, localPath, globalPath)
+        dfs(root.right, localPath, globalPath)
+
+        del localPath[-1]
+
+    dfs(root, [], paths)
+
+    print(f"after: {paths}")
+    result = 0
+    for path in paths:
+        number = "".join(path)
+        result = result + int(number)
+    return result
+
+# Find if a sequence is present in a root-to-lead path in a given tree
+def findPath(root, sequence):
+    def dfs(root, index):
+
+        if index >= len(sequence):
+            return False
+
+        if root is None:
+            return False
+
+        if root.value == sequence[index]:
+            if root.left is None and root.right is None and index == len(sequence)-1:
+                return True
+            else:
+                return dfs(root.left, index+1) or dfs(root.right, index+1)
+        else:
+            return False
+
+    result = dfs(root, 0)
+    return result
+
+# Count all paths that sum a target
+def countPathSum(root, targetSum):
+    def dfs(root, target):
+
+        if root is None:
+            return 0
+
+        if root.value == target and root.left is None and root.right is None:
+            return 1
+        else:
+            return dfs(root.left, target - root.value) + dfs(root.right, target - root.value)
+
+    result = dfs(root, targetSum)
+    return result
+
+def pathSumIII(root, targetSum):
+
+    result = 0
+
+    # make dfs
+    # keep tracking and adding elem to the sum
+    # count all sum == target
+    def dfs(root, target):
+        return 0
+
+    result = dfs(root, targetSum)
+    return result
+
 
 if __name__ == '__main__':
-    lst = [1,7,9,4,5,2,7]
+    lst = [1,7,9,6,5,2,3]
     low = 6
     high = 10
     root = deserialize(lst)
     key = 22
-    print(hasPathSum(root, 12))
+    print(pathSumIII(root, 12))
     a = [3, 2, 1, 5, 4, 6]
