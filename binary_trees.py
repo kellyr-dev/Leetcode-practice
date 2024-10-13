@@ -479,6 +479,7 @@ def countPathSum(root, targetSum):
     result = dfs(root, targetSum)
     return result
 
+# 437. Path Sum III (not checked)
 def pathSumIII(root, targetSum):
 
     result = 0
@@ -487,17 +488,48 @@ def pathSumIII(root, targetSum):
     # keep tracking and adding elem to the sum
     # count all sum == target
     def dfs(root, target):
-        return 0
+
+        print(f"target: {target}")
+        if root is None:
+            return 0
+
+        if root.value == target:
+            return 1 + dfs(root.left, target) + dfs(root.right, target)
+        else:
+            return (dfs(root.left, target - root.value) + dfs(root.left, target)
+                    + dfs(root.right, target) + dfs(root.right, target-root.value))
 
     result = dfs(root, targetSum)
     return result
 
+# 543. Diameter of Binary Tree
+def diameterOfBinaryTree(root):
+
+
+    result = []
+    def dfsHeight(root):
+
+        if root is None:
+            return 0
+
+        leftHeight = dfsHeight(root.left)
+        rightHeight = dfsHeight(root.right)
+
+        localDiameter = leftHeight + rightHeight
+        result.append(localDiameter)
+
+        return 1 + max(leftHeight, rightHeight)
+
+    dfsHeight(root)
+    print(f"result: {result}")
+    return max(result)
+
 
 if __name__ == '__main__':
-    lst = [1,7,9,6,5,2,3]
+    lst = [1,2,3,None,4,5,6]
     low = 6
     high = 10
     root = deserialize(lst)
     key = 22
-    print(pathSumIII(root, 12))
+    print(diameterOfBinaryTree(root))
     a = [3, 2, 1, 5, 4, 6]
