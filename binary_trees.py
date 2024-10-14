@@ -487,19 +487,24 @@ def pathSumIII(root, targetSum):
     # make dfs
     # keep tracking and adding elem to the sum
     # count all sum == target
-    def dfs(root, target):
 
-        print(f"target: {target}")
+    globalSum = [0]
+    def dfs(root, localSum):
+
+        print(f"localSum: {localSum}")
+
         if root is None:
             return 0
 
-        if root.value == target:
-            return 1 + dfs(root.left, target) + dfs(root.right, target)
+        print(f"root.value: {root.value}")
+        if root.value == targetSum or localSum == targetSum:
+            globalSum[0] += 1
+            dfs(root.left, root.value)
+            dfs(root.right, root.value)
         else:
-            return (dfs(root.left, target - root.value) + dfs(root.left, target)
-                    + dfs(root.right, target) + dfs(root.right, target-root.value))
+            dfs(root.left, localSum + root.value) + dfs(root.right, localSum + root.value)
 
-    result = dfs(root, targetSum)
+    result = dfs(root, 0)
     return result
 
 # 543. Diameter of Binary Tree
@@ -524,12 +529,85 @@ def diameterOfBinaryTree(root):
     print(f"result: {result}")
     return max(result)
 
+# 124. Binary Tree Maximum Path Sum (not checked)
+def maxPathSum(root):
+
+    globalmax = [0]
+    globalmax[0] = float('-inf')
+    def dfs(root):
+        if root is None:
+            return 0
+
+        leftSideMax = dfs(root.left)
+        rightSideMax = dfs(root.right)
+
+        local = root.value + leftSideMax + rightSideMax
+        returnLocal = max(root.value + leftSideMax, root.value + rightSideMax)
+        globalmax[0] = max(globalmax[0], local, returnLocal)
+        print(f"local: {local}")
+        return returnLocal
+
+    dfs(root)
+    print(f"result: {globalmax[0]}")
+    return globalmax[0]
+
+# 226. Invert Binary Tree
+def invertTree(root):
+
+    def dfs(root):
+
+        if root is None:
+            return
+
+        if root.left is not None and root.right is not None:
+            swap = root.left
+            root.left = root.right
+            root.right = swap
+
+        elif root.left is None and root.right is not None:
+            root.left = root.right
+            root.right = None
+
+        elif root.left is not None and root.right is None:
+            root.right = root.left
+            root.left = None
+
+        dfs(root.left)
+        dfs(root.right)
+
+    dfs(root)
+    print_bfs(root)
+    return root
+
+# 100. Same Tree
+def isSameTree(p, q):
+
+    if p is None and q is None:
+        return True
+
+    if p is None and q is not None:
+        return False
+
+    if p is not None and q is None:
+        return False
+
+    if p.value != q.value:
+        return False
+
+    result = isSameTree(p.left, q.left) and isSameTree(p.right, q.right)
+    return result
+
+
 
 if __name__ == '__main__':
-    lst = [1,2,3,None,4,5,6]
+    lst = [10,4,15,1,None,14,19,None,None,None,None,None, 20]
+    lst1 = [10,4,15,1,None,14,None]
+    lst2 = [10,4,15,1,None,14,20]
     low = 6
     high = 10
     root = deserialize(lst)
+    p = deserialize(lst1)
+    q = deserialize(lst2)
     key = 22
-    print(diameterOfBinaryTree(root))
+    print(isSameTree(p, q))
     a = [3, 2, 1, 5, 4, 6]
