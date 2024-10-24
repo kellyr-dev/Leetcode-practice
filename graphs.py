@@ -25,19 +25,9 @@ def bfs(graph, entry):
 
     return result
 
-def dfs(graph, entry):
-    aux = list()
-    aux.append(entry)
 
-    while (len(aux) > 0):
-        current = aux.pop()
-        print(current)
-        for neight in graph[current]:
-            aux.append(neight)
-
-
-#  /* Alvin practice
 visited = {}
+#  /* Alvin practice
 def explore_bfs_tree(graph, node):
 
     visited = {}
@@ -66,7 +56,7 @@ def explore_bfs_tree(graph, node):
 
     return cont_visited
 
-def is_a_tree(graph):
+def is_a_tree(graph, visited):
     print(graph)
 
     # find cycles to return False (condition 1)
@@ -81,7 +71,6 @@ def is_a_tree(graph):
             return False
 
     return True
-
 
 def hasPath(graph, src, tgt):
     if src in visited:
@@ -99,6 +88,8 @@ def hasPath(graph, src, tgt):
     return False
 
 def traversal(graph_input, srcnode):
+
+
     if srcnode in visited:
         # print(f"Already visited:", srcnode)
         return False
@@ -119,7 +110,6 @@ def traversal(graph_input, srcnode):
     return True
 
 # another way is using recursion
-
 def explore(graph_input, srcnode):
     if srcnode in visited:
         return False
@@ -171,14 +161,15 @@ def connected_components_cont(graph_input):
 
 def count_island(matrix):
     cont = 0
+    visited = {}
     for row in range(len(matrix)):
         for col in range(len(matrix[0])):
-            if explore_traversal(matrix, row, col):
+            if explore_traversal(matrix, row, col, visited):
                 cont += 1
 
     return cont
 
-def explore_traversal(grid, x, y):
+def explore_traversal(grid, x, y, visited):
     if x < 0 or x >= len(grid):
         return False
 
@@ -196,13 +187,12 @@ def explore_traversal(grid, x, y):
 
     visited[key] = 1
 
-    explore_traversal(grid, x - 1, y)
-    explore_traversal(grid, x + 1, y)
-    explore_traversal(grid, x, y - 1)
-    explore_traversal(grid, x, y + 1)
+    explore_traversal(grid, x - 1, y, visited)
+    explore_traversal(grid, x + 1, y, visited)
+    explore_traversal(grid, x, y - 1, visited)
+    explore_traversal(grid, x, y + 1, visited)
 
     return True
-
 
 def shortest_path(graph, source, target):
     aux = list()  # Queue for making BFS
@@ -212,6 +202,7 @@ def shortest_path(graph, source, target):
     # Otro Aproach podria ser ir por todos los caminos y sumar (luego devolver el mas pequeno)
     # Pero seria un poco mas lento ya que probablemente iria por todos varias veces
     aux.append([source, distance])
+    visited = {}
 
     if source == target:
         return distance
@@ -236,7 +227,6 @@ def shortest_path(graph, source, target):
 
     return -1
 
-
 def maximunIsland(matrix):
 
     maxSize = float('inf')
@@ -249,7 +239,6 @@ def maximunIsland(matrix):
                 maxSize = size
 
     return maxSize
-
 
 def explore_maxIsland(matrix, row, col, vistado):
 
@@ -299,12 +288,49 @@ def wordBreakBFS(word, wordDict):
 
     return True
 
+# 1971. Find if Path Exists in Graph
+def validPath(n, edges, source, destination):
 
+    graph = {}
 
+    for node in edges:
+     #   print(node)
+        if node[0] in graph:
+            graph[node[0]].append(node[1])
+        else:
+            graph[node[0]] = [node[1]]
+
+        if node[1] in graph:
+            graph[node[1]].append(node[0])
+        else:
+            graph[node[1]] = [node[0]]
+
+    print(graph)
+    visited = {}
+    queue = []
+
+    if source not in graph:
+        return False
+
+    queue.append(source)
+
+    while queue:
+        print(f"queue: {queue}")
+        current = queue.pop(0)
+
+        if current == destination:
+            return True
+
+        if current not in visited:
+            visited[current] = True
+            for neighbor in graph[current]:
+                queue.append(neighbor)
+
+    return False
 
 
 if __name__ == '__main__':
-    # Strategy for matrix algoritmos
+    # Strategy for matrix algorithms
     # In a matrix should be nested loop + Traverse
 
     graph_input_largest = {
@@ -353,16 +379,6 @@ if __name__ == '__main__':
         [0,0,0,0,0,0,0,1,1,0,0,0,0]
     ]
 
-
-    #grid = [
-    #    ['W', 'L', 'W', 'W', 'W'],
-    #    ['W', 'L', 'W', 'W', 'W'],
-    #    ['W', 'W', 'W', 'L', 'W'],
-    #    ['W', 'W', 'L', 'L', 'W'],
-    #    ['L', 'W', 'W', 'L', 'L'],
-    #    ['L', 'L', 'W', 'W', 'W'],
-    #]
-
     input_tree = {
         0: [1, 2, 3],
         1: [0],
@@ -371,12 +387,10 @@ if __name__ == '__main__':
         4: [3]
     }
 
-    # result = is_a_tree(graph_input)
-    # print(count_island(grid))
     n = 5
     m = 3
-    edges = [[1,2],[1,3],[3,4]]
+    edges = [[0,1],[1,2],[2,3],[3,4]]
     s = 1
     word = "applepenapple"
     wordDict = ["apple", "pen"]
-    print(wordBreakBFS(word, wordDict))
+    print(validPath(3, edges, 0, 4))
