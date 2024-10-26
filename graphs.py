@@ -328,6 +328,10 @@ def validPath(n, edges, source, destination):
 
     return False
 
+# 547. Number of Provinces
+def findCircleNum(isConnected):
+
+    return False
 
 if __name__ == '__main__':
     # Strategy for matrix algorithms
