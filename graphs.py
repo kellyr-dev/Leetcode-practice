@@ -72,21 +72,6 @@ def is_a_tree(graph, visited):
 
     return True
 
-def hasPath(graph, src, tgt):
-    if src in visited:
-        return False
-
-    visited[src] = True
-
-    if src == tgt:
-        return True
-
-    for neighbor in graph[src]:
-        if (hasPath(graph, neighbor, tgt)):
-            return True
-
-    return False
-
 def traversal(graph_input, srcnode):
 
 
@@ -288,7 +273,7 @@ def wordBreakBFS(word, wordDict):
 
     return True
 
-# 1971. Find if Path Exists in Graph
+# 1971. Find if Path Exists in Graph (BFS)
 def validPath(n, edges, source, destination):
 
     graph = {}
@@ -328,9 +313,61 @@ def validPath(n, edges, source, destination):
 
     return False
 
+# 1971. Find if Path Exists in Graph (DFS)
+def validPathDFS(n, edges, source, destination):
+
+    graph = {}
+
+    for node in edges:
+        #   print(node)
+        if node[0] in graph:
+            graph[node[0]].append(node[1])
+        else:
+            graph[node[0]] = [node[1]]
+
+        if node[1] in graph:
+            graph[node[1]].append(node[0])
+        else:
+            graph[node[1]] = [node[0]]
+
+    # for each neighbor in source
+    # check if exist a path
+    # if return True
+
+    visited = {}
+    def dfs(graph, source, destination):
+        if source in visited:
+            return False
+
+        visited[source] = True
+
+        if source == destination:
+            return True
+
+        for node in graph[source]:
+            if node not in visited:
+                if dfs(graph, node, destination) == True:
+                    return True
+
+        return False
+
+    return dfs(graph, source, destination)
+
 # 547. Number of Provinces
 def findCircleNum(isConnected):
 
+    graph = {}
+
+    for j in range(len(isConnected)): # list of ([[1,1,0], [1,1,0], [0,0,1]])
+        node = isConnected[j]
+        for i in range(len(node)):
+            if node[i] == 1 and i != j:
+                if i in graph:
+                    graph[i].append(j)
+                else:
+                    graph[i] = [j]
+
+    print(graph)
     return False
 
 if __name__ == '__main__':
@@ -393,8 +430,8 @@ if __name__ == '__main__':
 
     n = 5
     m = 3
-    edges = [[0,1],[1,2],[2,3],[3,4]]
+    edges = [[1,0,0,1],[0,1,1,0],[0,1,1,0],[1,0,0,1]]
     s = 1
     word = "applepenapple"
     wordDict = ["apple", "pen"]
-    print(validPath(3, edges, 0, 4))
+    print(findCircleNum(edges))
