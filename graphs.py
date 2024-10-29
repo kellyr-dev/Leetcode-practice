@@ -358,6 +358,9 @@ def findCircleNum(isConnected):
 
     graph = {}
 
+    for i in range(len(isConnected)):
+        graph[i] = []
+
     for j in range(len(isConnected)): # list of ([[1,1,0], [1,1,0], [0,0,1]])
         node = isConnected[j]
         for i in range(len(node)):
@@ -367,8 +370,28 @@ def findCircleNum(isConnected):
                 else:
                     graph[i] = [j]
 
+    visited = {}
+    count = 0
+    queue = []
     print(graph)
-    return False
+    for node in graph:
+        if node not in visited:
+            count += 1
+            visited[node] = True
+            queue.append(node)
+            while queue:
+                current = queue.pop(0)
+                visited[current] = True
+                for each in graph[current]:
+                    if each not in visited:
+                        queue.append(each)
+
+    return count
+
+# 1557. Minimum Number of Vertices to Reach All Nodes
+def findSmallestSetOfVertices(n, edges):
+
+    return []
 
 if __name__ == '__main__':
     # Strategy for matrix algorithms
@@ -430,7 +453,7 @@ if __name__ == '__main__':
 
     n = 5
     m = 3
-    edges = [[1,0,0,1],[0,1,1,0],[0,1,1,0],[1,0,0,1]]
+    edges = [[1,0,0],[0,1,0],[0,0,1]]
     s = 1
     word = "applepenapple"
     wordDict = ["apple", "pen"]
