@@ -1,5 +1,5 @@
-
 import queue
+
 
 # PRACTICE ON GRAPHS FOR CODING INTERVIEWS
 
@@ -25,11 +25,10 @@ def bfs(graph, entry):
 
     return result
 
-
 visited = {}
+
 #  /* Alvin practice
 def explore_bfs_tree(graph, node):
-
     visited = {}
     queue = list()
     queue.append(node)
@@ -38,7 +37,7 @@ def explore_bfs_tree(graph, node):
 
     while (len(queue) > 0):
         current = queue.pop(0)
-        print(f"current: ",current)
+        print(f"current: ", current)
 
         for list_ad in graph[current]:
             if list_ad in visited:
@@ -73,8 +72,6 @@ def is_a_tree(graph, visited):
     return True
 
 def traversal(graph_input, srcnode):
-
-
     if srcnode in visited:
         # print(f"Already visited:", srcnode)
         return False
@@ -107,7 +104,6 @@ def explore(graph_input, srcnode):
     return True
 
 def explore_int(graph_input, srcnode):
-
     if srcnode in visited:
         return 0
 
@@ -144,41 +140,6 @@ def connected_components_cont(graph_input):
 
     return contRecursive
 
-def count_island(matrix):
-    cont = 0
-    visited = {}
-    for row in range(len(matrix)):
-        for col in range(len(matrix[0])):
-            if explore_traversal(matrix, row, col, visited):
-                cont += 1
-
-    return cont
-
-def explore_traversal(grid, x, y, visited):
-    if x < 0 or x >= len(grid):
-        return False
-
-    if y < 0 or y >= len(grid[0]):
-        return False
-
-    if grid[x][y] == 'W':
-        return False
-
-    key = str(x) + ',' + str(y)
-    print(key)
-
-    if key in visited:
-        return False
-
-    visited[key] = 1
-
-    explore_traversal(grid, x - 1, y, visited)
-    explore_traversal(grid, x + 1, y, visited)
-    explore_traversal(grid, x, y - 1, visited)
-    explore_traversal(grid, x, y + 1, visited)
-
-    return True
-
 def shortest_path(graph, source, target):
     aux = list()  # Queue for making BFS
     distance = 0  # distance is the level in the Graph
@@ -212,41 +173,8 @@ def shortest_path(graph, source, target):
 
     return -1
 
-def maximunIsland(matrix):
-
-    maxSize = float('inf')
-    visitado = {}
-    for row in range(len(matrix)):
-        for col in range(len(matrix[0])):
-            size = explore_maxIsland(matrix, row, col, visitado)
-            print(f"Size: ", size)
-            if size < maxSize and size > 0:
-                maxSize = size
-
-    return maxSize
-
-def explore_maxIsland(matrix, row, col, vistado):
-
-    if row >= len(matrix) or row < 0:
-        return 0
-    if col >= len(matrix[0]) or col < 0:
-        return 0
-
-    key = (row, col)
-    if key in vistado:
-        return 0
-
-    vistado[key] = 1
-
-    if matrix[row][col] == 0:
-        return 0
-
-    size = 1 + explore_maxIsland(matrix, row+1, col, vistado) + explore_maxIsland(matrix, row-1, col, vistado) + explore_maxIsland(matrix, row, col+1, vistado) + explore_maxIsland(matrix, row, col-1, vistado)
-    return size
-
 # LeetCode 139 using BFS
 def wordBreakBFS(word, wordDict):
-
     if len(word) == 0:
         return True
 
@@ -265,21 +193,20 @@ def wordBreakBFS(word, wordDict):
 
         visited[word] = 1
 
-
-        for i in range(1, len(current)+1):
+        for i in range(1, len(current) + 1):
 
             if current[:i] in wordDict:
                 queue.append(current[i:])
 
     return True
 
+
 # 1971. Find if Path Exists in Graph (BFS)
 def validPath(n, edges, source, destination):
-
     graph = {}
 
     for node in edges:
-     #   print(node)
+        #   print(node)
         if node[0] in graph:
             graph[node[0]].append(node[1])
         else:
@@ -313,9 +240,9 @@ def validPath(n, edges, source, destination):
 
     return False
 
+
 # 1971. Find if Path Exists in Graph (DFS)
 def validPathDFS(n, edges, source, destination):
-
     graph = {}
 
     for node in edges:
@@ -335,6 +262,7 @@ def validPathDFS(n, edges, source, destination):
     # if return True
 
     visited = {}
+
     def dfs(graph, source, destination):
         if source in visited:
             return False
@@ -353,15 +281,15 @@ def validPathDFS(n, edges, source, destination):
 
     return dfs(graph, source, destination)
 
+
 # 547. Number of Provinces
 def findCircleNum(isConnected):
-
     graph = {}
 
     for i in range(len(isConnected)):
         graph[i] = []
 
-    for j in range(len(isConnected)): # list of ([[1,1,0], [1,1,0], [0,0,1]])
+    for j in range(len(isConnected)):  # list of ([[1,1,0], [1,1,0], [0,0,1]])
         node = isConnected[j]
         for i in range(len(node)):
             if node[i] == 1 and i != j:
@@ -388,6 +316,7 @@ def findCircleNum(isConnected):
 
     return count
 
+
 # 1557. Minimum Number of Vertices to Reach All Nodes
 def findSmallestSetOfVertices(n, edges):
     graph = {}
@@ -407,13 +336,156 @@ def findSmallestSetOfVertices(n, edges):
         else:
             visited[node[1]] = 1
 
-
     result = []
     for node in visited:
         if visited[node] == 0:
             result.append(node)
 
     return result
+
+# 200. Number of Islands
+def numIslands(grid):
+
+    count = 0
+    visited = {}
+    print(f"row: {len(grid)}")
+    print(f"col: {len(grid[0])}")
+
+    def dfs(grid, row, col):
+
+        if row >= len(grid) or row < 0 or col >= len(grid[0]) or col < 0:
+            return
+
+        key = (row, col)
+        if key in visited:
+            return
+
+        visited[key] = True
+
+        if grid[row][col] == "1":
+            dfs(grid, row + 1, col)
+            dfs(grid, row - 1, col)
+            dfs(grid, row, col + 1)
+            dfs(grid, row, col - 1)
+
+        else:
+            return
+
+    for i in range(len(grid)): # [1,1,0,0,0] =
+        for j in range(len(grid[0])):
+
+            key = (i,j)
+            if grid[i][j] == "1" and key not in visited:
+                print(f"key: {key}")
+                print(f"visited: {visited}")
+                count += 1
+                dfs(grid, i, j)
+
+    return count
+
+# 695. Max Area of Island
+def maxAreaOfIsland(grid):
+
+    maxArea = 0
+    visited = {}
+
+    row = len(grid)
+    col = len(grid[0])
+
+    def dfs(grid, i, j):
+
+        if i < 0 or i >= row or j < 0 or j >= col:
+            return 0
+
+        key = (i,j)
+        if key in visited:
+            return 0
+
+        visited[key] = True
+
+        if grid[i][j] == 1:
+            return 1 + dfs(grid, i+1, j) + dfs(grid, i-1, j) + dfs(grid, i, j+1) + dfs(grid, i, j-1)
+        else:
+            return 0
+
+    for i in range(row):
+        for j in range(col):
+            maxArea = max(maxArea, dfs(grid, i,j))
+
+    return maxArea
+
+# 733. Flood Fill
+def floodFill(image, sr, sc, color):
+
+    origin = image[sr][sc]
+    row = len(image)
+    col = len(image[0])
+    visited = {}
+
+    def dfs(image, i, j):
+
+        if i < 0 or i >= row or j < 0 or j >= col:
+            return
+
+        key = (i,j)
+        if key in visited:
+            return
+
+        visited[key] = True
+
+        if image[i][j] == color:
+            return
+
+        if image[i][j] == origin:
+            image[i][j] = color
+            dfs(image, i-1, j)
+            dfs(image, i+1, j)
+            dfs(image, i, j-1)
+            dfs(image, i, j+1)
+
+        return
+
+    dfs(image, sr, sc)
+
+    return image
+
+# 1254. Number of Closed Islands
+def closedIsland(grid):
+
+    row = len(grid)
+    col = len(grid[0])
+    visited = {}
+
+    def dfs(grid, i, j): #1 for touch and edfe
+
+        if i < 0 or i >= row or j < 0 or j >= col:
+            return 1
+
+        key = (i,j)
+        if key in visited:
+            return visited[key]
+
+        #visited[key] = True
+
+        if grid[i][j] == 0:
+            visited[key] = 0
+            return 0
+
+        visited[key] = 1
+        result = dfs(grid, i+1, j) or dfs(grid, i-1, j) or dfs(grid, i, j-1) or dfs(grid, i, j+1)
+
+        return result
+
+    count = 0
+    for i in range(row):
+        for j in range(col):
+
+            print(f"grid: {grid[i][j]}")
+            if grid[i][j] == 1:
+                if dfs(grid, i, j) == 0:
+                    count += 1
+
+    return count
 
 
 if __name__ == '__main__':
@@ -455,16 +527,7 @@ if __name__ == '__main__':
         ['w', 'v']
     ]
 
-    grid = [
-        [0,0,0,0,0,0,0,1,0,0,0,0,0],
-        [0,0,0,0,0,0,0,1,1,1,0,0,0],
-        [0,1,0,0,1,0,0,0,0,0,0,0,0],
-        [0,1,0,0,1,1,0,0,1,0,1,0,0],
-        [0,1,0,0,1,1,0,0,1,1,1,0,0],
-        [0,0,0,0,0,0,0,0,0,0,1,0,0],
-        [0,0,0,0,0,0,0,1,1,1,0,0,0],
-        [0,0,0,0,0,0,0,1,1,0,0,0,0]
-    ]
+    grid = [[1,1,1,1,1,1,1,0],[1,0,0,0,0,1,1,0],[1,0,1,0,1,1,1,0],[1,0,0,0,0,1,0,1],[1,1,1,1,1,1,1,0]]
 
     input_tree = {
         0: [1, 2, 3],
@@ -476,8 +539,8 @@ if __name__ == '__main__':
 
     n = 5
     m = 3
-    edges = [[0,1],[2,1],[3,1],[1,4],[2,4]]
+    edges = [[0, 1], [2, 1], [3, 1], [1, 4], [2, 4]]
     s = 1
     word = "applepenapple"
     wordDict = ["apple", "pen"]
-    print(findSmallestSetOfVertices(1, edges))
+    print(closedIsland(grid))
