@@ -449,43 +449,6 @@ def floodFill(image, sr, sc, color):
 
     return image
 
-# 1254. Number of Closed Islands
-def closedIsland(grid):
-
-    row = len(grid)
-    col = len(grid[0])
-    visited = {}
-
-    def dfs(grid, i, j): #1 for touch and edfe
-
-        if i < 0 or i >= row or j < 0 or j >= col:
-            return 1
-
-        key = (i,j)
-        if key in visited:
-            return visited[key]
-
-        #visited[key] = True
-
-        if grid[i][j] == 0:
-            visited[key] = 0
-            return 0
-
-        visited[key] = 1
-        result = dfs(grid, i+1, j) or dfs(grid, i-1, j) or dfs(grid, i, j-1) or dfs(grid, i, j+1)
-
-        return result
-
-    count = 0
-    for i in range(row):
-        for j in range(col):
-
-            print(f"grid: {grid[i][j]}")
-            if grid[i][j] == 1:
-                if dfs(grid, i, j) == 0:
-                    count += 1
-
-    return count
 
 
 if __name__ == '__main__':
@@ -527,7 +490,7 @@ if __name__ == '__main__':
         ['w', 'v']
     ]
 
-    grid = [[1,1,1,1,1,1,1,0],[1,0,0,0,0,1,1,0],[1,0,1,0,1,1,1,0],[1,0,0,0,0,1,0,1],[1,1,1,1,1,1,1,0]]
+    grid = [[0,1,0,0],[1,1,1,0],[0,1,0,0],[1,1,0,0]]
 
     input_tree = {
         0: [1, 2, 3],
@@ -543,4 +506,4 @@ if __name__ == '__main__':
     s = 1
     word = "applepenapple"
     wordDict = ["apple", "pen"]
-    print(closedIsland(grid))
+    print(islandPerimeter(grid))
