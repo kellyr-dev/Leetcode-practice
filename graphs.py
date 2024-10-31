@@ -1,8 +1,6 @@
 import queue
 
-
 # PRACTICE ON GRAPHS FOR CODING INTERVIEWS
-
 # Basic Theory for Graphs start with BFS and DFS to traversal graphs
 def bfs(graph, entry):
     queue = []  # queue
@@ -24,8 +22,6 @@ def bfs(graph, entry):
             continue
 
     return result
-
-visited = {}
 
 #  /* Alvin practice
 def explore_bfs_tree(graph, node):
@@ -71,76 +67,7 @@ def is_a_tree(graph, visited):
 
     return True
 
-def traversal(graph_input, srcnode):
-    if srcnode in visited:
-        # print(f"Already visited:", srcnode)
-        return False
-
-    visited[srcnode] = 1
-
-    Stack = []
-    Stack.append(srcnode)
-
-    while len(Stack) > 0:
-        current = Stack.pop()
-        # print(f"current:",current)
-        for neighbors in graph_input[current]:
-            if neighbors not in visited:
-                visited[neighbors] = 1
-                Stack.append(neighbors)
-
-    return True
-
-# another way is using recursion
-def explore(graph_input, srcnode):
-    if srcnode in visited:
-        return False
-
-    visited[srcnode] = 1
-
-    for neighbor in graph_input[srcnode]:
-        explore(graph_input, neighbor)
-
-    return True
-
-def explore_int(graph_input, srcnode):
-    if srcnode in visited:
-        return 0
-
-    visited[srcnode] = 1
-    cont = 1
-
-    for neighbor in graph_input[srcnode]:
-        print(f"neighbor:", neighbor)
-        print(graph_input[srcnode])
-        cont = cont + explore_int(graph_input, neighbor)
-
-    return cont
-
-# Alvin practice */
-def largest_components(graph_input):
-    largest = 0
-    for node in graph_input:
-        print(f"node:", node)
-        size = explore_int(graph_input, node)
-        if size > largest:
-            largest = size
-
-    return largest
-
-def connected_components_cont(graph_input):
-    contIterative = 0
-    contRecursive = 0
-    for node in graph_input:
-        # if traversal(graph_input, node):
-        #    contIterative += 1
-
-        if explore(graph_input, node):
-            contRecursive += 1
-
-    return contRecursive
-
-def shortest_path(graph, source, target):
+def shortestPath(graph, source, target):
     aux = list()  # Queue for making BFS
     distance = 0  # distance is the level in the Graph
     # esta es la clave guardar la distancia del Grafo donde empiezas a iterar
@@ -173,6 +100,28 @@ def shortest_path(graph, source, target):
 
     return -1
 
+def largestComponents(graph_input):
+
+    largest = 0
+    visited = {}
+    def dfs(graph, src):
+
+        if src in visited:
+            return 0
+
+        visited[src] = True
+        count = 1
+        for node in graph[src]:
+            count = count + dfs(graph, node)
+
+        return count
+
+    for node in graph_input:
+        largest = max(largest, dfs(graph_input, node))
+
+    return largest
+# Alvin practice */
+
 # LeetCode 139 using BFS
 def wordBreakBFS(word, wordDict):
     if len(word) == 0:
@@ -199,7 +148,6 @@ def wordBreakBFS(word, wordDict):
                 queue.append(current[i:])
 
     return True
-
 
 # 1971. Find if Path Exists in Graph (BFS)
 def validPath(n, edges, source, destination):
@@ -239,7 +187,6 @@ def validPath(n, edges, source, destination):
                 queue.append(neighbor)
 
     return False
-
 
 # 1971. Find if Path Exists in Graph (DFS)
 def validPathDFS(n, edges, source, destination):
@@ -281,7 +228,6 @@ def validPathDFS(n, edges, source, destination):
 
     return dfs(graph, source, destination)
 
-
 # 547. Number of Provinces
 def findCircleNum(isConnected):
     graph = {}
@@ -315,7 +261,6 @@ def findCircleNum(isConnected):
                         queue.append(each)
 
     return count
-
 
 # 1557. Minimum Number of Vertices to Reach All Nodes
 def findSmallestSetOfVertices(n, edges):
@@ -449,7 +394,36 @@ def floodFill(image, sr, sc, color):
 
     return image
 
+# largest element
+def largest(graph):
 
+    visited = {}
+    maxNodes = 0
+    def bfs(graph, source):
+
+       # print(f"source: {source}")
+        count = 0
+        queue = []
+        queue.append(source)
+
+        while queue:
+        #    print(f"queue: {queue}")
+            current = queue.pop(0)
+            if current not in visited:
+                visited[current] = True
+                count += 1
+                for node in graph[current]:
+                    if node not in visited:
+                        queue.append(node)
+
+        return count
+
+    for node in graph:
+    #    print(f"count: {maxNodes}")
+        if node not in visited:
+            maxNodes = max(maxNodes, bfs(graph, node))
+
+    return maxNodes
 
 if __name__ == '__main__':
     # Strategy for matrix algorithms
@@ -482,13 +456,6 @@ if __name__ == '__main__':
         'E': ['B', 'G']
     }
 
-    graph_or = [
-        ['w', 'x'],
-        ['x', 'y'],
-        ['z', 'y'],
-        ['z', 'v'],
-        ['w', 'v']
-    ]
 
     grid = [[0,1,0,0],[1,1,1,0],[0,1,0,0],[1,1,0,0]]
 
@@ -506,4 +473,5 @@ if __name__ == '__main__':
     s = 1
     word = "applepenapple"
     wordDict = ["apple", "pen"]
-    print(islandPerimeter(grid))
+    print(largest(graph_input_largest))
+    print(largestComponents(graph_input_largest))
