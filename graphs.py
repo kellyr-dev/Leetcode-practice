@@ -316,7 +316,6 @@ def floodFill(image, sr, sc, color):
 # 1559. Detect Cycles in 2D Grid (TLE not checked)
 def containsCycle(grid):
 
-
     cache = {}
     def dfs(grid, i, j, startPoint, cache, count):
 
@@ -346,6 +345,53 @@ def containsCycle(grid):
             if dfs(grid, i, j, startPoint, visited, count):
                 return True
     return False
+
+# Topological Sort
+def topolicalOrder(edges):
+
+    khan = {}
+    graph = {}
+
+    # initialize Khan for all nodes
+    for node in edges:
+        khan[node[0]] = 0
+        khan[node[1]] = 0
+        if node[0] in graph:
+            graph[node[0]].append(node[1])
+        else:
+            graph[node[0]] = [node[1]]
+
+        if node[1] not in graph:
+            graph[node[1]] = []
+
+    # getting in-degree node
+    for node in edges:
+        khan[node[1]] += 1
+
+    # initialize the queue with only in-degree nodes
+    queue = []
+
+    for node in khan:
+        if khan[node] == 0:
+            queue.append(node)
+
+    print(khan)
+    print(graph)
+    result = []
+    while queue:
+        current = queue.pop(0)
+        print(f"current: {current}")
+        result.append(current)
+
+        for neighbor in graph[current]:
+            print(f"neig: {neighbor}")
+            khan[neighbor] -= 1
+            if khan[neighbor] == 0:
+                queue.append(neighbor)
+
+    return result
+
+
 
 # LeetCode 139 using BFS
 def wordBreakBFS(word, wordDict):
@@ -380,8 +426,8 @@ if __name__ == '__main__':
     grid = [["a","b","b"],["b","z","b"],["b","b","a"]]
     n = 5
     m = 3
-    edges = [[0, 1], [2, 1], [3, 1], [1, 4], [2, 4]]
+    edges = [4, 2], [4, 3], [2, 0], [2, 1], [3, 1]
     s = 1
     word = "applepenapple"
     wordDict = ["apple", "pen"]
-    print(containsCycle(grid))
+    print(topolicalOrder(edges))
