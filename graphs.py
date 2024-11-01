@@ -1,7 +1,8 @@
 import queue
 
-# PRACTICE ON GRAPHS FOR CODING INTERVIEWS
 # Basic Theory for Graphs start with BFS and DFS to traversal graphs
+
+# BFS template on Graphs
 def bfs(graph, entry):
     queue = []  # queue
     queue.append(entry)
@@ -23,83 +24,6 @@ def bfs(graph, entry):
 
     return result
 
-#  /* Alvin practice
-def explore_bfs_tree(graph, node):
-    visited = {}
-    queue = list()
-    queue.append(node)
-    visited[node] = 1
-    cont_visited = 0
-
-    while (len(queue) > 0):
-        current = queue.pop(0)
-        print(f"current: ", current)
-
-        for list_ad in graph[current]:
-            if list_ad in visited:
-                cont_visited += 1
-            else:
-                visited[list_ad] = 1
-                queue.append(list_ad)
-
-        print(f"queue: ", queue)
-        print(f"cont_visited:", cont_visited)
-        if cont_visited > 1:
-            return cont_visited
-        else:
-            cont_visited = 0
-
-    return cont_visited
-
-def is_a_tree(graph, visited):
-    print(graph)
-
-    # find cycles to return False (condition 1)
-    for nodes in graph:
-        print(f"node: ", nodes)
-        if explore_bfs_tree(graph, nodes) > 1:
-            return False
-
-    # find unvisited nodes -> means island or disconnected nodes because BFS never toch it (condition 2)
-    for nodis in graph:
-        if nodis not in visited:
-            return False
-
-    return True
-
-def shortestPath(graph, source, target):
-    aux = list()  # Queue for making BFS
-    distance = 0  # distance is the level in the Graph
-    # esta es la clave guardar la distancia del Grafo donde empiezas a iterar
-    # esto te da el minimo Path
-    # Otro Aproach podria ser ir por todos los caminos y sumar (luego devolver el mas pequeno)
-    # Pero seria un poco mas lento ya que probablemente iria por todos varias veces
-    aux.append([source, distance])
-    visited = {}
-
-    if source == target:
-        return distance
-
-    visited[source] = 1
-
-    while (len(aux) > 0):
-
-        current = aux.pop(0)
-        print(current)
-
-        if current[0] == target:
-            return current[1]
-
-        distance = current[1]
-
-        for neighbor in graph[current[0]]:
-            if neighbor not in visited:
-                print(f"neighbor:", neighbor)
-                aux.append([neighbor, distance + 1])
-                print(f"Queue:", aux)
-
-    return -1
-
 def largestComponents(graph_input):
 
     largest = 0
@@ -120,34 +44,29 @@ def largestComponents(graph_input):
         largest = max(largest, dfs(graph_input, node))
 
     return largest
-# Alvin practice */
 
-# LeetCode 139 using BFS
-def wordBreakBFS(word, wordDict):
-    if len(word) == 0:
-        return True
+# ShortestPath without weight
+def shortestPath(graph, source, target):
 
-    queue = [word]
+    queue = []  # Queue for making BFS
+    queue.append((source, 0))
     visited = {}
+    visited[source] = True
 
     while queue:
 
         current = queue.pop(0)
+        if current[0] == target:
+            return current[1]
 
-        if len(current) == 0:
-            return True
+        distance = current[1]
 
-        if current in visited:
-            continue
+        for neighbor in graph[current[0]]:
+            if neighbor not in visited:
+                queue.append((neighbor, distance + 1))
+                visited[neighbor] = True
 
-        visited[word] = 1
-
-        for i in range(1, len(current) + 1):
-
-            if current[:i] in wordDict:
-                queue.append(current[i:])
-
-    return True
+    return -1
 
 # 1971. Find if Path Exists in Graph (BFS)
 def validPath(n, edges, source, destination):
@@ -394,84 +313,75 @@ def floodFill(image, sr, sc, color):
 
     return image
 
-# largest element
-def largest(graph):
+# 1559. Detect Cycles in 2D Grid (TLE not checked)
+def containsCycle(grid):
 
+
+    cache = {}
+    def dfs(grid, i, j, startPoint, cache, count):
+
+        if i < 0 or i >= len(grid) or j < 0 or j >= len(grid[0]):
+            return False
+
+        key = (i,j)
+        if key in cache:
+            if key == (startPoint[0], startPoint[1]) and count >= 4:
+                    return True
+
+            return False
+
+        cache[key] = True
+        if grid[i][j] != grid[startPoint[0]][startPoint[1]]:
+            return False
+
+        return (dfs(grid, i+1, j, startPoint, cache, count+1) or dfs(grid, i-1, j, startPoint, cache, count+1)
+    or dfs(grid, i, j+1, startPoint, cache, count+1) or dfs(grid, i, j-1, startPoint, cache, count+1))
+
+
+    for i in range(len(grid)):
+        for j in range(len(grid[0])):
+            visited = {}
+            startPoint = (i,j)
+            count = 0
+            if dfs(grid, i, j, startPoint, visited, count):
+                return True
+    return False
+
+# LeetCode 139 using BFS
+def wordBreakBFS(word, wordDict):
+    if len(word) == 0:
+        return True
+
+    queue = [word]
     visited = {}
-    maxNodes = 0
-    def bfs(graph, source):
 
-       # print(f"source: {source}")
-        count = 0
-        queue = []
-        queue.append(source)
+    while queue:
 
-        while queue:
-        #    print(f"queue: {queue}")
-            current = queue.pop(0)
-            if current not in visited:
-                visited[current] = True
-                count += 1
-                for node in graph[current]:
-                    if node not in visited:
-                        queue.append(node)
+        current = queue.pop(0)
 
-        return count
+        if len(current) == 0:
+            return True
 
-    for node in graph:
-    #    print(f"count: {maxNodes}")
-        if node not in visited:
-            maxNodes = max(maxNodes, bfs(graph, node))
+        if current in visited:
+            continue
 
-    return maxNodes
+        visited[word] = 1
+
+        for i in range(1, len(current) + 1):
+
+            if current[:i] in wordDict:
+                queue.append(current[i:])
+
+    return True
 
 if __name__ == '__main__':
     # Strategy for matrix algorithms
-    # In a matrix should be nested loop + Traverse
 
-    graph_input_largest = {
-        0: [1, 5, 8],
-        1: [0],
-        2: [3, 4],
-        3: [2, 4],
-        4: [2, 3],
-        5: [0, 8],
-        8: [0, 5]
-    }
-
-    graph_bfs = {
-        'w': ['x', 'v'],
-        'x': ['y'],
-        'y': ['z'],
-        'v': ['z']
-    }
-
-    graph_white = {
-        'A': ['B', 'D', 'C'],
-        'B': ['A', 'E'],
-        'C': ['F', 'A'],
-        'D': ['A', 'G'],
-        'F': ['C', 'G'],
-        'G': ['E', 'D', 'F'],
-        'E': ['B', 'G']
-    }
-
-
-    grid = [[0,1,0,0],[1,1,1,0],[0,1,0,0],[1,1,0,0]]
-
-    input_tree = {
-        0: [1, 2, 3],
-        1: [0],
-        2: [0],
-        3: [0, 4],
-        4: [3]
-    }
-
+    grid = [["a","b","b"],["b","z","b"],["b","b","a"]]
     n = 5
     m = 3
     edges = [[0, 1], [2, 1], [3, 1], [1, 4], [2, 4]]
     s = 1
     word = "applepenapple"
     wordDict = ["apple", "pen"]
-    print(largest(graph_input_largest))
-    print(largestComponents(graph_input_largest))
+    print(containsCycle(grid))
