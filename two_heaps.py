@@ -72,5 +72,6 @@ def kSmallestPairs(list1, list2, k):
 if __name__ == '__main__':
     nums1 = [1,7,11]
     nums2 = [2,4,6]
+    tasks = ["A","B","A"]
     k = 3
     print(kSmallestPairs(nums1, nums2, k))
