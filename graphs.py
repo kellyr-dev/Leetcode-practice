@@ -391,6 +391,30 @@ def topolicalOrder(edges):
 
     return result
 
+# 127. Word Ladder
+def ladderLength(beginWord, endWord, wordList):
+
+    wordList.index(0, wordList)
+    #building Graph
+    for i in range(len(wordList)):
+        current_word = wordList[i]
+        globalMin = float('-inf')
+        for j in range(len(wordList)):
+
+            graphOfmin = {}
+            if i != j:
+                word = wordList[j]
+                count = 0
+                for k in range(len(word)):
+                    if current_word[k] != word[k]:
+                        count+=1
+
+                globalMin = min(count, globalMin)
+                graphOfmin[word] = count
+
+
+
+
 
 
 # LeetCode 139 using BFS
@@ -424,10 +448,13 @@ if __name__ == '__main__':
     # Strategy for matrix algorithms
 
     grid = [["a","b","b"],["b","z","b"],["b","b","a"]]
+    edges = [4, 2], [4, 3], [2, 0], [2, 1], [3, 1]
     n = 5
     m = 3
-    edges = [4, 2], [4, 3], [2, 0], [2, 1], [3, 1]
     s = 1
     word = "applepenapple"
     wordDict = ["apple", "pen"]
-    print(topolicalOrder(edges))
+    beginWord = "hit"
+    endWord = "cog"
+    wordList = ["hot","dot","dog","lot","log","cog"]
+    print(ladderLength(beginWord, endWord, wordList))
