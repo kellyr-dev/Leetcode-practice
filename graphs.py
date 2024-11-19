@@ -1,4 +1,7 @@
 import queue
+from string import ascii_letters
+from typing import List
+
 
 # Basic Theory for Graphs start with BFS and DFS to traversal graphs
 
@@ -24,10 +27,11 @@ def bfs(graph, entry):
 
     return result
 
-def largestComponents(graph_input):
 
+def largestComponents(graph_input):
     largest = 0
     visited = {}
+
     def dfs(graph, src):
 
         if src in visited:
@@ -45,9 +49,9 @@ def largestComponents(graph_input):
 
     return largest
 
+
 # ShortestPath without weight
 def shortestPath(graph, source, target):
-
     queue = []  # Queue for making BFS
     queue.append((source, 0))
     visited = {}
@@ -67,6 +71,7 @@ def shortestPath(graph, source, target):
                 visited[neighbor] = True
 
     return -1
+
 
 # 1971. Find if Path Exists in Graph (BFS)
 def validPath(n, edges, source, destination):
@@ -106,6 +111,7 @@ def validPath(n, edges, source, destination):
                 queue.append(neighbor)
 
     return False
+
 
 # 1971. Find if Path Exists in Graph (DFS)
 def validPathDFS(n, edges, source, destination):
@@ -147,6 +153,7 @@ def validPathDFS(n, edges, source, destination):
 
     return dfs(graph, source, destination)
 
+
 # 547. Number of Provinces
 def findCircleNum(isConnected):
     graph = {}
@@ -181,6 +188,7 @@ def findCircleNum(isConnected):
 
     return count
 
+
 # 1557. Minimum Number of Vertices to Reach All Nodes
 def findSmallestSetOfVertices(n, edges):
     graph = {}
@@ -207,9 +215,9 @@ def findSmallestSetOfVertices(n, edges):
 
     return result
 
+
 # 200. Number of Islands
 def numIslands(grid):
-
     count = 0
     visited = {}
     print(f"row: {len(grid)}")
@@ -235,10 +243,10 @@ def numIslands(grid):
         else:
             return
 
-    for i in range(len(grid)): # [1,1,0,0,0] =
+    for i in range(len(grid)):  # [1,1,0,0,0] =
         for j in range(len(grid[0])):
 
-            key = (i,j)
+            key = (i, j)
             if grid[i][j] == "1" and key not in visited:
                 print(f"key: {key}")
                 print(f"visited: {visited}")
@@ -247,9 +255,9 @@ def numIslands(grid):
 
     return count
 
+
 # 695. Max Area of Island
 def maxAreaOfIsland(grid):
-
     maxArea = 0
     visited = {}
 
@@ -261,26 +269,26 @@ def maxAreaOfIsland(grid):
         if i < 0 or i >= row or j < 0 or j >= col:
             return 0
 
-        key = (i,j)
+        key = (i, j)
         if key in visited:
             return 0
 
         visited[key] = True
 
         if grid[i][j] == 1:
-            return 1 + dfs(grid, i+1, j) + dfs(grid, i-1, j) + dfs(grid, i, j+1) + dfs(grid, i, j-1)
+            return 1 + dfs(grid, i + 1, j) + dfs(grid, i - 1, j) + dfs(grid, i, j + 1) + dfs(grid, i, j - 1)
         else:
             return 0
 
     for i in range(row):
         for j in range(col):
-            maxArea = max(maxArea, dfs(grid, i,j))
+            maxArea = max(maxArea, dfs(grid, i, j))
 
     return maxArea
 
+
 # 733. Flood Fill
 def floodFill(image, sr, sc, color):
-
     origin = image[sr][sc]
     row = len(image)
     col = len(image[0])
@@ -291,7 +299,7 @@ def floodFill(image, sr, sc, color):
         if i < 0 or i >= row or j < 0 or j >= col:
             return
 
-        key = (i,j)
+        key = (i, j)
         if key in visited:
             return
 
@@ -302,10 +310,10 @@ def floodFill(image, sr, sc, color):
 
         if image[i][j] == origin:
             image[i][j] = color
-            dfs(image, i-1, j)
-            dfs(image, i+1, j)
-            dfs(image, i, j-1)
-            dfs(image, i, j+1)
+            dfs(image, i - 1, j)
+            dfs(image, i + 1, j)
+            dfs(image, i, j - 1)
+            dfs(image, i, j + 1)
 
         return
 
@@ -313,19 +321,20 @@ def floodFill(image, sr, sc, color):
 
     return image
 
+
 # 1559. Detect Cycles in 2D Grid (TLE not checked)
 def containsCycle(grid):
-
     cache = {}
+
     def dfs(grid, i, j, startPoint, cache, count):
 
         if i < 0 or i >= len(grid) or j < 0 or j >= len(grid[0]):
             return False
 
-        key = (i,j)
+        key = (i, j)
         if key in cache:
             if key == (startPoint[0], startPoint[1]) and count >= 4:
-                    return True
+                return True
 
             return False
 
@@ -333,22 +342,22 @@ def containsCycle(grid):
         if grid[i][j] != grid[startPoint[0]][startPoint[1]]:
             return False
 
-        return (dfs(grid, i+1, j, startPoint, cache, count+1) or dfs(grid, i-1, j, startPoint, cache, count+1)
-    or dfs(grid, i, j+1, startPoint, cache, count+1) or dfs(grid, i, j-1, startPoint, cache, count+1))
-
+        return (dfs(grid, i + 1, j, startPoint, cache, count + 1) or dfs(grid, i - 1, j, startPoint, cache, count + 1)
+                or dfs(grid, i, j + 1, startPoint, cache, count + 1) or dfs(grid, i, j - 1, startPoint, cache,
+                                                                            count + 1))
 
     for i in range(len(grid)):
         for j in range(len(grid[0])):
             visited = {}
-            startPoint = (i,j)
+            startPoint = (i, j)
             count = 0
             if dfs(grid, i, j, startPoint, visited, count):
                 return True
     return False
 
+
 # Topological Sort
 def topolicalOrder(edges):
-
     khan = {}
     graph = {}
 
@@ -391,31 +400,57 @@ def topolicalOrder(edges):
 
     return result
 
-# 127. Word Ladder
-def ladderLength(beginWord, endWord, wordList):
 
-    wordList.index(0, wordList)
-    #building Graph
-    for i in range(len(wordList)):
-        current_word = wordList[i]
-        globalMin = float('-inf')
-        for j in range(len(wordList)):
+# 207. Course Schedule
+def canFinish(numCourses, prerequisites):
+    if len(prerequisites) <= 1:
+        return True
 
-            graphOfmin = {}
-            if i != j:
-                word = wordList[j]
-                count = 0
-                for k in range(len(word)):
-                    if current_word[k] != word[k]:
-                        count+=1
+    graph = {}
+    khan = {}
+    queue = []
 
-                globalMin = min(count, globalMin)
-                graphOfmin[word] = count
+    for pre in prerequisites:
+        if pre[0] in graph:
+            graph[pre[0]].append(pre[1])
+        else:
+            graph[pre[0]] = [pre[1]]
 
+        if pre[1] not in graph:
+            graph[pre[1]] = []
 
+    for node in prerequisites:
+        if node[1] in khan:
+            khan[node[1]] += 1
+        else:
+            khan[node[1]] = 1
 
+    for key in graph:
+        if key not in khan:
+            queue.append(key)
 
+    print(f"graph: {graph}")
+    print(f"khan: {khan}")
+    print(f"queue: {queue}")
 
+    if len(queue) == 0:
+        return False
+
+    while queue:
+        current = queue.pop()
+
+        for node in graph[current]:
+
+            khan[node] -= 1
+            if khan[node] == 0:
+                queue.append(node)
+
+    for node in khan:
+        if khan[node] > 0:
+            return False
+
+    #
+    return True
 
 # LeetCode 139 using BFS
 def wordBreakBFS(word, wordDict):
@@ -444,17 +479,18 @@ def wordBreakBFS(word, wordDict):
 
     return True
 
+
 if __name__ == '__main__':
     # Strategy for matrix algorithms
 
-    grid = [["a","b","b"],["b","z","b"],["b","b","a"]]
+    grid = [["a", "b", "b"], ["b", "z", "b"], ["b", "b", "a"]]
     edges = [4, 2], [4, 3], [2, 0], [2, 1], [3, 1]
     n = 5
     m = 3
     s = 1
     word = "applepenapple"
     wordDict = ["apple", "pen"]
-    beginWord = "hit"
-    endWord = "cog"
-    wordList = ["hot","dot","dog","lot","log","cog"]
-    print(ladderLength(beginWord, endWord, wordList))
+    numCourses = 20
+    prerequisites = [[0, 10], [3, 18], [5, 5], [6, 11], [11, 14], [13, 1], [15, 1], [17, 4]]  # false
+    print(canFinish(numCourses, prerequisites))
+
