@@ -1,3 +1,4 @@
+import heapq
 import queue
 from string import ascii_letters
 from typing import List
@@ -356,7 +357,7 @@ def containsCycle(grid):
     return False
 
 
-# Topological Sort
+# [Topological Sort]
 def topolicalOrder(edges):
     khan = {}
     graph = {}
@@ -399,7 +400,6 @@ def topolicalOrder(edges):
                 queue.append(neighbor)
 
     return result
-
 
 # 207. Course Schedule
 def canFinish(numCourses, prerequisites):
@@ -452,6 +452,93 @@ def canFinish(numCourses, prerequisites):
     #
     return True
 
+
+# [Dijkstra]
+# 1584. Min Cost to Connect All Points
+def minCostConnectPoints(points):
+
+    # Step 1 bulding the initial graph
+    visited = {}
+    graph = {}
+    queue = []
+    result = 0
+
+    source = (points[0][0], points[0][1])
+    visited[source] = True
+
+    for j in range(1, len(points)):
+        key = (points[j][0], points[j][1])
+        val = abs(points[0][0] - points[j][0]) + abs(points[0][1] - points[j][1])
+        graph[key] = val
+
+    # Step 2 building the initial queue
+    for node in graph:
+        key = (graph[node], node)
+        heapq.heappush(queue, key)
+
+    # BFS from source
+    while len(visited) < len(points) and len(queue) > 0:
+
+        # get the minimun guarantee
+        currentNode = heapq.heappop(queue)
+        if currentNode[1] not in visited:
+            result += currentNode[0]
+            visited[currentNode[1]] = True
+
+            # building graph for currentNode
+            for pointi in points:
+                point = (pointi[0], pointi[1])
+
+                if point not in visited and point != currentNode[1]:
+                    val = abs(currentNode[1][0] - point[0]) + abs(currentNode[1][1] - point[1])
+                    graph[point] = min(graph[point], val)
+
+            # building queue for currentNode
+            queue.clear()
+            for node in graph:
+                key = (graph[node], node)
+                heapq.heappush(queue, key)
+
+    return result
+
+# 1584. Min Cost to Connect All Points (using Prim Algo)
+def minCostConnectPointsPrim(points):
+
+    n = len(points)
+    visited = set()
+    # min_heap = [(d,i)]
+    min_heap = [(0,0)]
+    result = 0
+
+    while len(visited) < n:
+
+        key = heapq.heappop(min_heap)
+        if key[1] in visited:
+            continue
+        visited.add(key[1])
+        result += key[0]
+
+        for j in range(len(points)):
+
+            if j not in visited:
+                val = abs(points[key[1]][0] - points[j][0]) + abs(points[key[1]][1] - points[j][1])
+                heapq.heappush(min_heap, (val, j))
+
+        print(min_heap)
+
+    return result
+
+# 787. Cheapest Flights Within K Stops
+def findCheapestPrice(flights, src, dst, k):
+
+
+    return False
+
+# [Union Find]
+# 684. Redundant Connection
+def findRedundantConnection(edges):
+    return True
+
 # LeetCode 139 using BFS
 def wordBreakBFS(word, wordDict):
     if len(word) == 0:
@@ -492,5 +579,8 @@ if __name__ == '__main__':
     wordDict = ["apple", "pen"]
     numCourses = 20
     prerequisites = [[0, 10], [3, 18], [5, 5], [6, 11], [11, 14], [13, 1], [15, 1], [17, 4]]  # false
-    print(canFinish(numCourses, prerequisites))
+    points = [[0,0],[2,2],[3,10],[5,2],[7,0]]
+
+    flights = [[0, 1, 100], [1, 2, 100], [2, 0, 100], [1, 3, 600], [2, 3, 200]]
+    print(findCheapestPrice(points))
 
