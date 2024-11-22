@@ -452,7 +452,6 @@ def canFinish(numCourses, prerequisites):
     #
     return True
 
-
 # [Dijkstra]
     # step 1:   Maintain a set of processed nodes
     # step 1.1: Building the Graph
@@ -473,29 +472,34 @@ def DjkstraAlgo(points, src, dst):
         if points[i][0] not in graph:
             graph[points[i][0]] = [(points[i][1], points[i][2])]
         else:
-            graph[points[i][0]].append(points[i][1], points[i][2])
+            graph[points[i][0]].append((points[i][1], points[i][2]))
 
         if points[i][1] not in graph:
             graph[points[i][1]] = []
 
     # Step 2: Initialize nodes with distance values in 0 and Inf
     min_heap = [(0,src)]
+    spg = {}
     for key in graph:
         if key != src:
-            aux_key = (key, float('inf'))
+            aux_key = (float('inf'), key)
             heapq.heappush(min_heap, aux_key)
 
-    while len(min_heap) < len(visited):
-
+    while len(visited) < len(min_heap):
         current = heapq.heappop(min_heap)
+        if current[1] not in spg:
+            spg[current[1]] = current[0]
 
-        if current[1] not in visited:
-            visited.add(current[1])
+        if current[1] in visited:
+            continue
 
+        visited.add(current[1])
         for neighbord in graph[current[1]]:
+            if neighbord[0] not in visited:
+                heapq.heappush(min_heap, (current[0]+neighbord[1], neighbord[0]))
 
 
-
+    print(f"SPG: {spg}")
 
 # 1584. Min Cost to Connect All Points
 def minCostConnectPoints(points):
@@ -572,10 +576,6 @@ def minCostConnectPointsPrim(points):
     return result
 
 # [Union Find]
-# 684. Redundant Connection
-def findRedundantConnection(edges):
-
-    return True
 
 # LeetCode 139 using BFS
 def wordBreakBFS(word, wordDict):
@@ -618,7 +618,7 @@ if __name__ == '__main__':
     numCourses = 20
     prerequisites = [[0, 10], [3, 18], [5, 5], [6, 11], [11, 14], [13, 1], [15, 1], [17, 4]]  # false
     points = [[0,0],[2,2],[3,10],[5,2],[7,0]]
-    flights = [[0, 1, 100], [1, 2, 100], [2, 0, 100], [1, 3, 600], [2, 3, 200]]
+    flights = [[0,1,100],[1,2,100],[2,0,100],[1,3,600],[2,3,200]]
     src = 0
     dst = 3
     print(DjkstraAlgo(flights, src, dst))
