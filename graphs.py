@@ -454,6 +454,49 @@ def canFinish(numCourses, prerequisites):
 
 
 # [Dijkstra]
+    # step 1:   Maintain a set of processed nodes
+    # step 1.1: Building the Graph
+    # step 2:   Initialize nodes with distance value = Inf, except Source
+    # step 3:   Pick min value vertex which is not already processed
+    # step 4:   Included selected node in processed set
+    # step 5:   Update all adjacent Node distances
+    # step 6:   If (new_distance < old_distance) then update else skip
+
+def DjkstraAlgo(points, src, dst):
+
+    # Step 1 Set for processing nodes
+    visited = set()
+
+    graph = {}
+    # Step 1.1 Graph for processing vertices for each node
+    for i in range(len(points)):
+        if points[i][0] not in graph:
+            graph[points[i][0]] = [(points[i][1], points[i][2])]
+        else:
+            graph[points[i][0]].append(points[i][1], points[i][2])
+
+        if points[i][1] not in graph:
+            graph[points[i][1]] = []
+
+    # Step 2: Initialize nodes with distance values in 0 and Inf
+    min_heap = [(0,src)]
+    for key in graph:
+        if key != src:
+            aux_key = (key, float('inf'))
+            heapq.heappush(min_heap, aux_key)
+
+    while len(min_heap) < len(visited):
+
+        current = heapq.heappop(min_heap)
+
+        if current[1] not in visited:
+            visited.add(current[1])
+
+        for neighbord in graph[current[1]]:
+
+
+
+
 # 1584. Min Cost to Connect All Points
 def minCostConnectPoints(points):
 
@@ -501,7 +544,7 @@ def minCostConnectPoints(points):
 
     return result
 
-# 1584. Min Cost to Connect All Points (using Prim Algo)
+# 1584. Min Cost to Connect All Points using [Prim's]
 def minCostConnectPointsPrim(points):
 
     n = len(points)
@@ -528,15 +571,10 @@ def minCostConnectPointsPrim(points):
 
     return result
 
-# 787. Cheapest Flights Within K Stops
-def findCheapestPrice(flights, src, dst, k):
-
-
-    return False
-
 # [Union Find]
 # 684. Redundant Connection
 def findRedundantConnection(edges):
+
     return True
 
 # LeetCode 139 using BFS
@@ -580,7 +618,8 @@ if __name__ == '__main__':
     numCourses = 20
     prerequisites = [[0, 10], [3, 18], [5, 5], [6, 11], [11, 14], [13, 1], [15, 1], [17, 4]]  # false
     points = [[0,0],[2,2],[3,10],[5,2],[7,0]]
-
     flights = [[0, 1, 100], [1, 2, 100], [2, 0, 100], [1, 3, 600], [2, 3, 200]]
-    print(findCheapestPrice(points))
+    src = 0
+    dst = 3
+    print(DjkstraAlgo(flights, src, dst))
 
