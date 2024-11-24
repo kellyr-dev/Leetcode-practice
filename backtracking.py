@@ -1,4 +1,26 @@
 
+# [Backtracking]
+# given an N no negative build all combinations of letter a y b possible
+def combination(n):
+
+    string = ""
+    result = []
+    def helper(string, i):
+
+        print(f"string: {string}")
+        if i == n:
+            result.append(string)
+            return
+
+        helper(string+"a", i+1)
+        helper(string+"b", i+1)
+
+    helper("",0)
+    return result
+
+# 131. Palindrome Partitioning
+def partition(string):
+
 
 # 39. Combination Sum
 def combinationSum(candidates, target):
@@ -20,6 +42,7 @@ def combinationSum(candidates, target):
 
     helper(candidates, 0, target, [])
     return res
+
 
 # 79. Word Search
 def exist(boad, word):
@@ -60,11 +83,7 @@ def exist(boad, word):
     return False
 
 if __name__ == '__main__':
-    # board = [
-    #     ["C","A","A"],
-    #     ["A","A","A"],
-    #     ["B","C","D"]
-    # ]
+
     board = [
         ["A","B","C","E"],
         ["S","F","E","S"],
@@ -74,4 +93,5 @@ if __name__ == '__main__':
     candidates = [2,3,6,7]
     targrt = 7
     # need to change this file
-    print(exist(board, word))
+    n = 4
+    print(combination(n))
