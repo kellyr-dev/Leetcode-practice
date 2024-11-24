@@ -322,7 +322,6 @@ def floodFill(image, sr, sc, color):
 
     return image
 
-
 # 1559. Detect Cycles in 2D Grid (TLE not checked)
 def containsCycle(grid):
     cache = {}
@@ -355,7 +354,6 @@ def containsCycle(grid):
             if dfs(grid, i, j, startPoint, visited, count):
                 return True
     return False
-
 
 # [Topological Sort]
 def topolicalOrder(edges):
