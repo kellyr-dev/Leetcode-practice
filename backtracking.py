@@ -1,5 +1,5 @@
 
-# [Backtracking]
+# [Backtracking Template]
 # given an N no negative build all combinations of letter a y b possible
 def combination(n):
 
@@ -18,8 +18,76 @@ def combination(n):
     helper("",0)
     return result
 
+# 17. Letter Combinations of a Phone Number
+def phoneAllCombinators(string):
+
+    KEYBOARD = {
+        '2' : "abc",
+        '3' : "def",
+        '4' : "ghi",
+        '5' : "jkl",
+        '6' : "mno",
+        '7' : "pqrs",
+        '8' : "tuv",
+        '9' : "wxyz"
+    }
+
+    if len(string) == 0:
+        return []
+
+    if len(string) == 1:
+        return list(KEYBOARD[string[0]])
+
+    totalChar = ""
+    totalArray = []
+    arrayTam = 1
+    for i in range(len(string)):
+        totalChar += KEYBOARD[string[i]]
+        totalArray.append(KEYBOARD[string[i]])
+        arrayTam *= len(KEYBOARD[string[i]])
+
+    n = len(totalChar)
+    tamanio = len(string)
+
+    queue = list(totalArray.pop(0))
+    while totalArray:
+
+        local_res = []
+        aux = totalArray.pop(0)
+        while queue:
+            local_string = queue.pop(0) # 'a'
+            for i in range(len(aux)):
+                local_res.append(str(local_string)+aux[i])
+
+        queue = list(local_res)
+
+    return queue
+
 # 131. Palindrome Partitioning
 def partition(string):
+
+    if len(string) == 0:
+        return []
+
+    if len(string) == 1:
+        return [string[0]]
+
+    def checkPalindrome(word):
+        start = 0
+        end = len(word)
+        while start <= end:
+            if word[start] != word[end]:
+                return False
+
+            start += 1
+            end += 1
+
+        return True
+
+    result = []
+    result.append(list(string))
+
+    for i in range(len(string))
 
 
 # 39. Combination Sum
@@ -94,4 +162,4 @@ if __name__ == '__main__':
     targrt = 7
     # need to change this file
     n = 4
-    print(combination(n))
+    print(phoneAllCombinators("34"))
