@@ -63,33 +63,6 @@ def phoneAllCombinators(string):
 
     return queue
 
-# 131. Palindrome Partitioning
-def partition(string):
-
-    if len(string) == 0:
-        return []
-
-    if len(string) == 1:
-        return [string[0]]
-
-    def checkPalindrome(word):
-        start = 0
-        end = len(word)
-        while start <= end:
-            if word[start] != word[end]:
-                return False
-
-            start += 1
-            end += 1
-
-        return True
-
-    result = []
-    result.append(list(string))
-
-    for i in range(len(string))
-
-
 # 39. Combination Sum
 def combinationSum(candidates, target):
 
@@ -110,7 +83,6 @@ def combinationSum(candidates, target):
 
     helper(candidates, 0, target, [])
     return res
-
 
 # 79. Word Search
 def exist(boad, word):
@@ -162,4 +134,4 @@ if __name__ == '__main__':
     targrt = 7
     # need to change this file
     n = 4
-    print(phoneAllCombinators("34"))
+    print(phoneAllCombinators("56"))
