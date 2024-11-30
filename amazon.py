@@ -96,10 +96,143 @@ def maxArea(nums):
 
     return maxContainer
 
+# 12. Integer to Roman
+def intORoman(num):
+
+    hash_table = {
+        1: "I",
+        2: "II",
+        3: "III",
+        4: "IV",
+        5: "V",
+        6: "VI",
+        7: "VII",
+        8: "VIII",
+        9: "IX",
+        10: "X",
+        40: "XL",
+        50: "L",
+        90: "XC",
+        100: "C",
+        400: "CD",
+        500: "D",
+        900: "CM",
+        1000: "M",
+    }
+
+    if num < 0 or num >= 4000:
+        return ""
+
+    string = str(num)
+    index = len(string)-1
+    result = []
+    i = 0
+
+    while index >= 0:
+        i += 1
+        digit = int(string[index])
+        if i == 1:
+            if digit != 0:
+                result.append(hash_table[digit])
+        if i == 2: # decenas
+            new_digit = digit
+
+            if new_digit >= 1 and new_digit <= 3:
+                result_aux = ""
+                for j in range(new_digit):
+                    result_aux+= "X"
+                result.insert(0, result_aux)
+
+            elif new_digit == 4:
+                result.insert(0, "XL")
+
+            elif new_digit >= 5 and new_digit <= 8:
+                result_aux = "L"
+                for j in range(5, new_digit):
+                    result_aux += "X"
+                result.insert(0, result_aux)
+
+            elif new_digit == 9:
+                result.insert(0, "XC")
+
+        if i == 3: # centenas
+            new_digit = digit
+            if new_digit >= 1 and new_digit <= 3:
+                result_aux = ""
+                for j in range(new_digit):
+                    result_aux+= "C"
+                result.insert(0, result_aux)
+
+            elif new_digit == 4:
+                result.insert(0, "CD")
+
+            elif new_digit >= 5 and new_digit <= 8:
+                result_aux = "D"
+                for j in range(5, new_digit):
+                    result_aux += "C"
+                result.insert(0, result_aux)
+
+            elif new_digit == 9: # DCCC # LM
+                result.insert(0, "CM")
+
+        if i == 4: # milesas
+            new_digit = digit
+            if new_digit >= 1 and new_digit <= 3:
+                result_aux = ""
+                for j in range(new_digit):
+                    result_aux += "M"
+                result.insert(0, result_aux)
+
+        index -= 1
+
+    return "".join(list(result))
+
+# 13. Roman to Integer
+def romanToInt(string):
+
+    hash_table = {
+
+        "I" : 1,
+        "II" : 2,
+        "III" : 3,
+        "IV" : 4,
+        "V" : 5,
+        "VI" : 6,
+        "VII" : 7,
+        "VIII" : 8,
+        "IX" : 9,
+        "X" : 10,
+        "XL" : 40,
+        "L": 50,
+        "C" :100,
+        "D" : 500,
+        "M" : 1000,
+
+    }
+
+    if len(string) == 1:
+        return hash_table[string]
+
+    current = len(string)-2
+    prev = len(string)-1
+    result = hash_table[string[prev]]
+
+    while current >= 0:
+        if hash_table[string[current]] < hash_table[string[prev]]:
+            result -= hash_table[string[current]]
+        else:
+            result += hash_table[string[current]]
+
+        current -= 1
+        prev -= 1
+
+    return result
 
 
 if __name__ == '__main__':
 
     word = "-042"
     nums = [1,8,6,2,5,4,8,3,7]
-    print(maxArea(nums))
+    num = 3200
+    string = "LVIII"
+    print(romanToInt(string))
