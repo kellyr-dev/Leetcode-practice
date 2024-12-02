@@ -1,3 +1,4 @@
+import heapq
 
 # 3. Longest Substring Without Repeating Characters
 def lengthOfLongestSubstring(word):
@@ -228,11 +229,99 @@ def romanToInt(string):
 
     return result
 
+# 819. Most Common Word
+def mostCommonWord(paragraph, banned):
+
+
+    new_string = paragraph.lower().rstrip()
+
+    table_banned = set()
+
+    othersChars = ["," , ";" , "!", "?", "."]
+    others = set(othersChars)
+
+    for i in range(len(banned)):
+        table_banned.add(banned[i])
+
+    freq = {}
+    word = ""
+    for j in range(len(new_string)):
+        if new_string[j] == " " or new_string[j] in others:
+            if word != " " and len(word) > 0:
+                if word in freq:
+                    freq[word] += 1
+                    word = ""
+                else:
+                    freq[word] = 1
+                    word = ""
+        else:
+            word += new_string[j]
+
+    if word in freq:
+        freq[word] += 1
+    else:
+        freq[word] = 1
+
+    maxHeap = []
+
+    for key in freq:
+        if key not in table_banned:
+            value = freq[key]
+            keyAux = (-value, key)
+            heapq.heappush(maxHeap, keyAux)
+
+    result = heapq.heappop(maxHeap)[1]
+    return result
+
+# 937. Reorder Data in Log Files
+def reorderLogFiles(logs):
+
+    digits = [] # queue for storing relative order that appears in the log file
+    minHeap = [] # Heap ordered log by (key1, key2) where key1 is content and key2 is id
+
+    for i in range(len(logs)): # O(n)
+
+        log = logs[i].split(" ")
+        print(f"log: {log}")
+        all_digit = 0
+        all_letter = 0
+        content = ""
+        id = log[0]
+        for j in range(1, len(log)): # O(k) k is words (space separate) in a log
+
+            if log[j].isnumeric():
+                all_digit += 1
+            else:
+                all_letter += 1
+
+            content = content + log[j] + " "
+
+        if all_letter == 0:
+            digits.append(logs[i])
+        else:
+            key = (content, log[0])
+            heapq.heappush(minHeap, key)
+
+    result = []
+    print(f"minHeap: {minHeap}")
+    while len(minHeap) > 0:
+        aux = heapq.heappop(minHeap)
+        aux_log = aux[1] + " " + aux[0]
+        result.append(aux_log.rstrip())
+
+    while len(digits) > 0:
+        result.append(digits.pop(0))
+    return result
+
 
 if __name__ == '__main__':
 
     word = "-042"
-    nums = [1,8,6,2,5,4,8,3,7]
+    nums = [-1,0,1,2,-1,-4]
     num = 3200
     string = "LVIII"
-    print(romanToInt(string))
+    paragraph = "a, a, a, a, b,b,b,c, c"
+    banned = ["a"]
+    logs = ["a1 9 2 3 1","g1 act car","zo4 4 7","ab1 off key dog","a8 act zoo"]
+
+    print(reorderLogFiles(logs))
