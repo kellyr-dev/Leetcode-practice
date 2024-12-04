@@ -1,8 +1,8 @@
 import heapq
+from collections import Counter
 
 # 3. Longest Substring Without Repeating Characters
 def lengthOfLongestSubstring(word):
-
     maxLenght = 0
     table_set = set()
     left = 0
@@ -27,7 +27,6 @@ def lengthOfLongestSubstring(word):
 
 # 8. String to Integer (atoi)
 def myAtoi(s):
-
     NEG = False  # For checking if first num is -
     DIGIT = False  # For checking if a first element is already a digit Not Zero
     start = 0
@@ -81,9 +80,8 @@ def myAtoi(s):
 
 # 11. Container With Most Water
 def maxArea(nums):
-
     maxContainer = 0
-    end = len(nums)-1
+    end = len(nums) - 1
     start = 0
 
     while start < end:
@@ -99,7 +97,6 @@ def maxArea(nums):
 
 # 12. Integer to Roman
 def intORoman(num):
-
     hash_table = {
         1: "I",
         2: "II",
@@ -125,7 +122,7 @@ def intORoman(num):
         return ""
 
     string = str(num)
-    index = len(string)-1
+    index = len(string) - 1
     result = []
     i = 0
 
@@ -135,13 +132,13 @@ def intORoman(num):
         if i == 1:
             if digit != 0:
                 result.append(hash_table[digit])
-        if i == 2: # decenas
+        if i == 2:  # decenas
             new_digit = digit
 
             if new_digit >= 1 and new_digit <= 3:
                 result_aux = ""
                 for j in range(new_digit):
-                    result_aux+= "X"
+                    result_aux += "X"
                 result.insert(0, result_aux)
 
             elif new_digit == 4:
@@ -156,12 +153,12 @@ def intORoman(num):
             elif new_digit == 9:
                 result.insert(0, "XC")
 
-        if i == 3: # centenas
+        if i == 3:  # centenas
             new_digit = digit
             if new_digit >= 1 and new_digit <= 3:
                 result_aux = ""
                 for j in range(new_digit):
-                    result_aux+= "C"
+                    result_aux += "C"
                 result.insert(0, result_aux)
 
             elif new_digit == 4:
@@ -173,10 +170,10 @@ def intORoman(num):
                     result_aux += "C"
                 result.insert(0, result_aux)
 
-            elif new_digit == 9: # DCCC # LM
+            elif new_digit == 9:  # DCCC # LM
                 result.insert(0, "CM")
 
-        if i == 4: # milesas
+        if i == 4:  # milesas
             new_digit = digit
             if new_digit >= 1 and new_digit <= 3:
                 result_aux = ""
@@ -190,32 +187,31 @@ def intORoman(num):
 
 # 13. Roman to Integer
 def romanToInt(string):
-
     hash_table = {
 
-        "I" : 1,
-        "II" : 2,
-        "III" : 3,
-        "IV" : 4,
-        "V" : 5,
-        "VI" : 6,
-        "VII" : 7,
-        "VIII" : 8,
-        "IX" : 9,
-        "X" : 10,
-        "XL" : 40,
+        "I": 1,
+        "II": 2,
+        "III": 3,
+        "IV": 4,
+        "V": 5,
+        "VI": 6,
+        "VII": 7,
+        "VIII": 8,
+        "IX": 9,
+        "X": 10,
+        "XL": 40,
         "L": 50,
-        "C" :100,
-        "D" : 500,
-        "M" : 1000,
+        "C": 100,
+        "D": 500,
+        "M": 1000,
 
     }
 
     if len(string) == 1:
         return hash_table[string]
 
-    current = len(string)-2
-    prev = len(string)-1
+    current = len(string) - 2
+    prev = len(string) - 1
     result = hash_table[string[prev]]
 
     while current >= 0:
@@ -231,13 +227,11 @@ def romanToInt(string):
 
 # 819. Most Common Word
 def mostCommonWord(paragraph, banned):
-
-
     new_string = paragraph.lower().rstrip()
 
     table_banned = set()
 
-    othersChars = ["," , ";" , "!", "?", "."]
+    othersChars = [",", ";", "!", "?", "."]
     others = set(othersChars)
 
     for i in range(len(banned)):
@@ -275,11 +269,10 @@ def mostCommonWord(paragraph, banned):
 
 # 937. Reorder Data in Log Files
 def reorderLogFiles(logs):
+    digits = []  # queue for storing relative order that appears in the log file
+    minHeap = []  # Heap ordered log by (key1, key2) where key1 is content and key2 is id
 
-    digits = [] # queue for storing relative order that appears in the log file
-    minHeap = [] # Heap ordered log by (key1, key2) where key1 is content and key2 is id
-
-    for i in range(len(logs)): # O(n)
+    for i in range(len(logs)):  # O(n)
 
         log = logs[i].split(" ")
         print(f"log: {log}")
@@ -287,7 +280,7 @@ def reorderLogFiles(logs):
         all_letter = 0
         content = ""
         id = log[0]
-        for j in range(1, len(log)): # O(k) k is words (space separate) in a log
+        for j in range(1, len(log)):  # O(k) k is words (space separate) in a log
 
             if log[j].isnumeric():
                 all_digit += 1
@@ -313,15 +306,35 @@ def reorderLogFiles(logs):
         result.append(digits.pop(0))
     return result
 
+# 42. Trapping Rain Water
+def trap(height):
+    left_max = 0
+    right_max = 0
+    left = [0] * len(height)
+    right = [0] * len(height)
+    trapped = [0] * len(height)
+
+    for i in range(len(height)):
+        left[i] = left_max
+        left_max = max(left_max, height[i])
+
+    for j in range(len(height) - 1, 0, -1):
+        right[j] = right_max
+        right_max = max(right_max, height[j])
+
+    for i in range(len(height)):
+        trapp = min(left[i], right[i]) - height[i]
+        if trapp > 0:
+            trapped[i] = trapp
+
+
 
 if __name__ == '__main__':
-
     word = "-042"
-    nums = [-1,0,1,2,-1,-4]
     num = 3200
-    string = "LVIII"
-    paragraph = "a, a, a, a, b,b,b,c, c"
-    banned = ["a"]
-    logs = ["a1 9 2 3 1","g1 act car","zo4 4 7","ab1 off key dog","a8 act zoo"]
-
-    print(reorderLogFiles(logs))
+    height = [0, 1, 0, 2, 1, 0, 1, 3, 2, 1, 2, 1]
+    stringArray = ["aba", "abb", "aba"]
+    k = 2
+    tasks = ["a", "a", "a", "b", "c", "c"]
+    nums = [2, 1, 8]
+    print(trap(nums))

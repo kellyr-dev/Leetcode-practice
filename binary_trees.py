@@ -598,9 +598,48 @@ def isSameTree(p, q):
     return result
 
 
+# 103. Binary Tree Zigzag Level Order Traversal
+def zigzagLevelOrderN(root):
+
+    if root is None:
+        return []
+
+    queue = [root]
+    left = False
+
+    result = []
+    while queue:
+
+        level = len(queue)
+        aux = []
+
+        for i in range(level):
+            current = queue.pop(0)
+            aux.append(current.value)
+
+            if left:
+                if current.left != None:
+                    queue.append(current.left)
+
+                if current.right != None:
+                    queue.append(current.right)
+
+                left = False
+            else:
+                if current.right != None:
+                    queue.append(current.right)
+
+                if current.left != None:
+                    queue.append(current.left)
+
+                left = True
+        result.append(aux)
+
+    print(f"result: {result}")
+    return result
 
 if __name__ == '__main__':
-    lst = [10,4,15,1,None,14,19,None,None,None,None,None, 20]
+    lst = [3,9,20,None,None,15,7]
     lst1 = [10,4,15,1,None,14,None]
     lst2 = [10,4,15,1,None,14,20]
     low = 6
@@ -609,5 +648,5 @@ if __name__ == '__main__':
     p = deserialize(lst1)
     q = deserialize(lst2)
     key = 22
-    print(isSameTree(p, q))
+    print(zigzagLevelOrderN(root))
     a = [3, 2, 1, 5, 4, 6]
