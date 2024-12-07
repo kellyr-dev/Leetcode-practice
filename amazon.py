@@ -327,7 +327,59 @@ def trap(height):
         if trapp > 0:
             trapped[i] = trapp
 
+# 1152. Analyze User Website Visit Pattern
+def mostVisited(username, timestamp, website):
 
+    if len(username) != len(website) != len(timestamp):
+        return "Impossible"
+
+    table_hash = {}
+    for i in range(len(username)):
+        if username[i] in table_hash:
+            table_hash[username[i]].append(website[i])
+        else:
+            table_hash[username[i]] = [website[i]]
+
+    print(f"table_hash: {table_hash}")
+    freq = {}
+    minHeap = []
+    for key in table_hash:
+
+        aux = table_hash[key]
+        print(f"aux: {aux}")
+        if len(aux) == 3:
+            key = (aux[0],aux[1],aux[2])
+            if key in freq:
+                freq[key] += 1
+            else:
+                freq[key] = 1
+        elif len(aux) > 3:
+
+            tam = len(aux) - 2
+            for k in range(tam):
+                key = aux[k]
+                print(f"key: {key}")
+                for j in range(k+1, len(aux)):
+                    arrayAux = list([key])
+                    arrayAux.append(aux[j])
+                    for kk in range(j+1, len(aux)):
+                        word = (arrayAux[0], arrayAux[1], aux[kk])
+                        if word in freq:
+                            freq[word] += 1
+                        else:
+                            freq[word] = 1
+    print(f"freq: {freq}")
+    # loop thru table_freq:
+    # minHeap = heapq.heappush(-table_freq[key], key)
+    for key in freq:
+        aux_key = (-freq[key], key)
+        heapq.heappush(minHeap, aux_key)
+
+    # answer = heapq.heappop(minHeap) # get by freq and by lexicographically
+    # return [answer[1][0], answer[1][1], answer[1][2]]
+
+    result = heapq.heappop(minHeap)
+    return [result[1][0], result[1][1], result[1][2]]
 
 if __name__ == '__main__':
     word = "-042"
@@ -337,4 +389,7 @@ if __name__ == '__main__':
     k = 2
     tasks = ["a", "a", "a", "b", "c", "c"]
     nums = [2, 1, 8]
-    print(trap(nums))
+    username = ["joe", "joe", "joe", "james", "james", "james", "james", "mary", "mary", "mary"]
+    timestamp = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+    website = ["home", "about", "career", "home", "cart", "maps", "home", "home", "about", "career"]
+    print(mostVisited(username, timestamp, website))
