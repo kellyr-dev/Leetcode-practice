@@ -330,56 +330,62 @@ def trap(height):
 # 1152. Analyze User Website Visit Pattern
 def mostVisited(username, timestamp, website):
 
-    if len(username) != len(website) != len(timestamp):
-        return "Impossible"
+    table_username = {}
+    table_website = {}
+    for i in range(len(timestamp)):
+        table_username[timestamp[i]] = username[i]
+        table_website[timestamp[i]] = website[i]
 
-    table_hash = {}
-    for i in range(len(username)):
-        if username[i] in table_hash:
-            table_hash[username[i]].append(website[i])
+    timestamp.sort()
+    table_lists_byUsers = {}
+
+    for i in range(len(timestamp)):
+
+        keytoSearch = table_username[timestamp[i]]
+        if keytoSearch in table_lists_byUsers:
+            table_lists_byUsers[keytoSearch].append(table_website[timestamp[i]])
         else:
-            table_hash[username[i]] = [website[i]]
+            table_lists_byUsers[keytoSearch] = [table_website[timestamp[i]]]
 
-    print(f"table_hash: {table_hash}")
+    print(table_lists_byUsers)
     freq = {}
-    minHeap = []
-    for key in table_hash:
+    for key in table_lists_byUsers:
 
-        aux = table_hash[key]
-        print(f"aux: {aux}")
+        aux = table_lists_byUsers[key]
+        visited = set()
         if len(aux) == 3:
-            key = (aux[0],aux[1],aux[2])
-            if key in freq:
-                freq[key] += 1
+            aux_key = (aux[0], aux[1], aux[2])
+            if aux_key in freq:
+                freq[aux_key] += 1
             else:
-                freq[key] = 1
+                freq[aux_key] = 1
         elif len(aux) > 3:
+            tam = len(aux)-2
 
-            tam = len(aux) - 2
             for k in range(tam):
-                key = aux[k]
-                print(f"key: {key}")
+                keykey = aux[k]
                 for j in range(k+1, len(aux)):
-                    arrayAux = list([key])
+                    arrayAux = list([keykey])
                     arrayAux.append(aux[j])
-                    for kk in range(j+1, len(aux)):
-                        word = (arrayAux[0], arrayAux[1], aux[kk])
-                        if word in freq:
-                            freq[word] += 1
-                        else:
-                            freq[word] = 1
-    print(f"freq: {freq}")
-    # loop thru table_freq:
-    # minHeap = heapq.heappush(-table_freq[key], key)
+
+                    for jj in range(j+1, len(aux)):
+                        word = (arrayAux[0],arrayAux[1],aux[jj])
+
+                        if word not in visited:
+                            visited.add(word)
+                            if word in freq:
+                                freq[word] += 1
+                            else:
+                                freq[word] = 1
+
+    minHeap = []
     for key in freq:
-        aux_key = (-freq[key], key)
-        heapq.heappush(minHeap, aux_key)
+        aux = (-freq[key], key)
+        heapq.heappush(minHeap, aux)
 
-    # answer = heapq.heappop(minHeap) # get by freq and by lexicographically
-    # return [answer[1][0], answer[1][1], answer[1][2]]
+    result = heapq.heappop(minHeap)[1]
+    return [result[0], result[1], result[2]]
 
-    result = heapq.heappop(minHeap)
-    return [result[1][0], result[1][1], result[1][2]]
 
 if __name__ == '__main__':
     word = "-042"
@@ -389,7 +395,7 @@ if __name__ == '__main__':
     k = 2
     tasks = ["a", "a", "a", "b", "c", "c"]
     nums = [2, 1, 8]
-    username = ["joe", "joe", "joe", "james", "james", "james", "james", "mary", "mary", "mary"]
-    timestamp = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
-    website = ["home", "about", "career", "home", "cart", "maps", "home", "home", "about", "career"]
+    username = ["h","eiy","cq","h","cq","txldsscx","cq","txldsscx","h","cq","cq"]
+    timestamp = [527896567,334462937,517687281,134127993,859112386,159548699,51100299,444082139,926837079,317455832,411747930]
+    website = ["hibympufi","hibympufi","hibympufi","hibympufi","hibympufi","hibympufi","hibympufi","hibympufi","yljmntrclw","hibympufi","yljmntrclw"]
     print(mostVisited(username, timestamp, website))
