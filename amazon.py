@@ -1,3 +1,4 @@
+import collections
 import heapq
 from collections import Counter
 
@@ -386,6 +387,150 @@ def mostVisited(username, timestamp, website):
     result = heapq.heappop(minHeap)[1]
     return [result[0], result[1], result[2]]
 
+# 49. Group Anagrams
+def groupAnagrams(strs):
+
+    ans = {}
+
+    for word in strs:
+        count = [0] * 26
+        for char in word:
+            count[ord(char) - ord("a")] += 1
+
+        tup = tuple(count)
+        if tup in ans:
+            ans[tup].append(word)
+        else:
+            ans[tup] = [word]
+
+    result = []
+    for key in ans:
+        result.append(ans[key])
+
+    return result
+
+# 165. Compare Version Numbers
+def compareVersion(version1, version2):
+    stringVersion1 = version1.split(".")
+    stringVersion2 = version2.split(".")
+    firstPartV1 = int(stringVersion1[0])  # first part of String version1
+    secondPartV1 = stringVersion1[1:len(stringVersion1)]  # second part of String version2
+
+    firstPartV2 = int(stringVersion2[0])  # second part of String version1
+    secondPartV2 = stringVersion2[1:len(stringVersion2)]  # # second part of String version2
+
+    if firstPartV1 < firstPartV2:
+        return -1
+
+    if firstPartV1 > firstPartV2:
+        return 1
+
+    # we have firstPartV1 == secondPartV2
+
+    V1SumSecondPart = 0
+    V2SumSecondPart = 0
+
+    i, j = 0, 0
+
+    while len(secondPartV1) > 0 and len(secondPartV2) > 0:
+
+        num1 = int(secondPartV1.pop(0))
+        num2 = int(secondPartV2.pop(0))
+
+        if num1 > num2:
+            return 1
+        elif num1 < num2:
+            return -1
+
+    if len(secondPartV1) == 0 and len(secondPartV2) == 0:
+        return 0
+    else:
+        if len(secondPartV1) != 0:
+            suming = 0
+            for i in range(len(secondPartV1)):
+                suming += int(secondPartV1[i])
+
+            if suming > 0:
+                return 1
+            else:
+                return 0
+
+        else:
+            suming = 0
+            for i in range(len(secondPartV2)):
+                suming += int(secondPartV2[i])
+
+            if suming > 0:
+                return -1
+            else:
+                return 0
+
+# 20. Valid Parentheses
+def isValid(cad):
+
+    stack = []
+    i = 0
+    while i < len(cad):
+
+        if cad[i] == "(" or cad[i] == "[" or cad[i] == "{":
+            stack.append(cad[i])
+        else:
+
+            if len(stack) <= 0:
+                return False
+
+            if cad[i] == ")":
+                if stack[len(stack)-1] == '(':
+                    stack.pop(len(stack)-1)
+                else:
+                    return False
+
+            elif cad[i] == "]":
+                if stack[len(stack)-1] == "[":
+                    stack.pop(len(stack)-1)
+                else:
+                    return False
+            else:
+                if stack[len(stack)-1] == "{":
+                    stack.pop(len(stack)-1)
+                else:
+                    return False
+        i += 1
+
+    if len(stack) > 0:
+        return False
+    else:
+        return True
+
+# 28. Find the Index of the First Occurrence in a String
+def strStr(haystack, needle):
+
+    i, j = 0, 0
+
+    while j < len(haystack):
+
+        aux = j
+        while i < len(needle) and aux < len(haystack) and haystack[aux] == needle[i]:
+                aux += 1
+                i += 1
+
+        if i == len(needle):
+            return j
+        else:
+            i = 0
+
+        j += 1
+
+    return -1
+
+# 238. Product of Array Except Self
+def productExceptSelf(nums):
+    # [1,2,3,4]
+    # [1,2,6,24]
+    # [24,12,8,6]
+    
+    # [-1,1,0,-3,3]
+    # [-1,-1,0,0,0]
 
 if __name__ == '__main__':
     word = "-042"
@@ -398,4 +543,9 @@ if __name__ == '__main__':
     username = ["h","eiy","cq","h","cq","txldsscx","cq","txldsscx","h","cq","cq"]
     timestamp = [527896567,334462937,517687281,134127993,859112386,159548699,51100299,444082139,926837079,317455832,411747930]
     website = ["hibympufi","hibympufi","hibympufi","hibympufi","hibympufi","hibympufi","hibympufi","hibympufi","yljmntrclw","hibympufi","yljmntrclw"]
-    print(mostVisited(username, timestamp, website))
+    strs = ["eat","tea","tan","ate","nat","bat"]
+    version1 = "7.5.2.4"
+    version2 = "7.5.3"
+    haystack = "mississippi"
+    needle = "issipi"
+    print(strStr(haystack, needle))
