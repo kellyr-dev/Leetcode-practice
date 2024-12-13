@@ -2,6 +2,12 @@ import collections
 import heapq
 from collections import Counter
 
+class ListNode:
+    def __init__(self, val=0, next=None):
+        self.val = val
+        self.next = next
+
+
 # 3. Longest Substring Without Repeating Characters
 def lengthOfLongestSubstring(word):
     maxLenght = 0
@@ -523,14 +529,100 @@ def strStr(haystack, needle):
 
     return -1
 
-# 238. Product of Array Except Self
-def productExceptSelf(nums):
-    # [1,2,3,4]
-    # [1,2,6,24]
-    # [24,12,8,6]
-    
-    # [-1,1,0,-3,3]
-    # [-1,-1,0,0,0]
+# 2. Add Two Numbers
+def addTwonNumbers(l1, l2):
+
+    carry = 0
+    result = []
+    while l1 != None and l2 != None:
+
+        if l1.val + l2.val + carry >= 10:
+            value = (l1.val + l2.val + carry) % 10
+            result.append(value)
+            l1 = l1.next
+            l2 = l2.next
+            carry = 1
+        else:
+            result.append(l1.val + l2.val + carry)
+            l1 = l1.next
+            l2 = l2.next
+            carry = 0
+
+    if l2 != None:
+        while l2 != None:
+
+            if l2.val + carry >= 10:
+                value = (l2.val + carry) % 10
+                result.append(value)
+                carry = 1
+                l2 = l2.next
+            else:
+                carry = 0
+                result.append(l2.val)
+                l2 = l2.next
+
+    if l1 != None:
+
+        while l1 != None:
+            if l1.val + carry >= 10:
+                value = (l1.val + carry) % 10
+                result.append(value)
+                carry = 1
+                l1 = l1.next
+            else:
+                result.append(l1.val)
+                carry = 0
+                l1 = l1.next
+
+    if carry > 0:
+        result.append(carry)
+
+    aux = ListNode(result[0])
+    ans = aux
+    for i in range(1, len(result)):
+        aux.next = ListNode(result[i])
+        aux = aux.next
+
+    return ans
+
+# 21. Merge Two Sorted Lists
+def mergeTwoLists(list1, list2):
+
+    result = []
+    res = ListNode()
+    aux = res
+
+    while list1 != None and list2 != None:
+
+        if list1.val <= list2.val:
+            aux.next = ListNode(list1.val)
+
+            #result.append(list1.val)
+            list1 = list1.next
+        else:
+            #result.append(list2.val)
+            aux.next = ListNode(list2.val)
+            list2 = list2.next
+
+        aux = aux.next
+
+    while list1 != None:
+        aux.next = ListNode(list1.val)
+        list1 = list1.next
+        aux = aux.next
+
+    while list2 != None:
+        aux.next = ListNode(list2.val)
+        list2 = list2.next
+        aux = aux.next
+
+    while res != None:
+        print(res.val)
+        res = res.next
+
+    return res
+
+
 
 if __name__ == '__main__':
     word = "-042"
@@ -548,4 +640,11 @@ if __name__ == '__main__':
     version2 = "7.5.3"
     haystack = "mississippi"
     needle = "issipi"
-    print(strStr(haystack, needle))
+    l1 = ListNode(1)
+    l1.next = ListNode(2)
+    l1.next.next = ListNode(4)
+
+    l2 = ListNode(1)
+    l2.next = ListNode(3)
+    l2.next.next = ListNode(4)
+    print(mergeTwoLists(l1, l2))
