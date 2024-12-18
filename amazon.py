@@ -681,30 +681,27 @@ def reverseKGroup(head, k):
 # 7. Reverse Integer
 def reverse(x):
 
-    numStr = str(x)
-    j = len(numStr)-1
-
-    newStr = ""
-    while j >= 1:
-        newStr = newStr + numStr[j]
-        j -= 1
-
     NEG = False
-    if numStr[0] != "+" or numStr[0] != "-":
-        newStr = newStr + numStr[0]
-    elif numStr[0] == "-":
+    if x < 0:
         NEG = True
+        x = -x
 
-    result = int(newStr)
+    result = 0
+    while x > 0:
+        digit = x % 10
+        x = x // 10
+        print(f"X: {x}")
+        if (result > (2**31 -1) // 10):
+            return 0
+        if (result == (2 ** 31 - 1) // 10 and digit > 7):
+            return 0
+        result = (result * 10) + digit
+        print(f"result: {result}")
 
     if NEG:
-        result = -result
-
-    if result >= 2147483647 or result <= -2147483648:
-        return 0
+        return -result
     else:
         return result
-    print(f"numStr: {newStr}")
 
 if __name__ == '__main__':
     word = "-042"
@@ -723,5 +720,5 @@ if __name__ == '__main__':
     haystack = "mississippi"
     needle = "issipi"
     head = [[7, None], [13, 0], [11, 4], [10, 2], [1, 0]]
-    x = 123
+    x = 2147483647
     print(reverse(x))
