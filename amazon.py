@@ -7,6 +7,13 @@ class ListNode:
         self.val = val
         self.next = next
 
+class Node:
+    def __init__(self, x: int, next: 'Node' = None, random: 'Node' = None):
+        self.val = int(x)
+        self.next = next
+        self.random = random
+
+
 
 # 3. Longest Substring Without Repeating Characters
 def lengthOfLongestSubstring(word):
@@ -622,7 +629,82 @@ def mergeTwoLists(list1, list2):
 
     return res
 
+# 206. Reverse Linked List
+def reverseList(head):
 
+    prev = None
+
+    while head != None:
+
+        save = head.next
+        head.next = prev
+        prev = head
+        head = save
+
+    return prev
+
+# 25. Reverse Nodes in k-Group { Space Complexity: O(n)}
+def reverseKGroup(head, k):
+
+    aux_list = []
+    aux_result = []
+
+    while head != None:
+        aux_list.append(head.val)
+        head = head.next
+
+    i = 0
+    while i <= len(aux_list) - 1:
+
+        reverseLocal = []
+        if i + k <= len(aux_list):  # can be reversed in the windows i+k
+            for j in range(k):
+                reverseLocal.insert(0, aux_list[i])
+                i += 1
+        else:
+            for j in range(i, len(aux_list)):
+                reverseLocal.append(aux_list[j])
+                i += 1
+
+        for jj in range(len(reverseLocal)):
+            aux_result.append(reverseLocal[jj])
+
+    aux = ListNode(aux_result[0])
+    res = aux
+
+    for kk in range(1, len(aux_result)):
+        aux.next = ListNode(aux_result[kk])
+        aux = aux.next
+
+    return res
+
+# 7. Reverse Integer
+def reverse(x):
+
+    numStr = str(x)
+    j = len(numStr)-1
+
+    newStr = ""
+    while j >= 1:
+        newStr = newStr + numStr[j]
+        j -= 1
+
+    NEG = False
+    if numStr[0] != "+" or numStr[0] != "-":
+        newStr = newStr + numStr[0]
+    elif numStr[0] == "-":
+        NEG = True
+
+    result = int(newStr)
+
+    if NEG:
+        result = -result
+
+    if result >= 2147483647 or result <= -2147483648:
+        return 0
+    else:
+        return result
+    print(f"numStr: {newStr}")
 
 if __name__ == '__main__':
     word = "-042"
@@ -640,11 +722,6 @@ if __name__ == '__main__':
     version2 = "7.5.3"
     haystack = "mississippi"
     needle = "issipi"
-    l1 = ListNode(1)
-    l1.next = ListNode(2)
-    l1.next.next = ListNode(4)
-
-    l2 = ListNode(1)
-    l2.next = ListNode(3)
-    l2.next.next = ListNode(4)
-    print(mergeTwoLists(l1, l2))
+    head = [[7, None], [13, 0], [11, 4], [10, 2], [1, 0]]
+    x = 123
+    print(reverse(x))
