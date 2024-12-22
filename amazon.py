@@ -703,6 +703,75 @@ def reverse(x):
     else:
         return result
 
+# 33. Search in Rotated Sorted Array
+def searchRotated(nums, target):
+
+    # 1) find index of minimiun num
+    # 2) posisioning pointer depending on target if in one part of the array
+    # 3) apply binary Search
+
+    left = 0
+    right = len(nums)-1
+    middle = (left + right)//2
+
+    while left < right:
+
+        mid = (left + right)//2
+
+        if nums[mid] > nums[right]:
+            left = mid + 1
+        else:
+            right = mid
+
+    minIndex = left
+
+    if minIndex == 0:
+        left = 0
+        right = len(nums)-1
+
+    elif target >= nums[0] and target <= nums[minIndex-1]:
+        left = 0
+        right = minIndex-1
+    else:
+        left = minIndex
+        right = len(nums)-1
+
+    while left <= right:
+
+        midd = (left + right)//2
+
+        if target == nums[midd]:
+            return midd
+        elif target > nums[midd]:
+            left = midd + 1
+        else:
+            right = midd - 1
+
+    return -1
+
+
+
+
+
+# 253. Meeting Rooms II
+def meeting_roomII(intervals):
+
+    timeline = [0] * 31
+
+    for i in range(len(intervals)):
+        start = intervals[i][0]
+        end = intervals[i][1]
+
+        timeline[start] += 1
+        timeline[end] -= 1
+
+    print(timeline)
+    for i in range(1, len(timeline)):
+        timeline[i] = timeline[i-1] + timeline[i]
+
+    print(timeline)
+    return max(timeline)
+
 if __name__ == '__main__':
     word = "-042"
     num = 3200
@@ -710,7 +779,6 @@ if __name__ == '__main__':
     stringArray = ["aba", "abb", "aba"]
     k = 2
     tasks = ["a", "a", "a", "b", "c", "c"]
-    nums = [2, 1, 8]
     username = ["h","eiy","cq","h","cq","txldsscx","cq","txldsscx","h","cq","cq"]
     timestamp = [527896567,334462937,517687281,134127993,859112386,159548699,51100299,444082139,926837079,317455832,411747930]
     website = ["hibympufi","hibympufi","hibympufi","hibympufi","hibympufi","hibympufi","hibympufi","hibympufi","yljmntrclw","hibympufi","yljmntrclw"]
@@ -720,5 +788,6 @@ if __name__ == '__main__':
     haystack = "mississippi"
     needle = "issipi"
     head = [[7, None], [13, 0], [11, 4], [10, 2], [1, 0]]
-    x = 2147483647
-    print(reverse(x))
+    intervals = [[0,30],[5,10],[15,20]]
+    nums = [4,5,6,7,0,1,2]
+    print(searchRotated(nums, 3))
