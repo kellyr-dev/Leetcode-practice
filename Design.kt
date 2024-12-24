@@ -30,6 +30,10 @@ class MinStack(){
     }
 }
 
+// 295. Find Median from Data Stream
+class MedianFinder(){
+    
+}
 
 fun main(){
 
