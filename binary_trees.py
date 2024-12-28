@@ -638,8 +638,19 @@ def zigzagLevelOrderN(root):
     print(f"result: {result}")
     return result
 
+# 98. Validate Binary Search Tree
+def isValidBST(root):
+
+    if root == None:
+        return True
+
+    if root.value >= root.left.value and root.value <= root.right.value:
+        return isValidBST(root.left) and isValidBST(root.right)
+    else:
+        return False
+
 if __name__ == '__main__':
-    lst = [3,9,20,None,None,15,7]
+    lst = [2,1,3]
     lst1 = [10,4,15,1,None,14,None]
     lst2 = [10,4,15,1,None,14,20]
     low = 6
@@ -648,5 +659,5 @@ if __name__ == '__main__':
     p = deserialize(lst1)
     q = deserialize(lst2)
     key = 22
-    print(zigzagLevelOrderN(root))
+    print(isValidBST(root))
     a = [3, 2, 1, 5, 4, 6]
