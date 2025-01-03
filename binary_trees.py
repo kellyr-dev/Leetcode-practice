@@ -1,3 +1,5 @@
+import heapq
+
 # Node class for a binary tree node
 class TreeNode:
     def __init__(self, value=None):
@@ -649,8 +651,56 @@ def isValidBST(root):
     else:
         return False
 
+# 230. Kth Smallest Element in a BST (BFS)
+def kthSmallest(root, k):
+
+    minHeap = []
+
+    queue = [root]
+
+    while queue:
+
+        levelSize = len(queue)
+
+        print(f"minHeap: {minHeap}")
+        for i in range(levelSize):
+            current = queue.pop(0)
+            minHeap.append(current.value)
+            if current.left is not None:
+                queue.append(current.left)
+
+            if current.right is not None:
+                queue.append(current.right)
+
+    heapq.heapify(minHeap)
+    print(minHeap)
+
+    result = float('inf')
+    for i in range(k):
+        result = heapq.heappop(minHeap)
+
+    return result
+
+# 230. Kth Smallest Element in a BST (DFS)
+def kthSmallestDFS(root, k):
+
+    nodes = []
+
+    def dfs(root):
+
+        if root is None:
+            return
+
+        dfs(root.left)
+        nodes.append(root.value)
+        dfs(root.right)
+
+    dfs(root)
+    return nodes[k-1]
+
+
 if __name__ == '__main__':
-    lst = [2,1,3]
+    lst = [5,3,6,2,4,None,None,1]
     lst1 = [10,4,15,1,None,14,None]
     lst2 = [10,4,15,1,None,14,20]
     low = 6
@@ -659,5 +709,5 @@ if __name__ == '__main__':
     p = deserialize(lst1)
     q = deserialize(lst2)
     key = 22
-    print(isValidBST(root))
+    print(kthSmallestDFS(root, 3))
     a = [3, 2, 1, 5, 4, 6]
