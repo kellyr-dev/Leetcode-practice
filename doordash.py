@@ -18,7 +18,6 @@ def areAlmostEqual(s1, s2):
 
     return True
 
-
 # 286. Walls and Gates (NOT FINISHED)
 def wallsAndGates(rooms):
     def dfs(i, j):
@@ -77,7 +76,31 @@ def nearestValidPoint(x, y, points):
     result = heapq.heappop(minHeap)
     return result[1]
 
-#
+# 1347. Minimum Number of Steps to Make Two Strings Anagram
+def minSteps(s, t):
+    table_s = {}
+    tword = []
+
+    for i in range(len(s)):
+
+        if s[i] in table_s:
+            table_s[s[i]] += 1
+        else:
+            table_s[s[i]] = 1
+
+    for i in range(len(t)):
+
+        if t[i] in table_s:
+            if table_s[t[i]] > 1:
+                table_s[t[i]] -= 1
+            else:
+                table_s.pop(t[i])
+        else:
+            tword.append(t[i])
+
+    print(tword)
+    return len(tword)
+
 
 if __name__ == '__main__':
 
