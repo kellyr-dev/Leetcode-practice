@@ -19,10 +19,20 @@ def differByOne(dict):
 
     return False
 
+# 136. Single Number
+def singleNumber(nums):
 
+    num = 0
+    for value in nums:
 
+        print(f"num: {num} XOR value: {value}")
+        num = num ^ value
+        print(f"resutl: {num}")
+
+    return num
 
 if __name__ == '__main__':
 
-    dict = ["ab","cd","yz"]
-    print(differByOne(dict))
+    #nums = [1,1,2,2,4]
+    nums = [4,1,2,1,2]
+    print(singleNumber(nums))
