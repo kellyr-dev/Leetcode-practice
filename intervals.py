@@ -239,9 +239,37 @@ def minimunMeetingRoomIITwoHeap(intervals):
 
     return len(rooms)
 
+# 253. Minimun Meeting Rooms II (prefix timeline)
+def minMeetingRooms(intervals):
+
+    maxStart_End = float('-inf')
+
+    for i in range(len(intervals)):
+        aux = max(intervals[i][0], intervals[i][1])
+        maxStart_End = max(aux, maxStart_End)
+
+    timeline = [0] * (maxStart_End + 1)
+
+    for i in range(len(intervals)):
+        start = intervals[i][0]
+        end = intervals[i][1]
+
+        timeline[start] += 1
+        timeline[end] -= 1
+
+    print(timeline)
+
+    maxValue = timeline[0]
+    for i in range(1, len(timeline)):
+        timeline[i] = timeline[i] + timeline[i - 1]
+        maxValue = max(timeline[i], maxValue)
+        print(maxValue)
+
+    return maxValue
+
 if __name__ == '__main__':
-    intervals = [[4,5], [2,3], [2,4], [3,5]]
+    intervals = [[0,30],[5,10],[15,20]]
     newInterval = [2,7]
     event1 = ["10:00","11:00"]
     event2 = ["14:00","15:00"]
-    print(minimunMeetingRoomIITwoHeap(intervals))
+    print(minMeetingRooms(intervals))
